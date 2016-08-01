@@ -1,0 +1,117 @@
+subprojects {
+
+	buildscript {
+	    repositories {
+		maven {
+		    url "https://maven.eveoh.nl/content/repositories/releases"
+		}
+	    }
+
+	    dependencies {
+		classpath "nl.eveoh:gradle-aspectj:1.6"
+	    }
+	}
+
+	ext {
+		aspectjVersion = '1.8.8'
+		springVersion = '4.2.4.RELEASE'
+		
+	}
+
+	apply plugin: 'java'
+
+	sourceCompatibility = 1.8
+
+	repositories {
+	    mavenCentral()
+	    maven {
+	    	url  'http://repository.jboss.org/nexus/content/groups/public'
+	    }
+	}
+
+	apply plugin: 'java-library-distribution'
+
+	distributions {
+	    main{
+		baseName = project.name
+	    }
+	}
+
+	task wrapper(type: Wrapper) {
+	    gradleVersion = '2.2'
+	}
+
+	configurations {
+	    testArtifacts.extendsFrom testRuntime
+	}
+	task testJar(type: Jar) {
+	    classifier "test"
+	    from sourceSets.test.output
+	}
+	artifacts {
+	    testArtifacts testJar
+	}
+
+	def deployTargets = ["../javadeploy"]
+	def zipFile = file("${buildDir}/distributions/${project.name}.zip")
+	def jarFile = file("${buildDir}/libs/${project.name}.jar")
+
+	task deploy (dependsOn: distZip) {
+		inputs.file zipFile
+		deployTargets.each { outputDir ->
+			outputs.dir outputDir
+			
+		}
+	
+		doLast {
+			deployTargets.each { outputDir ->
+				copy {
+					from zipTree(zipFile)
+					into outputDir
+				}
+			}
+		}
+	}
+
+	task deployJar(dependsOn: build) {
+		inputs.file jarFile
+		deployTargets.each { outputDir ->
+			outputs.dir "${outputDir}/${project.name}"
+			
+		}
+	
+		doLast {
+			deployTargets.each { outputDir ->
+				copy {
+					from jarFile
+					into "${outputDir}/${project.name}"
+				}
+			}
+		}
+	}
+
+	
+	
+	def restDeployTargets = ["../restdeploy"]
+	def warFile = file("${buildDir}/libs/${project.name}.war")
+	
+	task deployWar (dependsOn: distZip) {
+		inputs.file warFile
+		restDeployTargets.each { outputDir ->
+			outputs.dir  "${outputDir}/${project.name}"
+			
+		}
+	
+		doLast {
+			restDeployTargets.each { outputDir ->
+				copy {
+					from zipTree(warFile)
+					into "${outputDir}/${project.name}"
+				}
+			}
+		}
+	}
+}
+
+
+

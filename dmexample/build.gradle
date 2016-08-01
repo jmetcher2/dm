@@ -1,0 +1,15 @@
+dependencies {
+	compile project (':dmbase')
+}
+
+apply plugin: 'aspectj'
+apply plugin: 'eclipse'
+
+eclipse {
+
+	project {
+		natures = ['org.eclipse.ajdt.ui.ajnature','org.eclipse.jdt.core.javanature']
+		
+		buildCommand 'org.eclipse.ajdt.core.ajbuilder'
+	}
+}
