@@ -2,8 +2,19 @@ package au.id.lagod.dm.config;
 
 import au.id.lagod.dm.collections.Model;
 
-public interface Bootstrapper {
+public abstract class Bootstrapper {
 
-	public abstract void bootstrap(Model model);
+
+	protected abstract void doBootstrap(Model model);
+
+	public void bootstrap(Model model) {
+		if (!model.isBootstrapped()) {
+			doBootstrap(model);
+		}
+		else {
+			throw new Error("Attempted to rebootstrap already bootstrapped model");
+		}
+	}
+
 
 }

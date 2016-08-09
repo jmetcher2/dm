@@ -2,11 +2,10 @@ package au.id.lagod.dm.config;
 
 import au.id.lagod.dm.collections.Model;
 
-public class NullBootstrap implements Bootstrapper {
+public class NullBootstrap extends Bootstrapper {
 
 	@Override
-	public void bootstrap(Model model) {
-		// noop
+	protected void doBootstrap(Model model) {
 	}
 
 }

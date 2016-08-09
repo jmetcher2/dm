@@ -16,7 +16,7 @@ import au.id.lagod.dm.test.TestObjectManager;
  * @author Jaime Metcher
  *
  */
-public class testNonModel extends au.id.lagod.dm.BaseTest {
+public class testNonModel  {
 	
 	@Test
 	public void testConstructorAccess() {
