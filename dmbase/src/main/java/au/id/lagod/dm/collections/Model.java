@@ -16,4 +16,8 @@ public class Model {
 		return bootstrapped;
 	}
 	
+	public void setBootstrapped() {
+		bootstrapped = true;
+	}
+	
 }

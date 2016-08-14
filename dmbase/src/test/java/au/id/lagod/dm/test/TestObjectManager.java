@@ -16,5 +16,10 @@ public class TestObjectManager extends DomainObjectCollectionManager<TestObject>
 		return null;
 	}
 
+	@Override
+	public Class<TestObject> getManagedObjectClass() {
+		return TestObject.class;
+	}
+
 
 }

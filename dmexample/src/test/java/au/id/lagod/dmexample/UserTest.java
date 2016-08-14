@@ -5,37 +5,37 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import au.id.lagod.dm.base.Utility;
-import au.id.lagod.dmexample.entities.Company;
+import au.id.lagod.dmexample.entities.User;
 
-public class CompanyTest extends BaseTest {
+public class UserTest extends BaseTest {
 
 	@Test(expected=javax.validation.ConstraintViolationException.class)
 	public void testBlankCode() {
-		model.getCompanies().create("");
+		model.getUsers().create("");
 	}
 
 	@Test(expected=javax.validation.ConstraintViolationException.class)
 	public void testNullCode() {
-		model.getCompanies().create(null);
+		model.getUsers().create(null);
 	}
 
 	@Test(expected=javax.validation.ConstraintViolationException.class)
 	public void testDuplicateCode() {
-		model.getCompanies().create("");
-		model.getCompanies().create("");
+		model.getUsers().create("");
+		model.getUsers().create("");
 	}
 	
 	@Test(expected=javax.validation.ConstraintViolationException.class)
 	public void testDescriptionTooLong() {
-		Company c = model.getCompanies().create("test");
+		User c = model.getUsers().create("test");
 		c.setDescription(Utility.string256);
 		Utility.validate(c);
 	}
 	
 	@Test
 	public void testCreate() {
-		Company c = model.getCompanies().create("test");
-		Company c2 = model.companies("test");
+		User c = model.getUsers().create("test");
+		User c2 = model.users("test");
 		assertFalse(c2 == null);
 		assertEquals(c2, c);
 	}

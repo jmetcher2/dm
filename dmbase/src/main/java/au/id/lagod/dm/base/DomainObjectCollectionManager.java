@@ -26,6 +26,7 @@ public abstract class DomainObjectCollectionManager<T extends BaseDomainObject> 
 	protected Collection<T> collection = new HashSet<T>(0);
 
 	public DomainObjectCollectionManager() {
+		this(new HashSet<T>(0));
 	}
 
 	public DomainObjectCollectionManager(Collection<T> c) {
@@ -58,9 +59,13 @@ public abstract class DomainObjectCollectionManager<T extends BaseDomainObject> 
 	 * SET MANAGEMENT
 	 * 
 	 */
+	public abstract Class<T> getManagedObjectClass();
+	
 	public abstract T create(String name);
 
-	public abstract T get(String textID);
+	public T get(String textID) {
+		return findOne(BaseDomainObject.getTextKeyField(getManagedObjectClass()), textID);
+	};
 	
 	public boolean exists(String textID) {
 		return get(textID) != null;
@@ -123,7 +128,7 @@ public abstract class DomainObjectCollectionManager<T extends BaseDomainObject> 
 		}
 		
 		public String getMessage() {
-			return " DomainObject = "+domainObject.getClass()+"  Text Key Field = "+Utility.getTextKeyField(domainObject.getClass())+" Text Key = "+ domainObject.getTextKey();
+			return domainObject.getMessage();
 		}
 
 		

@@ -10,6 +10,7 @@ public abstract class Bootstrapper {
 	public void bootstrap(Model model) {
 		if (!model.isBootstrapped()) {
 			doBootstrap(model);
+			model.setBootstrapped();
 		}
 		else {
 			throw new Error("Attempted to rebootstrap already bootstrapped model");

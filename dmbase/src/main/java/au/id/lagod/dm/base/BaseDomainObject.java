@@ -1,5 +1,15 @@
 package au.id.lagod.dm.base;
 
+import java.lang.reflect.Field;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+
+import org.apache.commons.beanutils.PropertyUtils;
 
 public class BaseDomainObject {
 
@@ -14,12 +24,25 @@ public class BaseDomainObject {
 	// Note: if this reflection-based approach proves to be too slow, we can
 	// a) cache the value after the first call, or
 	// b) override these two methods in subclasses 
+	public String getTextKeyField() {
+		return getTextKeyField(this.getClass());
+	}
 	public boolean hasTextKey() {
-		return Utility.getTextKeyField(getClass()) != null;
+		return getTextKeyField() != null;
 	}
 	
 	public String getTextKey() {
-		return Utility.getTextIDValue(this,Utility.getTextKeyField(getClass()));
+		String keyFieldName = getTextKeyField();
+		try {
+			if (keyFieldName == null) {
+				return null;
+			}
+			else {
+				return (String) PropertyUtils.getProperty(this, keyFieldName);
+			}
+		} catch (Exception e) {
+			throw new Error(e);
+		}
 	}
 	
 	/**
@@ -33,5 +56,25 @@ public class BaseDomainObject {
 	 */
 	public void removeAssociates() {
 	}
+	
+	public String getMessage() {
+		return " BaseDomainObject = "+this.getClass()+"  Text Key Field = "+this.getTextKeyField()+" Text Key = "+ this.getTextKey();
+	}
+	
+	public static String getTextKeyField(Class clazz) {
+		for (Field field: clazz.getDeclaredFields()) {
+			if (field.isAnnotationPresent(TextKey.class)) {
+				return field.getName();
+			}
+		}
+
+		if (clazz.getSuperclass() != Object.class) {
+			return getTextKeyField(clazz.getSuperclass());
+		}
+		else {
+			return null;
+		}
+	}
+	
 
 }

@@ -13,9 +13,9 @@ public class CompanyManager extends DomainObjectCollectionManager<Company> {
 	}
 
 	@Override
-	public Company get(String textID) {
-		// TODO Auto-generated method stub
-		return null;
+	public Class<Company> getManagedObjectClass() {
+		return Company.class;
 	}
+	
 
 }

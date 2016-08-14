@@ -1,21 +1,22 @@
 package au.id.lagod.dmexample.entities;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import au.id.lagod.dm.base.BaseDomainObject;
 import au.id.lagod.dm.base.TextKey;
-import au.id.lagod.dmexample.collections.DepartmentManager;
-
 import org.hibernate.validator.constraints.NotBlank;
 
-public class Company extends BaseDomainObject {
+public class Department extends BaseDomainObject {
 
+	@NotNull
+	Company company;
+	
 	@TextKey
 	@NotBlank @Size(max=50)	private String code;
 	@Size(max=255)			private String description;
-	
-	DepartmentManager departments = new DepartmentManager(this);
 
-	public Company(String name) {
+	public Department(Company c, String name) {
+		this.company = c;
 		this.code = name;
 		this.description = name;
 	}
@@ -30,10 +31,6 @@ public class Company extends BaseDomainObject {
 
 	public String getCode() {
 		return code;
-	}
-	
-	public DepartmentManager getDepartments() {
-		return departments;
 	}
 	
 	

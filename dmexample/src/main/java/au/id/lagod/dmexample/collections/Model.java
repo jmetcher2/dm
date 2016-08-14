@@ -1,6 +1,7 @@
 package au.id.lagod.dmexample.collections;
 
 import au.id.lagod.dmexample.entities.Company;
+import au.id.lagod.dmexample.entities.User;
 
 public class Model extends au.id.lagod.dm.collections.Model {
 	
@@ -27,6 +28,8 @@ public class Model extends au.id.lagod.dm.collections.Model {
 	 */
 	
 	private CompanyManager companies = new CompanyManager();
+	private UserManager users = new UserManager();
+	
 	
 	public CompanyManager getCompanies() {
 		return companies;
@@ -35,4 +38,13 @@ public class Model extends au.id.lagod.dm.collections.Model {
 	public Company companies(String code) {
 		return getCompanies().get(code);
 	}
+	
+	public UserManager getUsers() {
+		return users;
+	}
+	
+	public User users(String code) {
+		return getUsers().get(code);
+	}
+
 }

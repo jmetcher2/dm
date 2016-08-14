@@ -70,7 +70,9 @@ public abstract class AssociationCollectionManager<A extends BaseDomainObject,T 
 	 * 
 	 * @return field name, or null if the object has no text key
 	 */
-	protected abstract String getAssociateKeyFieldName();
+	protected String getAssociateKeyFieldName() {
+		return BaseDomainObject.getTextKeyField(getManagedObjectClass());
+	};
 
 	/**
 	 * Get the collection that manages all of the associate objects (not just the ones participating in this association)
@@ -101,16 +103,6 @@ public abstract class AssociationCollectionManager<A extends BaseDomainObject,T 
 	 * @return an association collection manager
 	 */
 	protected abstract AssociationCollectionManager<B,T,A> getReverseCollection(T associationObject);
-
-	/**
-	 * Cast Object to the association object type.  Required for Collection.remove(Object).
-	 * 
-	 * This method is a side effect of generic type erasure - we have no other way to get the correct type
-	 * 
-	 * @param o
-	 * @return
-	 */
-	protected abstract T castAssociationObject(Object o);
 
 	/**
 	 * Return a new association object.  We assume the implementing class has a reference to the "A" end of the association
@@ -195,7 +187,7 @@ public abstract class AssociationCollectionManager<A extends BaseDomainObject,T 
 	 */
 	public boolean remove(Object o) {
 		if (super.remove(o)) {
-			T ao = castAssociationObject(o);
+			T ao = getManagedObjectClass().cast(o);
 			getReverseCollection(ao).remove(ao);
 			return true;
 		}

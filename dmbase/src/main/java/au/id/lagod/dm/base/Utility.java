@@ -47,34 +47,10 @@ public class Utility {
 		return e.getMessage().concat(" " + printMessages(cvs));
 	}
 
-	public static String getTextKeyField(Class clazz) {
-		for (Field field: clazz.getDeclaredFields()) {
-			if (field.isAnnotationPresent(TextKey.class)) {
-				return field.getName();
-			}
-		}
-
-		if (clazz.getSuperclass() != Object.class) {
-			return getTextKeyField(clazz.getSuperclass());
-		}
-		else {
-			return null;
-		}
-	}
-	
-	public static  String getTextIDValue(BaseDomainObject o, String keyFieldName) {
-		try {
-			if (keyFieldName == null) {
-				return null;
-			}
-			else {
-				return (String) PropertyUtils.getProperty(o, keyFieldName);
-			}
-		} catch (Exception e) {
-			throw new Error(e);
-		}
-	}
-	
+	/*
+	 * Utility method to help in writing tests.  In normal use, validation is triggered by context, not 
+	 * explicitly by calling a method like this.
+	 */
 	public static void validate(BaseDomainObject bdo) {
 		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
 		Validator validator = factory.getValidator();
@@ -82,13 +58,8 @@ public class Utility {
 		
 		if (!constraintViolations.isEmpty()) {
 			System.out.println(Utility.printMessages(constraintViolations));
-			throw new ConstraintViolationException(getMessage(bdo) ,constraintViolations);
+			throw new ConstraintViolationException(bdo.getMessage() ,constraintViolations);
 		}
-	}
-	
-	
-	public String getMessage(BaseDomainObject bdo) {
-		return " BaseDomainObject = "+bdo.getClass()+"  Text Key Field = "+Utility.getTextKeyField(bdo.getClass())+" Text Key = "+ bdo.getTextKey();
 	}
 
 

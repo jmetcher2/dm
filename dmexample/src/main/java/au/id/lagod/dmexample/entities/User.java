@@ -7,16 +7,14 @@ import au.id.lagod.dmexample.collections.DepartmentManager;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-public class Company extends BaseDomainObject {
+public class User extends BaseDomainObject {
 
 	@TextKey
-	@NotBlank @Size(max=50)	private String code;
+	@NotBlank @Size(max=50)	private String username;
 	@Size(max=255)			private String description;
 	
-	DepartmentManager departments = new DepartmentManager(this);
-
-	public Company(String name) {
-		this.code = name;
+	public User(String name) {
+		this.username = name;
 		this.description = name;
 	}
 
@@ -28,14 +26,9 @@ public class Company extends BaseDomainObject {
 		this.description = description;
 	}
 
-	public String getCode() {
-		return code;
+	public String getUsername() {
+		return username;
 	}
-	
-	public DepartmentManager getDepartments() {
-		return departments;
-	}
-	
 	
 
 }
