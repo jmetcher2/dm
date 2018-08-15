@@ -1,10 +1,13 @@
 package au.id.lagod.dm.base;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
@@ -61,6 +64,17 @@ public class Utility {
 			throw new ConstraintViolationException(bdo.getMessage() ,constraintViolations);
 		}
 	}
+	
+    public static Properties loadProperties(String fileName) throws IOException {
+		Properties prop = new Properties();
+		 
+		InputStream inputStream = Utility.class.getResourceAsStream(fileName);
+		
+		prop.load(inputStream);
+		
+		return prop;
+	}    
+
 
 
 }

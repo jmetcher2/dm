@@ -1,0 +1,109 @@
+package com.objective.keystone.config;
+
+import java.beans.PropertyVetoException;
+import java.io.IOException;
+import java.util.Properties;
+
+import javax.sql.DataSource;
+
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.AdviceMode;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.orm.hibernate5.HibernateTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import com.objective.keystone.model.Model;
+
+import au.id.lagod.dm.base.Utility;
+
+@Configuration
+@EnableTransactionManagement(mode=AdviceMode.ASPECTJ)
+public class AppConfig {
+	
+	@Bean
+	public com.mchange.v2.c3p0.ComboPooledDataSource getDataSource() {
+		com.mchange.v2.c3p0.ComboPooledDataSource ds =  new com.mchange.v2.c3p0.ComboPooledDataSource();
+		Properties prop = getDatasourceProperties();
+		
+		try {
+			ds.setDriverClass(prop.getProperty("driver"));
+			ds.setJdbcUrl(prop.getProperty("dburl"));
+			ds.setPreferredTestQuery("SELECT 1");
+			ds.setTestConnectionOnCheckout(true);
+			ds.setUser(prop.getProperty("db.user"));
+			ds.setPassword(prop.getProperty("db.password"));
+			ds.setTestConnectionOnCheckout(true);
+		} catch (PropertyVetoException e) {
+			throw new Error(e);
+		}
+		
+		return ds;
+	}
+
+
+	@Bean
+	@Autowired
+    public org.springframework.orm.hibernate5.LocalSessionFactoryBean getSessionFactory(DataSource ds)
+    {
+		org.springframework.orm.hibernate5.LocalSessionFactoryBean lsfb = new org.springframework.orm.hibernate5.LocalSessionFactoryBean();
+        lsfb.setDataSource(ds);
+        lsfb.setHibernateProperties(getHibernateProperties());  
+        lsfb.setPackagesToScan(
+        		"com.objective.keystone.model.**.*"
+        );
+        return lsfb;
+    }
+
+    @Bean(name="model")
+    @Autowired
+    public Model getModel(SessionFactory sf) {
+    	return Model.getModel(new DBBootstrapper(sf));
+    }
+    
+    @Bean(name="transactionManager")
+    @Autowired
+    public PlatformTransactionManager getTransactionManager(SessionFactory sf) {
+    	HibernateTransactionManager htm = new HibernateTransactionManager();
+    	htm.setSessionFactory(sf);
+    	return htm;
+    }
+    
+
+
+	
+    public Properties getHibernateProperties() {
+		Properties properties;
+		
+		// externalized properties
+		try {
+			properties = Utility.loadProperties("/hibernate.properties");
+		} catch (IOException e) {
+			throw new Error(e);
+		}
+		
+		// hardcoded properties
+        properties.put("hibernate.format_sql", true);
+        
+        return properties;
+    }
+    
+    public Properties getDatasourceProperties() {
+		Properties properties;
+		
+		// externalized properties
+		try {
+			properties = Utility.loadProperties("/db.properties");
+		} catch (IOException e) {
+			throw new Error(e);
+		}
+		
+		// hardcoded properties
+        
+        return properties;
+    }
+    
+
+}

@@ -11,7 +11,7 @@ import javax.validation.ValidatorFactory;
 
 import org.apache.commons.beanutils.PropertyUtils;
 
-public class BaseDomainObject {
+public abstract class BaseDomainObject {
 
 	public BaseDomainObject() {
 		super();
@@ -20,6 +20,8 @@ public class BaseDomainObject {
 	public int compareTo(BaseDomainObject o) {
 		return 0;
 	}
+	
+	public abstract Long getId();
 	
 	// Note: if this reflection-based approach proves to be too slow, we can
 	// a) cache the value after the first call, or

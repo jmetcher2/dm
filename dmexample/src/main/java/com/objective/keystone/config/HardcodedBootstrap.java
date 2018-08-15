@@ -1,4 +1,4 @@
-package au.id.lagod.dmexample.config;
+package com.objective.keystone.config;
 
 import au.id.lagod.dm.config.Bootstrapper;
 import au.id.lagod.dm.collections.Model;

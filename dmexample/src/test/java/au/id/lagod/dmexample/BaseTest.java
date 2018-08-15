@@ -2,8 +2,8 @@ package au.id.lagod.dmexample;
 
 import org.junit.Before;
 
-import au.id.lagod.dmexample.collections.Model;
-import au.id.lagod.dmexample.config.HardcodedBootstrap;
+import com.objective.keystone.config.HardcodedBootstrap;
+import com.objective.keystone.model.Model;
 
 public class BaseTest {
 
@@ -16,8 +16,7 @@ public class BaseTest {
 	@Before
 	public void beforeTest() {
 		Model.resetModel();
-		model = Model.getModel();
-		new HardcodedBootstrap().bootstrap(model);
+		model = Model.getModel(new HardcodedBootstrap());
 	}
 
 }
