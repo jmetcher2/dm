@@ -18,6 +18,8 @@ import javax.validation.constraints.Size;
 import org.hibernate.annotations.AttributeAccessor;
 import org.hibernate.validator.constraints.NotBlank;
 
+import com.objective.keystone.model.folder.Folder;
+import com.objective.keystone.model.folder.FolderManager;
 import com.objective.keystone.model.group.Group;
 import com.objective.keystone.model.group.GroupManager;
 import com.objective.keystone.model.person.CustomerPerson;
@@ -54,7 +56,11 @@ public class Customer extends BaseDomainObject {
 
 	@AttributeAccessor(collectionAccessor)
 	@OneToMany(cascade = CascadeType.ALL, 
-	        mappedBy = "customer", orphanRemoval = true)					private Set<Group> groups = new GroupManager(this);
+	        mappedBy = "customer", orphanRemoval = true)				private Set<Group> groups = new GroupManager(this);
+
+	@AttributeAccessor(collectionAccessor)
+	@OneToMany(cascade = CascadeType.ALL, 
+	        mappedBy = "customer", orphanRemoval = true)				private Set<Folder> folders = new FolderManager(this);
 
 
 	protected Customer() {}
@@ -99,7 +105,14 @@ public class Customer extends BaseDomainObject {
 		return getGroups().get(name);
 	}
 	
+	public FolderManager getFolders() {
+		return (FolderManager) folders;
+	}
 	
+	public Folder folders(String name) {
+		return getFolders().get(name);
+	}
+		
 	
 	
 

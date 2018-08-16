@@ -15,7 +15,9 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.annotations.Parameter;
 
 import com.objective.keystone.model.customer.Customer;
 
@@ -24,31 +26,43 @@ import au.id.lagod.dm.base.ChildDomainObject;
 import au.id.lagod.dm.base.TextKey;
 
 @Entity
-@Table(name="publisher_group")
-public class Group extends BaseDomainObject implements ChildDomainObject {
+@Table(name="publisher_folder")
+public class Folder extends BaseDomainObject implements ChildDomainObject {
 
-	@Id	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "group_id", updatable = false, nullable = false)	private Long id;
+	@Id	
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "folder-generator")
+	@GenericGenerator(
+			name="folder-generator",
+			strategy="com.objective.dm.persistence.CustomTableIDGenerator",
+			parameters = {
+					@Parameter(name="sp_name", value="get_folder_id_nextval")
+			}
+		)
+	@Column(name = "folder_id", updatable = false, nullable = false)	private Long id;
 	
 	@Enumerated(EnumType.STRING)
-    @Column(name="group_type", length = 10 )
-	@NotNull														private GroupType type;
+    @Column(name="folder_type", length = 12 )
+	@NotNull														private FolderType type;
 	
 	@TextKey
-	@Column(name="group_name", length = 255)
+	@Column(name="folder_short_name", length = 255)
+	@NotBlank @Size(max=255)										private String shortName;
+	
+	@Column(name="folder_name", length = 255)
 	@NotBlank @Size(max=255)										private String name;
 	
-	@Column(name="group_etag")
+	@Column(name="folder_etag")
 	@NotBlank														private String eTag;
 
-	@ManyToOne @JoinColumn(name="group_customer_id")				private Customer customer;
+	@ManyToOne @JoinColumn(name="folder_customer_id")				private Customer customer;
 
-	protected Group() {}
+	protected Folder() {}
 	
-	protected Group(Customer customer, GroupType type, String name, String identifier) {
+	protected Folder(Customer customer, FolderType type, String name, String identifier) {
 		super();
 		this.type = type;
 		this.name = name;
+		this.shortName = name;
 		this.eTag = UUID.randomUUID().toString();
 		this.customer = customer;
 	}
@@ -57,12 +71,16 @@ public class Group extends BaseDomainObject implements ChildDomainObject {
 		return id;
 	}
 
-	public GroupType getType() {
+	public FolderType getType() {
 		return type;
 	}
 
 	public String getName() {
 		return name;
+	}
+	
+	public String getShortName() {
+		return shortName;
 	}
 
 	public String getETag() {
