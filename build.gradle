@@ -13,14 +13,15 @@ subprojects {
 	}
 
 	ext {
-		aspectjVersion = '1.8.8'
-		springVersion = '5.0.8.RELEASE'
+		aspectjVersion = '1.9.1'
+		springVersion = '4.3.4.RELEASE'
 		
 	}
 
 	apply plugin: 'java'
 
-	sourceCompatibility = 1.8
+	sourceCompatibility = 1.9
+	targetCompatibility = 1.9
 
 	repositories {
 	    mavenCentral()

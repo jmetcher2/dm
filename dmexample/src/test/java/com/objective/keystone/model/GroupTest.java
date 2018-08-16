@@ -1,7 +1,13 @@
 package com.objective.keystone.model;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
+
 import com.objective.dm.test.BaseChildObjectPersistenceTests;
 import com.objective.keystone.model.customer.Customer;
+import com.objective.keystone.model.folder.Folder;
 import com.objective.keystone.model.group.Group;
 
 import au.id.lagod.dm.base.DomainObjectManager;
@@ -35,6 +41,20 @@ public class GroupTest extends BaseChildObjectPersistenceTests<Group, Customer> 
 	@Override
 	protected DomainObjectManager<Group> getChildObjectManager() {
 		return getParent().getGroups();
+	}
+	
+	@Test
+	public void testFolders() {
+		Group g = getChildObject();
+		Folder f = getParent().getFolders().create("testFolder");
+		
+		assertTrue(g.getFolders().isEmpty());
+		g.getFolders().add(f);
+		assertFalse(g.getFolders().isEmpty());
+		g.getFolders().remove(f);
+		getParent().getGroups().remove(g);
+		assertTrue(g.getFolders().isEmpty());
+		
 	}
 
 }

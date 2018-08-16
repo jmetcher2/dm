@@ -55,7 +55,7 @@ public class Folder extends BaseDomainObject implements ChildDomainObject {
 	@NotBlank														private String eTag;
 
 	@ManyToOne @JoinColumn(name="folder_customer_id")				private Customer customer;
-
+	
 	protected Folder() {}
 	
 	protected Folder(Customer customer, FolderType type, String name, String identifier) {

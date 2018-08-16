@@ -1,7 +1,10 @@
 package com.objective.keystone.model.person;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -10,6 +13,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -17,6 +22,8 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.objective.keystone.model.customer.Customer;
+import com.objective.keystone.model.folder.Folder;
+import com.objective.keystone.model.group.Group;
 
 import au.id.lagod.dm.base.BaseDomainObject;
 
@@ -36,6 +43,12 @@ public class CustomerPerson extends BaseDomainObject {
 
 	@ManyToOne @JoinColumn(name="link_customer_id")					private Customer customer;
 	@ManyToOne @JoinColumn(name="link_person_id")					private Person person;
+	
+	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinTable(name="publisher_group_person_lnk",
+    	joinColumns = @JoinColumn(name="link_id"),
+    	inverseJoinColumns = @JoinColumn(name="group_id")
+    )																private Set<Group> groups = new HashSet<Group>();
 	
 	protected CustomerPerson() {}
 	
