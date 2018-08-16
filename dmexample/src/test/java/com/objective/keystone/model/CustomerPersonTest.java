@@ -11,17 +11,20 @@ public class CustomerPersonTest extends BaseAssociationPersistenceTests<Customer
 	
 	@Override
 	protected void doSetupBeforeTransaction(){
-		Customer c = model.getCustomers().create("parentObj");
+		Customer c = model.getCustomers().create(getParentName());
 		Person p = model.getPersons().create(parent2Name1);
+		model.getPersons().create(parent2Name2);
 
-		domainObject = c.getCustomerPersons().create(p);
+		//domainObject = c.getCustomerPersons().create(p);
+		super.doSetupBeforeTransaction();
 	}
 	
 	@Override
 	protected void doTeardownAfterTransaction(){
+		super.doTeardownAfterTransaction();
 		model.getPersons().remove(model.persons(parent2Name1));
+		model.getPersons().remove(model.persons(parent2Name2));
 		model.getCustomers().remove(getParent());
-		
 	}
 
 
@@ -44,7 +47,7 @@ public class CustomerPersonTest extends BaseAssociationPersistenceTests<Customer
 
 	@Override
 	public Customer getParent() {
-		return model.customers(testObjectName);
+		return model.customers(getParentName());
 	}
 
 }

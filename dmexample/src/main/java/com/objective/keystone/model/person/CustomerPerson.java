@@ -9,6 +9,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -24,17 +25,17 @@ import au.id.lagod.dm.base.BaseDomainObject;
 public class CustomerPerson extends BaseDomainObject {
 
 	@Id	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "link_id", updatable = false, nullable = false)	Long id;
+	@Column(name = "link_id", updatable = false, nullable = false)	private Long id;
 	
 	@Enumerated(EnumType.STRING)
     @Column(name="link_type", length = 10 )
-	@NotNull														CustomerPersonType type;
+	@NotNull														private CustomerPersonType type;
 	
-	@Column(name="person_etag")
-	@NotBlank														String eTag;
+	@Column(name="link_etag")
+	@NotBlank														private String eTag;
 
-	@ManyToOne 														Customer customer;
-	@ManyToOne														Person person;
+	@ManyToOne @JoinColumn(name="link_customer_id")					private Customer customer;
+	@ManyToOne @JoinColumn(name="link_person_id")					private Person person;
 	
 	protected CustomerPerson() {}
 	

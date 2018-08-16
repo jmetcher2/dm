@@ -71,7 +71,13 @@ public abstract class AssociationCollectionManager<A extends BaseDomainObject,T 
 	 * @return field name, or null if the object has no text key
 	 */
 	protected String getAssociateKeyFieldName() {
-		return BaseDomainObject.getTextKeyField(getManagedObjectClass());
+		DomainObjectCollectionManager<B> amc = getAssociateMasterCollection();
+		if (amc != null) {
+			return BaseDomainObject.getTextKeyField(amc.getManagedObjectClass());
+		}
+		else {
+			return null;
+		}
 	};
 
 	/**
@@ -84,14 +90,14 @@ public abstract class AssociationCollectionManager<A extends BaseDomainObject,T 
 	 *  
 	 * @return A collection manager, or null
 	 */
-	protected abstract DomainObjectCollectionManager<B> getAssociateMasterCollection();
+	public abstract DomainObjectCollectionManager<B> getAssociateMasterCollection();
 
 	/**
 	 * Get the field name of the associate within the association object
 	 * 
 	 * E.g. if UserRole has fields user and role, this would return the string "role"
 	 */
-	protected abstract String getAssociateName();
+	public abstract String getAssociateName();
 
 	/**
 	 * Get the reverse association collection

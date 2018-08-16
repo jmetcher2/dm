@@ -18,6 +18,8 @@ import javax.validation.constraints.Size;
 import org.hibernate.annotations.AttributeAccessor;
 import org.hibernate.validator.constraints.NotBlank;
 
+import com.objective.keystone.model.group.Group;
+import com.objective.keystone.model.group.GroupManager;
 import com.objective.keystone.model.person.CustomerPerson;
 import com.objective.keystone.model.person.CustomerPersonManager;
 import com.objective.keystone.model.person.PersonCustomerManager;
@@ -30,25 +32,30 @@ import au.id.lagod.dm.base.TextKey;
 public class Customer extends BaseDomainObject {
 
 	@Id	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "customer_id", updatable = false, nullable = false)	Long id;
+	@Column(name = "customer_id", updatable = false, nullable = false)	private Long id;
 	
 	@Enumerated(EnumType.STRING)
     @Column(name="customer_type", length = 10 )
-	@NotNull															CustomerType type;
+	@NotNull															private CustomerType type;
 	
 	@Column(name="customer_name", length = 255)
-	@NotBlank @Size(max=255)											String name;
+	@NotBlank @Size(max=255)											private String name;
 	
 	@TextKey
 	@Column(name="customer_identifier", length = 20)
-	@NotBlank @Size(max=20)												String identifier;
+	@NotBlank @Size(max=20)												private String identifier;
 	
 	@Column(name="customer_uuid")
-	@NotBlank															String uuid;
+	@NotBlank															private String uuid;
 
-	@AttributeAccessor("com.objective.dm.persistence.collectiongetter.PropertyAccessStrategyCollectionImpl")
+	@AttributeAccessor(collectionAccessor)
 	@OneToMany(cascade = CascadeType.ALL, 
-	        mappedBy = "customer", orphanRemoval = true)				Set<CustomerPerson> customerPersons = new CustomerPersonManager(this);
+	        mappedBy = "customer", orphanRemoval = true)				private Set<CustomerPerson> customerPersons = new CustomerPersonManager(this);
+
+	@AttributeAccessor(collectionAccessor)
+	@OneToMany(cascade = CascadeType.ALL, 
+	        mappedBy = "customer", orphanRemoval = true)					private Set<Group> groups = new GroupManager(this);
+
 
 	protected Customer() {}
 	
@@ -82,6 +89,14 @@ public class Customer extends BaseDomainObject {
 
 	public CustomerPersonManager getCustomerPersons() {
 		return (CustomerPersonManager) customerPersons;
+	}
+	
+	public GroupManager getGroups() {
+		return (GroupManager) groups;
+	}
+	
+	public Group groups(String name) {
+		return getGroups().get(name);
 	}
 	
 	

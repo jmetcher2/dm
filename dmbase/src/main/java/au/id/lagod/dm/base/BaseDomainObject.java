@@ -78,5 +78,7 @@ public abstract class BaseDomainObject {
 		}
 	}
 	
+	public static final String collectionAccessor = "com.objective.dm.persistence.collectiongetter.PropertyAccessStrategyCollectionImpl";
+	
 
 }

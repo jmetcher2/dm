@@ -23,12 +23,12 @@ public class PersonCustomerManager extends AssociationCollectionManager<Person, 
 	}
 
 	@Override
-	protected DomainObjectCollectionManager<Customer> getAssociateMasterCollection() {
+	public DomainObjectCollectionManager<Customer> getAssociateMasterCollection() {
 		return Model.getModel().getCustomers();
 	}
 
 	@Override
-	protected String getAssociateName() {
+	public String getAssociateName() {
 		return "person";
 	}
 

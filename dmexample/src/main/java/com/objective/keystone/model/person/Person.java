@@ -27,25 +27,25 @@ import au.id.lagod.dm.base.TextKey;
 public class Person extends BaseDomainObject {
 
 	@Id	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "person_id", updatable = false, nullable = false)	Long id;
+	@Column(name = "person_id", updatable = false, nullable = false)	private Long id;
 	
 	@Enumerated(EnumType.STRING)
     @Column(name="person_type", length = 13 )
-	@NotNull															PersonType type;
+	@NotNull															private PersonType type;
 	
 	@Column(name="person_family_name", length = 35)
-	@NotBlank @Size(max=35)												String familyName;
+	@NotBlank @Size(max=35)												private String familyName;
 	
 	@TextKey
 	@Column(name="person_username", length = 100)
-	@NotBlank @Size(max=100)											String userName;
+	@NotBlank @Size(max=100)											private String userName;
 	
 	@Column(name="person_etag")
-	@NotBlank															String eTag;
+	@NotBlank															private String eTag;
 
-	@AttributeAccessor("com.objective.dm.persistence.collectiongetter.PropertyAccessStrategyCollectionImpl")
+	@AttributeAccessor(collectionAccessor)
 	@OneToMany(cascade = CascadeType.ALL, 
-	        mappedBy = "person", orphanRemoval = true)					Set<CustomerPerson> personCustomers = new PersonCustomerManager(this);
+	        mappedBy = "person", orphanRemoval = true)					private Set<CustomerPerson> personCustomers = new PersonCustomerManager(this);
 	
 	protected Person() {}
 	

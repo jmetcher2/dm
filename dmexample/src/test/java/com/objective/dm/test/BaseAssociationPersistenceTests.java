@@ -6,6 +6,9 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.objective.keystone.model.customer.Customer;
+import com.objective.keystone.model.person.Person;
+
 import au.id.lagod.dm.base.AssociationManager;
 import au.id.lagod.dm.base.BaseDomainObject;
 
@@ -30,6 +33,28 @@ import au.id.lagod.dm.base.BaseDomainObject;
  * to create the primary parent.
  * 
  * For parent2, the names are important.  You must use parent2Name1 and parent2Name2.
+ * 
+ * Example:
+ * 
+  	@Override
+	protected void doSetupBeforeTransaction(){
+		Customer c = model.getCustomers().create(getParentName());
+		Person p = model.getPersons().create(parent2Name1);
+		model.getPersons().create(parent2Name2);
+
+		domainObject = c.getCustomerPersons().create(p);
+		super.doSetupBeforeTransaction();
+	}
+	
+	@Override
+	protected void doTeardownAfterTransaction(){
+		model.getPersons().remove(model.persons(parent2Name1));
+		model.getPersons().remove(model.persons(parent2Name2));
+		model.getCustomers().remove(getParent());
+		super.doTeardownAfterTransaction();
+	}
+
+
  * 
  * Override getParent2() to return the second instance (i.e. the one named parent2Name2, the one we 
  * did not use to create the test domain object).
@@ -85,6 +110,24 @@ public abstract class BaseAssociationPersistenceTests<ObjectType extends BaseDom
 		testObjectName = parent2Name1;
 		testObject2Name = parent2Name2;
 		super.doSetupBeforeTransaction();
+	}
+
+	
+	@Override 
+	protected String getTextIDName() {
+		String textIDName = BaseDomainObject.getTextKeyField(getChildObjectManager().getAssociateMasterCollection().getManagedObjectClass());
+
+		if (textIDName == null) {
+			throw new Error("No text key found.  Either override getTextIDName() or hasTextIDName() in your test class, or annotate the text key field of your entity class (" + domainObject.getClass().getName() + ")");
+		}
+		
+		return getChildObjectManager().getAssociateName() + "." + textIDName;
+	}
+	
+	
+	@Override
+	protected Object getFindValue() {
+		return getTestObjectName();
 	}
 
 	

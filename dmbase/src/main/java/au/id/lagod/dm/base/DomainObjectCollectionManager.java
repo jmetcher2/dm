@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
 import javax.validation.constraints.AssertTrue;
 
@@ -127,8 +128,9 @@ public abstract class DomainObjectCollectionManager<T extends BaseDomainObject> 
 			return addnocheck(domainObject);
 		}
 		
-		public String getMessage() {
-			return domainObject.getMessage();
+		@Override
+		public String getMessage(Set<ConstraintViolation<ValidatedCommand<Boolean>>> constraintViolations) {
+			return super.getMessage(constraintViolations) + " | " + domainObject.getMessage();
 		}
 
 		
