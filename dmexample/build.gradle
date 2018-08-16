@@ -16,6 +16,8 @@ dependencies {
  	compile "com.sun.xml.bind:jaxb-core:2.2.11"
  	compile "com.sun.xml.bind:jaxb-impl:2.2.11"
  	compile "javax.activation:activation:1.1.1"
+ 	
+ 	compile "javax.transaction:javax.transaction-api:1.2"
 	
 	testCompile "org.springframework:spring-test:${springVersion}"
 	testCompile 'junit:junit:4.+';

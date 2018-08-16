@@ -8,12 +8,13 @@
 
 plugins {
     id 'war'  
-    id 'org.gretty' version '2.1.0'
+    id 'org.gretty' version '2.2.0'
     id 'eclipse-wtp'
 }
 
 gretty {
   integrationTestTask = 'test'
+  servletContainer = 'jetty9.4'
  }
  
 
@@ -27,12 +28,13 @@ repositories {
 def jersey_version = '2.27'
 
 dependencies {
+	compile project (':dmbase')
 	compile project (':dmexample')
 
    compile "org.glassfish.jersey.containers:jersey-container-servlet:${jersey_version}"
    compile "org.glassfish.jersey.inject:jersey-hk2:${jersey_version}"
    compile "org.glassfish.jersey.media:jersey-media-json-jackson:${jersey_version}"
-   //compile "org.glassfish.jersey.ext:jersey-spring4:${jersey_version}"
+   compile "org.glassfish.jersey.ext:jersey-spring4:${jersey_version}"
    
     compile "javax.xml.bind:jaxb-api:2.2.11"
  	compile "com.sun.xml.bind:jaxb-core:2.2.11"
@@ -41,12 +43,14 @@ dependencies {
       
    testCompile 'junit:junit:4.+';
    testCompile "org.glassfish.jersey.core:jersey-client:${jersey_version}"
+	testCompile "org.springframework:spring-test:${springVersion}"
    
    // compile 'org.eclipse.persistence:org.eclipse.persistence.moxy:2.5.2'
    // compile 'org.glassfish.jersey.media:jersey-media-moxy:${jersey_version}'
    // compile 'org.glassfish.jersey.ext:jersey-declarative-linking:${jersey_version}'
    //compile "org.springframework:spring-aspects:${springVersion}"
    
+   	compile "javax.transaction:javax.transaction-api:1.2"
    
    providedCompile 'javax.servlet:servlet-api:2.5'
    // runtime 'javax.servlet:jstl:1.1.2'
@@ -54,3 +58,18 @@ dependencies {
 
 }
 
+apply plugin: 'aspectj'
+
+dependencies {
+	aspectpath "org.springframework:spring-aspects:${springVersion}"
+}
+
+apply plugin: 'eclipse'
+eclipse {
+
+	project {
+		natures = ['org.eclipse.ajdt.ui.ajnature','org.eclipse.jdt.core.javanature']
+		
+		buildCommand 'org.eclipse.ajdt.core.ajbuilder'
+	}
+}

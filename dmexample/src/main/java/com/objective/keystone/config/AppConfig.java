@@ -12,8 +12,11 @@ import org.springframework.context.annotation.AdviceMode;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.aspectj.AnnotationTransactionAspect;
+import org.springframework.transaction.aspectj.JtaAnnotationTransactionAspect;
 
 import com.objective.keystone.model.Model;
 
@@ -46,10 +49,10 @@ public class AppConfig {
 
 	@Bean
 	@Autowired
-    public org.springframework.orm.hibernate5.LocalSessionFactoryBean getSessionFactory(DataSource ds)
+    public org.springframework.orm.hibernate5.LocalSessionFactoryBean getSessionFactory()
     {
 		org.springframework.orm.hibernate5.LocalSessionFactoryBean lsfb = new org.springframework.orm.hibernate5.LocalSessionFactoryBean();
-        lsfb.setDataSource(ds);
+        lsfb.setDataSource(getDataSource());
         lsfb.setHibernateProperties(getHibernateProperties());  
         lsfb.setPackagesToScan(
         		"com.objective.keystone.model.**.*"
@@ -65,9 +68,12 @@ public class AppConfig {
     
     @Bean(name="transactionManager")
     @Autowired
-    public PlatformTransactionManager getTransactionManager(SessionFactory sf) {
+    public PlatformTransactionManager getTransactionManager() {
+    	//JpaTransactionManager jtm = new JpaTransactionManager();
+    	//jtm.setEntityManagerFactory(sf);
     	HibernateTransactionManager htm = new HibernateTransactionManager();
-    	htm.setSessionFactory(sf);
+    	htm.setSessionFactory(getSessionFactory().getObject());
+    	JtaAnnotationTransactionAspect.aspectOf().setTransactionManager(htm);
     	return htm;
     }
     

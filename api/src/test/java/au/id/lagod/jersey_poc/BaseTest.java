@@ -11,7 +11,9 @@ import org.glassfish.jersey.client.ClientProperties;
 import org.junit.After;
 import org.junit.Before;
 
-public class BaseTest {
+import com.objective.dm.test.BasePersistenceTests;
+
+public abstract class BaseTest extends BasePersistenceTests {
 	protected static String defaultRootUrl = "http://localhost:8080/api/resources";
 	protected static String rootUrl = System.getProperty("apiRootUrl") == null ? defaultRootUrl : System.getProperty("apiRootUrl");
 	
