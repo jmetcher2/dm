@@ -7,35 +7,17 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.objective.keystone.model.Model;
-import com.objective.keystone.model.customer.Customer;
-
 import au.id.lagod.entities.APIRoot;
 import au.id.lagod.entities.CustomerDTO;
-import au.id.lagod.entities.Customers;
+import au.id.lagod.entities.CustomersDTO;
 
 @Path("/")
 @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 @Transactional
-public class RootService {
-	@Autowired Model model;
-	
+public class RootService extends BaseService {
 	@GET
 	public APIRoot getRoot() {
-		return new APIRoot();
+		return new APIRoot(uriInfo);
 	}
 	
-	@GET
-	@Path("/customers")
-	public Customers getCustomers() {
-		return new Customers(model.getCustomers());
-	}
-	
-	@GET
-	@Path("/customers/{customerIdentifier}")
-	public CustomerDTO getCustomer(@PathParam("customerIdentifier") String customerIdentifier) {
-		return new CustomerDTO(model.customers(customerIdentifier));
-	}
 }
