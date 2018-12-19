@@ -2,12 +2,11 @@ package com.objective.keystone.config;
 
 import org.hibernate.SessionFactory;
 
+import com.objective.dm.config.Bootstrapper;
 import com.objective.dm.persistence.TableSet;
 import com.objective.keystone.model.Model;
 import com.objective.keystone.model.customer.Customer;
 import com.objective.keystone.model.person.Person;
-
-import au.id.lagod.dm.config.Bootstrapper;
 
 public class DBBootstrapper extends Bootstrapper {
 
@@ -18,7 +17,7 @@ public class DBBootstrapper extends Bootstrapper {
 	}
 
 	@Override
-	public void doBootstrap(au.id.lagod.dm.collections.Model model) {
+	public void doBootstrap(com.objective.dm.collections.Model model) {
 		// model.getCountries().setCollection(new TableSet<Country>(sf, Country.class, "Country"));
 		Model keystoneModel = (Model) model;
 		keystoneModel.getPersons().setCollection(new TableSet<Person>(sf, Person.class));

@@ -12,7 +12,7 @@ import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.property.access.internal.AbstractFieldSerialForm;
 import org.hibernate.property.access.spi.Setter;
 
-import au.id.lagod.dm.base.DomainObjectCollectionManager;
+import com.objective.dm.base.DomainObjectCollectionManager;
 
 /**
  * Field-based implementation of Setter

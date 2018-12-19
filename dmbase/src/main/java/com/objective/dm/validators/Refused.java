@@ -1,4 +1,4 @@
-package au.id.lagod.dm.validators;
+package com.objective.dm.validators;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Target;

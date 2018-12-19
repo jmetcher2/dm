@@ -1,4 +1,4 @@
-package au.id.lagod.dm.base;
+package com.objective.dm.base;
 
 import java.util.List;
 import java.util.Map;

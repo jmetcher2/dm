@@ -1,14 +1,13 @@
 package com.objective.keystone.model;
 
 
+import com.objective.dm.config.Bootstrapper;
 import com.objective.keystone.model.customer.Customer;
 import com.objective.keystone.model.customer.CustomerManager;
 import com.objective.keystone.model.person.Person;
 import com.objective.keystone.model.person.PersonManager;
 
-import au.id.lagod.dm.config.Bootstrapper;
-
-public class Model extends au.id.lagod.dm.collections.Model {
+public class Model extends com.objective.dm.collections.Model {
 	
 	/*
 	 * SINGLETON STUFF

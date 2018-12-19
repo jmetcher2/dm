@@ -20,9 +20,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.aspectj.AnnotationTransactionAspect;
 import org.springframework.transaction.aspectj.JtaAnnotationTransactionAspect;
 
+import com.objective.dm.base.Utility;
 import com.objective.keystone.model.Model;
-
-import au.id.lagod.dm.base.Utility;
 
 @Configuration
 @EnableTransactionManagement(mode=AdviceMode.ASPECTJ)

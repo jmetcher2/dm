@@ -2,7 +2,7 @@ package com.objective.dm.persistence;
 
 import java.util.Iterator;
 
-import au.id.lagod.dm.base.BaseDomainObject;
+import com.objective.dm.base.BaseDomainObject;
 
 public class TableSetIterator<T extends BaseDomainObject> implements Iterator<T> {
 	

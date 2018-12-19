@@ -1,4 +1,4 @@
-package au.id.lagod.dm.base;
+package com.objective.dm.base;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ import javax.validation.constraints.AssertTrue;
 
 import org.apache.commons.beanutils.PropertyUtils;
 
-import au.id.lagod.dm.validators.Restricted;
+import com.objective.dm.validators.Restricted;
 
 public abstract class DomainObjectCollectionManager<T extends BaseDomainObject> implements Set<T>,
 		DomainObjectManager<T> {
@@ -62,8 +62,16 @@ public abstract class DomainObjectCollectionManager<T extends BaseDomainObject> 
 	 */
 	public abstract Class<T> getManagedObjectClass();
 	
-	public abstract T create(String name);
-
+	protected abstract T instantiate(String name);
+	
+	@Override
+	public T create(String name) {
+		T u = instantiate(name);
+		u.setParentManager(this);
+		add(u);
+		return u;
+	}
+	
 	public T get(String textID) {
 		return findOne(BaseDomainObject.getTextKeyField(getManagedObjectClass()), textID);
 	};
@@ -75,7 +83,7 @@ public abstract class DomainObjectCollectionManager<T extends BaseDomainObject> 
 	public T getOrCreate(String name) {
 		T t = get(name);
 		if (t == null) {
-			t = create(name);
+			t = instantiate(name);
 		}
 		return t;
 	}

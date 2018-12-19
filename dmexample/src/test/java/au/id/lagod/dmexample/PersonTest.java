@@ -2,10 +2,12 @@ package au.id.lagod.dmexample;
 
 import static org.junit.Assert.*;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.objective.keystone.model.person.Person;
 
+@Ignore
 public class PersonTest extends BaseTest {
 
 	@Test(expected=javax.validation.ConstraintViolationException.class)

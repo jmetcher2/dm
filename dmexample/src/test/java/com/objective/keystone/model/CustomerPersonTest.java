@@ -1,11 +1,10 @@
 package com.objective.keystone.model;
 
+import com.objective.dm.base.AssociationManager;
 import com.objective.dm.test.BaseAssociationPersistenceTests;
 import com.objective.keystone.model.customer.Customer;
 import com.objective.keystone.model.person.CustomerPerson;
 import com.objective.keystone.model.person.Person;
-
-import au.id.lagod.dm.base.AssociationManager;
 
 public class CustomerPersonTest extends BaseAssociationPersistenceTests<CustomerPerson, Customer, Person> {
 	

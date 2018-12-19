@@ -1,6 +1,6 @@
-package au.id.lagod.dm.config;
+package com.objective.dm.config;
 
-import au.id.lagod.dm.collections.Model;
+import com.objective.dm.collections.Model;
 
 public abstract class Bootstrapper {
 

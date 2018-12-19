@@ -19,8 +19,8 @@ import javax.validation.constraints.Size;
 import org.hibernate.annotations.AttributeAccessor;
 import org.hibernate.validator.constraints.NotBlank;
 
-import au.id.lagod.dm.base.BaseDomainObject;
-import au.id.lagod.dm.base.TextKey;
+import com.objective.dm.base.BaseDomainObject;
+import com.objective.dm.base.TextKey;
 
 @Entity
 @Table(name="publisher_person")

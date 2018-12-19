@@ -23,12 +23,11 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import com.objective.dm.base.BaseDomainObject;
+import com.objective.dm.base.ChildDomainObject;
+import com.objective.dm.base.TextKey;
 import com.objective.keystone.model.customer.Customer;
 import com.objective.keystone.model.folder.Folder;
-
-import au.id.lagod.dm.base.BaseDomainObject;
-import au.id.lagod.dm.base.ChildDomainObject;
-import au.id.lagod.dm.base.TextKey;
 
 @Entity
 @Table(name="publisher_group")

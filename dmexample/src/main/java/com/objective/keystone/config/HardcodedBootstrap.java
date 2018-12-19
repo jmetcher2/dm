@@ -1,7 +1,7 @@
 package com.objective.keystone.config;
 
-import au.id.lagod.dm.config.Bootstrapper;
-import au.id.lagod.dm.collections.Model;
+import com.objective.dm.collections.Model;
+import com.objective.dm.config.Bootstrapper;
 
 public class HardcodedBootstrap extends Bootstrapper {
 	

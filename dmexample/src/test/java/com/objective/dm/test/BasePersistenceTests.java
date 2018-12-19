@@ -9,8 +9,8 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
-import au.id.lagod.dm.base.BaseDomainObject;
-import au.id.lagod.dm.base.Utility;
+import com.objective.dm.base.BaseDomainObject;
+import com.objective.dm.base.Utility;
 
 
 public abstract class BasePersistenceTests<ObjectType extends BaseDomainObject> extends BaseTransactionalContextTests {

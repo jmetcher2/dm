@@ -1,7 +1,7 @@
 package au.id.lagod.dm.test;
 
-import au.id.lagod.dm.base.BaseDomainObject;
-import au.id.lagod.dm.validators.Restricted;
+import com.objective.dm.base.BaseDomainObject;
+import com.objective.dm.validators.Restricted;
 
 public class TestObject extends BaseDomainObject {
 	

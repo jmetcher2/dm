@@ -1,4 +1,4 @@
-package au.id.lagod.dm.base;
+package com.objective.dm.base;
 
 import java.lang.reflect.Field;
 import java.util.Set;
@@ -11,12 +11,26 @@ import javax.validation.ValidatorFactory;
 
 import org.apache.commons.beanutils.PropertyUtils;
 
+import com.objective.dm.validators.Restricted;
+
 public abstract class BaseDomainObject {
+
+	private DomainObjectCollectionManager<? extends BaseDomainObject> parentManager;
 
 	public BaseDomainObject() {
 		super();
 	}
+	
+	public DomainObjectCollectionManager<? extends BaseDomainObject> getParentManager() {
+		return parentManager;
+	}
 
+	@Restricted
+	public void setParentManager(DomainObjectCollectionManager<? extends BaseDomainObject> parentManager) {
+		this.parentManager = parentManager;
+	}
+	
+	
 	public int compareTo(BaseDomainObject o) {
 		return 0;
 	}

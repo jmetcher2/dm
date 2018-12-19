@@ -1,8 +1,7 @@
 package com.objective.keystone.model.folder;
 
+import com.objective.dm.base.DomainObjectCollectionManager;
 import com.objective.keystone.model.customer.Customer;
-
-import au.id.lagod.dm.base.DomainObjectCollectionManager;
 
 public class FolderManager extends DomainObjectCollectionManager<Folder> {
 	
@@ -14,10 +13,8 @@ public class FolderManager extends DomainObjectCollectionManager<Folder> {
 	}
 
 	@Override
-	public Folder create(String name) {
-		Folder u = new Folder(customer, FolderType.folder, name, name);
-		add(u);
-		return u;
+	protected Folder instantiate(String name) {
+		return new Folder(customer, FolderType.folder, name, name);
 	}
 
 	@Override

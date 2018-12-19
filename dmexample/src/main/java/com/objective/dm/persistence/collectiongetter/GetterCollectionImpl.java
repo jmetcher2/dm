@@ -14,7 +14,7 @@ import org.hibernate.property.access.internal.AbstractFieldSerialForm;
 import org.hibernate.property.access.spi.Getter;
 import org.hibernate.property.access.spi.PropertyAccessException;
 
-import au.id.lagod.dm.base.DomainObjectCollectionManager;
+import com.objective.dm.base.DomainObjectCollectionManager;
 
 
 /**

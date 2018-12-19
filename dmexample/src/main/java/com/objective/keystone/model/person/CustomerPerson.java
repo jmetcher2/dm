@@ -21,15 +21,16 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import com.objective.dm.base.AssociationParents;
+import com.objective.dm.base.BaseAssociationDomainObject;
+import com.objective.dm.base.BaseDomainObject;
 import com.objective.keystone.model.customer.Customer;
 import com.objective.keystone.model.folder.Folder;
 import com.objective.keystone.model.group.Group;
 
-import au.id.lagod.dm.base.BaseDomainObject;
-
 @Entity
 @Table(name="publisher_customer_person_lnk")
-public class CustomerPerson extends BaseDomainObject {
+public class CustomerPerson extends BaseAssociationDomainObject<Customer, Person>  {
 
 	@Id	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "link_id", updatable = false, nullable = false)	private Long id;
@@ -59,7 +60,12 @@ public class CustomerPerson extends BaseDomainObject {
 		this.person = person;
 		this.eTag = UUID.randomUUID().toString();
 	}
-
+	
+	
+	@Override
+	public AssociationParents<Customer, CustomerPerson, Person> getAssociationParents() {
+		return new AssociationParents<Customer, CustomerPerson, Person>(customer.getCustomerPersons(), person.getPersonCustomers());
+	}
 
 	@Override
 	public Long getId() {
@@ -80,6 +86,37 @@ public class CustomerPerson extends BaseDomainObject {
 
 	public Person getPerson() {
 		return person;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((customer == null) ? 0 : customer.hashCode());
+		result = prime * result + ((person == null) ? 0 : person.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		CustomerPerson other = (CustomerPerson) obj;
+		if (customer == null) {
+			if (other.customer != null)
+				return false;
+		} else if (!customer.equals(other.customer))
+			return false;
+		if (person == null) {
+			if (other.person != null)
+				return false;
+		} else if (!person.equals(other.person))
+			return false;
+		return true;
 	}
 	
 	

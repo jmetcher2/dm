@@ -14,7 +14,7 @@ import org.hibernate.Hibernate;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
-import au.id.lagod.dm.base.BaseDomainObject;
+import com.objective.dm.base.BaseDomainObject;
 
 public class TableSet<T extends BaseDomainObject>  extends AbstractSet<T> implements Set<T> {
 

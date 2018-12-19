@@ -6,11 +6,10 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.objective.dm.base.AssociationManager;
+import com.objective.dm.base.BaseDomainObject;
 import com.objective.keystone.model.customer.Customer;
 import com.objective.keystone.model.person.Person;
-
-import au.id.lagod.dm.base.AssociationManager;
-import au.id.lagod.dm.base.BaseDomainObject;
 
 /**
  * 

@@ -20,9 +20,9 @@ import org.hibernate.persister.entity.AbstractEntityPersister;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import au.id.lagod.dm.base.BaseDomainObject;
-import au.id.lagod.dm.base.DomainObjectManager;
-import au.id.lagod.dm.base.Utility;
+import com.objective.dm.base.BaseDomainObject;
+import com.objective.dm.base.DomainObjectManager;
+import com.objective.dm.base.Utility;
 
 /**
  * 

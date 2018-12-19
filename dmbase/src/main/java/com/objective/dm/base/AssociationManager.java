@@ -1,4 +1,4 @@
-package au.id.lagod.dm.base;
+package com.objective.dm.base;
 
 public interface AssociationManager<T extends BaseDomainObject,B extends BaseDomainObject> extends DomainObjectManager<T>{
 	
@@ -9,8 +9,6 @@ public interface AssociationManager<T extends BaseDomainObject,B extends BaseDom
 	
 	public boolean removeAssociate(B associate);
 
-	public abstract DomainObjectCollectionManager<B> getAssociateMasterCollection();
-	
 	public abstract String getAssociateName();
 
 }

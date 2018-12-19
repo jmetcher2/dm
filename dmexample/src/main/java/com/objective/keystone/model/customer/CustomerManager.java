@@ -2,15 +2,13 @@ package com.objective.keystone.model.customer;
 
 import java.util.UUID;
 
-import au.id.lagod.dm.base.DomainObjectCollectionManager;
+import com.objective.dm.base.DomainObjectCollectionManager;
 
 public class CustomerManager extends DomainObjectCollectionManager<Customer> {
 
 	@Override
-	public Customer create(String name) {
-		Customer u = new Customer(CustomerType.both, name, name, UUID.randomUUID().toString());
-		add(u);
-		return u;
+	protected Customer instantiate(String name) {
+		return new Customer(CustomerType.both, name, name, UUID.randomUUID().toString());
 	}
 
 	@Override

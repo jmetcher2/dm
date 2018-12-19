@@ -1,4 +1,4 @@
-package au.id.lagod.dm.collections;
+package com.objective.dm.collections;
 
 /*
  * Marker interface to indicate the object is the top level entry point for the domain model.

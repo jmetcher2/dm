@@ -1,4 +1,4 @@
-package au.id.lagod.dm.validators;
+package com.objective.dm.validators;
 
 /**
  * Enforces the rule that any method marked with @Restricted must only be called from within the domain model
@@ -21,9 +21,9 @@ public aspect CheckRestricted {
 	public CheckRestricted() {}
 	
 	
-	pointcut restrictedMethod() : call(@Restricted * * (..))  && !within(au.id.lagod.dm..*);
+	pointcut restrictedMethod() : call(@Restricted * * (..))  && !within(com.objective.dm..*);
 	
-	pointcut restrictedConstructor() : call(@Restricted au.id.lagod.dm..*.new(..)) && !within(au.id.lagod.dm..*);
+	pointcut restrictedConstructor() : call(@Restricted com.objective.dm..*.new(..)) && !within(com.objective.dm..*);
 
 	declare error : restrictedMethod() : "Modularity rule breach: call to restricted method";
 	

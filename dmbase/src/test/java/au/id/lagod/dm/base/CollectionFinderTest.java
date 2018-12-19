@@ -10,7 +10,8 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
-import au.id.lagod.dm.base.CollectionFinder;
+import com.objective.dm.base.CollectionFinder;
+
 import au.id.lagod.dm.test.TestObject;
 
 public class CollectionFinderTest {

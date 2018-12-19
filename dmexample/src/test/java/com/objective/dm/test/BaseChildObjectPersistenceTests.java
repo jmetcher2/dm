@@ -4,7 +4,7 @@ import static org.junit.Assert.assertFalse;
 
 import org.junit.Test;
 
-import au.id.lagod.dm.base.BaseDomainObject;
+import com.objective.dm.base.BaseDomainObject;
 
 
 /**

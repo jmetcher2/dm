@@ -1,4 +1,4 @@
-package au.id.lagod.dm.validators;
+package com.objective.dm.validators;
 
 /**
  * Enforces the rule that any method marked with @Refused must never be called.

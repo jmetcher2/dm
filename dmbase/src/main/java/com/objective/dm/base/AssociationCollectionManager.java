@@ -1,10 +1,15 @@
-package au.id.lagod.dm.base;
+package com.objective.dm.base;
 
 import java.util.Collection;
+import java.util.HashSet;
 
 import javax.validation.Valid;
 import javax.validation.constraints.AssertFalse;
 import javax.validation.constraints.NotNull;
+
+import com.objective.dm.validators.Refused;
+import com.objective.keystone.model.customer.Customer;
+import com.objective.keystone.model.person.CustomerPerson;
 
 /*
  * Adds methods for collection managers that are managing an association
@@ -45,9 +50,17 @@ import javax.validation.constraints.NotNull;
  *  	get("role.name", aString)
  * 
  */
-public abstract class AssociationCollectionManager<A extends BaseDomainObject,T extends BaseDomainObject,B extends BaseDomainObject> extends
+public abstract class AssociationCollectionManager<A extends BaseDomainObject,T extends BaseAssociationDomainObject<A, B>,B extends BaseDomainObject> extends
 		DomainObjectCollectionManager<T> 
 		implements AssociationManager<T, B> {
+
+	protected A parent;
+	
+	public AssociationCollectionManager(A parent) {
+		super(new HashSet<T>());
+		this.parent = parent;
+	}
+	
 
 	public AssociationCollectionManager(Collection<T> c) {
 		super(c);
@@ -58,10 +71,6 @@ public abstract class AssociationCollectionManager<A extends BaseDomainObject,T 
 	 * PRIMITIVES (template method pattern)
 	 * 
 	 ****************************************************************************** */
-
-	// Get the foreign end of the association (aka "the associate" out of the association object)
-	// E.g. userRole.getRole()
-	protected abstract B getAssociate(T ao);
 
 	/** 
 	 * Get the field name of the text key of the associate
@@ -81,34 +90,11 @@ public abstract class AssociationCollectionManager<A extends BaseDomainObject,T 
 	};
 
 	/**
-	 * Get the collection that manages all of the associate objects (not just the ones participating in this association)
-	 * 
-	 * This is required for the default implementation of create(String) to work.  However, many domain objects won't have a 
-	 * single master collection.  For example, each User might have a collection of UserRoles, but there is no single collection
-	 * containing all UserRoles for all Users.  In that case, this method should return null.  You may still be able to provide an 
-	 * alternative implementation of create(String).
-	 *  
-	 * @return A collection manager, or null
-	 */
-	public abstract DomainObjectCollectionManager<B> getAssociateMasterCollection();
-
-	/**
 	 * Get the field name of the associate within the association object
 	 * 
 	 * E.g. if UserRole has fields user and role, this would return the string "role"
 	 */
 	public abstract String getAssociateName();
-
-	/**
-	 * Get the reverse association collection
-	 * 
-	 * E.g. if we are looking at a UserRole that is in the collection of UserRoles for a User, this method will give us
-	 * the collection of UserRoles for a given Role that also contains that same UserRole.
-	 * 
-	 * @param associate
-	 * @return an association collection manager
-	 */
-	protected abstract AssociationCollectionManager<B,T,A> getReverseCollection(T associationObject);
 
 	/**
 	 * Return a new association object.  We assume the implementing class has a reference to the "A" end of the association
@@ -118,8 +104,8 @@ public abstract class AssociationCollectionManager<A extends BaseDomainObject,T 
 	 * @param associate
 	 * @return a new association object
 	 */
-	protected abstract T newAssociationObject(B associate);
-
+	protected abstract T newAssociationObject(BaseDomainObject associate);
+	
 	/* ******************************************************************************
 	 * 
 	 * TEMPLATE METHODS (template method pattern)
@@ -137,8 +123,7 @@ public abstract class AssociationCollectionManager<A extends BaseDomainObject,T 
 		if (ao == null) {
 			throw new java.lang.Error("Failed to create an association object from a given associate.  You may need to use a create() method with more arguments.");
 		}
-		add(ao);
-		getReverseCollection(ao).add(ao);
+		ao.getAssociationParents().add(ao);
 		return ao;
 	}
 
@@ -176,6 +161,9 @@ public abstract class AssociationCollectionManager<A extends BaseDomainObject,T 
 	public T create(String name) {
 		return new CreateByString(name).execute();
 	}
+	
+	@Refused
+	public T instantiate(String name) { return null; }
 
 	/**
 	 * Get an association object by specifying the name of the object at the foreign end of the association.
@@ -194,7 +182,7 @@ public abstract class AssociationCollectionManager<A extends BaseDomainObject,T 
 	public boolean remove(Object o) {
 		if (super.remove(o)) {
 			T ao = getManagedObjectClass().cast(o);
-			getReverseCollection(ao).remove(ao);
+			ao.getAssociationParents().remove(ao);
 			return true;
 		}
 		else {
@@ -215,10 +203,10 @@ public abstract class AssociationCollectionManager<A extends BaseDomainObject,T 
 		@Valid 		private T ao;
 		@AssertFalse private boolean associateAlreadyLinked;
 
-		public AddAssociation(T ees) {
-			this.ao = ees;
+		public AddAssociation(T ao) {
+			this.ao = ao;
 			
-			this.associateAlreadyLinked = get(getAssociate(ees)) != null;
+			this.associateAlreadyLinked = contains(ao);
 		}
 		
 		@Override
@@ -246,5 +234,5 @@ public abstract class AssociationCollectionManager<A extends BaseDomainObject,T 
 		}
 		
 	}
-	
+
 }

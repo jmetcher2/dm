@@ -1,6 +1,6 @@
-package au.id.lagod.dm.validators;
+package com.objective.dm.validators;
 
-import au.id.lagod.dm.base.ChildDomainObject;
+import com.objective.dm.base.ChildDomainObject;
 
 public aspect SameParentAspect {
 	/* TODO: Not sure if this is the right way to go, or whether to do a big-bang validation at some point

@@ -1,4 +1,4 @@
-package au.id.lagod.dm.config;
+package com.objective.dm.config;
 
 public class AuditUserHolder {
 	
