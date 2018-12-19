@@ -78,10 +78,14 @@ public abstract class BaseDomainObject {
 	}
 	
 	public static String getTextKeyField(Class clazz) {
-		for (Field field: clazz.getDeclaredFields()) {
-			if (field.isAnnotationPresent(TextKey.class)) {
-				return field.getName();
+		try {
+			for (Field field: clazz.getDeclaredFields()) {
+				if (field.isAnnotationPresent(TextKey.class)) {
+					return field.getName();
+				}
 			}
+		} catch (SecurityException e) {
+			return null;
 		}
 
 		if (clazz.getSuperclass() != Object.class) {

@@ -14,7 +14,7 @@ import org.hibernate.property.access.internal.AbstractFieldSerialForm;
 import org.hibernate.property.access.spi.Getter;
 import org.hibernate.property.access.spi.PropertyAccessException;
 
-import com.objective.dm.base.DomainObjectCollectionManager;
+import com.objective.dm.base.DomainCollectionManager;
 
 
 /**
@@ -35,7 +35,7 @@ public class GetterCollectionImpl implements Getter {
 	@Override
 	public Object get(Object owner) {
 		try {
-			DomainObjectCollectionManager manager = (DomainObjectCollectionManager) field.get(owner);
+			DomainCollectionManager manager = (DomainCollectionManager) field.get(owner);
 			return manager.getCollection();
 		}
 		catch (Exception e) {

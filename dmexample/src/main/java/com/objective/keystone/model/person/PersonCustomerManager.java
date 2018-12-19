@@ -1,20 +1,13 @@
 package com.objective.keystone.model.person;
 
-import java.util.HashSet;
-
 import com.objective.dm.base.AssociationCollectionManager;
 import com.objective.dm.base.BaseDomainObject;
-import com.objective.dm.base.DomainObjectCollectionManager;
-import com.objective.keystone.model.Model;
 import com.objective.keystone.model.customer.Customer;
 
-public class PersonCustomerManager extends AssociationCollectionManager<Customer, CustomerPerson, Person> {
-
-	private Person person;
+public class PersonCustomerManager extends AssociationCollectionManager<Person, CustomerPerson, Customer> {
 
 	public PersonCustomerManager(Person person) {
-		super(new HashSet<CustomerPerson>());
-		this.person = person;
+		super(person);
 	}
 	
 	@Override
@@ -23,9 +16,14 @@ public class PersonCustomerManager extends AssociationCollectionManager<Customer
 	}
 
 	@Override
+	public Class<Customer> getAssociateClass() {
+		return Customer.class;
+	}
+	
+	@Override
 	protected CustomerPerson newAssociationObject(BaseDomainObject associate) {
 		Customer customer = (Customer) associate;
-		CustomerPerson cp = new CustomerPerson(CustomerPersonType.user, customer, person);
+		CustomerPerson cp = new CustomerPerson(CustomerPersonType.user, customer, parent);
 		return cp;
 	}
 	

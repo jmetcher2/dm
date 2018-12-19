@@ -5,11 +5,8 @@ import java.util.HashSet;
 
 import javax.validation.Valid;
 import javax.validation.constraints.AssertFalse;
-import javax.validation.constraints.NotNull;
 
 import com.objective.dm.validators.Refused;
-import com.objective.keystone.model.customer.Customer;
-import com.objective.keystone.model.person.CustomerPerson;
 
 /*
  * Adds methods for collection managers that are managing an association
@@ -50,8 +47,8 @@ import com.objective.keystone.model.person.CustomerPerson;
  *  	get("role.name", aString)
  * 
  */
-public abstract class AssociationCollectionManager<A extends BaseDomainObject,T extends BaseAssociationDomainObject<A, B>,B extends BaseDomainObject> extends
-		DomainObjectCollectionManager<T> 
+public abstract class AssociationCollectionManager<A extends BaseDomainObject,T extends BaseAssociationDomainObject,B extends BaseDomainObject> extends
+		DomainCollectionManager<T> 
 		implements AssociationManager<T, B> {
 
 	protected A parent;
@@ -72,29 +69,14 @@ public abstract class AssociationCollectionManager<A extends BaseDomainObject,T 
 	 * 
 	 ****************************************************************************** */
 
-	/** 
-	 * Get the field name of the text key of the associate
-	 * 
-	 * E.g. if Role's textkey was the field Role.name, this would be "name"
-	 * 
-	 * @return field name, or null if the object has no text key
-	 */
-	protected String getAssociateKeyFieldName() {
-		DomainObjectCollectionManager<B> amc = getAssociateMasterCollection();
-		if (amc != null) {
-			return BaseDomainObject.getTextKeyField(amc.getManagedObjectClass());
-		}
-		else {
-			return null;
-		}
-	};
-
 	/**
 	 * Get the field name of the associate within the association object
 	 * 
 	 * E.g. if UserRole has fields user and role, this would return the string "role"
 	 */
 	public abstract String getAssociateName();
+	
+	protected abstract Class<B> getAssociateClass();
 
 	/**
 	 * Return a new association object.  We assume the implementing class has a reference to the "A" end of the association
@@ -118,24 +100,28 @@ public abstract class AssociationCollectionManager<A extends BaseDomainObject,T 
 	 * Where the association object has mandatory extra metadata, you should implement 
 	 * a create() method with more arguments to allow the caller to specify the extra data.
 	 */
+	 // See the comment on getAssociationParents();
+	@SuppressWarnings("unchecked")
 	public T create(B associate) {
 		T ao = newAssociationObject(associate);
 		if (ao == null) {
 			throw new java.lang.Error("Failed to create an association object from a given associate.  You may need to use a create() method with more arguments.");
 		}
-		ao.getAssociationParents().add(ao);
+		
+		AssociationParents<A, T, B> ap = ao.getAssociationParents();
+		ap.add(ao);
 		return ao;
 	}
 
 	/**
-	 * Get an association object by specifying the foreign end of the the assocation
+	 * Get an association object by specifying the foreign end of the the association
 	 */
 	public T get(B associate) {
 		return findOne(getAssociateName(), associate);
 	}
 
 	/**
-	 * Remove an association object by specifying the foreign end of the the assocation
+	 * Remove an association object by specifying the foreign end of the the association
 	 */
 	public boolean removeAssociate(B associate) {
 		return remove(get(associate));
@@ -149,36 +135,9 @@ public abstract class AssociationCollectionManager<A extends BaseDomainObject,T 
 	}
 
 	/**
-	 * Create an association object by specifying the name of the object at the foreign end of the association
-	 * 
-	 * There are two preconditions for this to work:
-	 * 1. The foreign object must have a text key
-	 * 2. There must be a single collection in which we can look up that text key (i.e. getAssociateMasterCollection() must not
-	 *    return null.
-	 *    
-	 * If these preconditions are false, subclasses may override this method to make it clear that it's not supported. 
-	 */
-	public T create(String name) {
-		return new CreateByString(name).execute();
-	}
-	
-	@Refused
-	public T instantiate(String name) { return null; }
-
-	/**
-	 * Get an association object by specifying the name of the object at the foreign end of the association.
-	 * The foreign object must have a text key.  If it doesn't, subclasses may override this method to make it clear that it's not supported.
-	 */
-	public T get(String textID) {
-		if (getAssociateKeyFieldName() == null) {
-			throw new java.lang.Error("Can't get association by name as associate has no text key field");
-		}
-		return findOne(getAssociateName() + "." + getAssociateKeyFieldName(), textID);
-	}
-
-	/**
 	 * Remove the association object from both ends of the association
 	 */
+	@SuppressWarnings("unchecked") // See the comment on getAssociationParents();
 	public boolean remove(Object o) {
 		if (super.remove(o)) {
 			T ao = getManagedObjectClass().cast(o);
@@ -216,23 +175,4 @@ public abstract class AssociationCollectionManager<A extends BaseDomainObject,T 
 		
 	}
 	
-	protected class CreateByString extends ValidatedCommand<T> {
-		
-		@NotNull 		private DomainObjectCollectionManager<B> amc;
-		@NotNull		private B associate;
-
-		public CreateByString(String name) {
-			this.amc = getAssociateMasterCollection();
-			if (amc != null) {
-				associate = getAssociateMasterCollection().get(name);
-			}
-		}
-		
-		@Override
-		public T doCommand() {
-			return create(associate);
-		}
-		
-	}
-
 }

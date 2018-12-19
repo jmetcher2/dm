@@ -1,6 +1,6 @@
 package com.objective.dm.base;
 
-public interface AssociationManager<T extends BaseDomainObject,B extends BaseDomainObject> extends DomainObjectManager<T>{
+public interface AssociationManager<T extends BaseDomainObject,B extends BaseDomainObject> {
 	
 	
 	public T create(B associate);

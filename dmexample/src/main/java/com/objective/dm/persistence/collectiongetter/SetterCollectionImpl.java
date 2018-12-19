@@ -12,7 +12,7 @@ import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.property.access.internal.AbstractFieldSerialForm;
 import org.hibernate.property.access.spi.Setter;
 
-import com.objective.dm.base.DomainObjectCollectionManager;
+import com.objective.dm.base.DomainCollectionManager;
 
 /**
  * Field-based implementation of Setter
@@ -33,7 +33,7 @@ public class SetterCollectionImpl implements Setter {
 	@Override
 	public void set(Object target, Object value, SessionFactoryImplementor factory) {
 		try {
-			DomainObjectCollectionManager manager = (DomainObjectCollectionManager) field.get(target);
+			DomainCollectionManager manager = (DomainCollectionManager) field.get(target);
 			manager.setCollection((Collection) value);
 		}
 		catch (Exception e) {

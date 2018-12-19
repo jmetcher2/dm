@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import com.objective.dm.base.AssociationManager;
 import com.objective.dm.base.BaseDomainObject;
+import com.objective.dm.base.DomainObjectManager;
 import com.objective.keystone.model.customer.Customer;
 import com.objective.keystone.model.person.Person;
 
@@ -112,18 +113,6 @@ public abstract class BaseAssociationPersistenceTests<ObjectType extends BaseDom
 	}
 
 	
-	@Override 
-	protected String getTextIDName() {
-		String textIDName = BaseDomainObject.getTextKeyField(getChildObjectManager().getAssociateMasterCollection().getManagedObjectClass());
-
-		if (textIDName == null) {
-			throw new Error("No text key found.  Either override getTextIDName() or hasTextIDName() in your test class, or annotate the text key field of your entity class (" + domainObject.getClass().getName() + ")");
-		}
-		
-		return getChildObjectManager().getAssociateName() + "." + textIDName;
-	}
-	
-	
 	@Override
 	protected Object getFindValue() {
 		return getTestObjectName();
@@ -138,7 +127,7 @@ public abstract class BaseAssociationPersistenceTests<ObjectType extends BaseDom
 	// The base DomainObjectManager does not define create(Parent2Type), which we need
 	// for our create-by-object tests.
 	@Override
-	protected abstract AssociationManager<ObjectType,Parent2Type> getChildObjectManager();
+	protected abstract DomainObjectManager<ObjectType> getChildObjectManager();
 
 	protected abstract Parent2Type getParent2();
 	
