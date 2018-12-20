@@ -1,7 +1,5 @@
 package com.objective.keystone.model.group;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -14,20 +12,23 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.AttributeAccessor;
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.objective.dm.base.BaseDomainObject;
 import com.objective.dm.base.ChildDomainObject;
 import com.objective.dm.base.TextKey;
 import com.objective.keystone.model.customer.Customer;
-import com.objective.keystone.model.folder.Folder;
+import com.objective.keystone.model.group.folder.GroupFolder;
+import com.objective.keystone.model.group.folder.GroupFolderManager;
+import com.objective.keystone.model.person.customer.group.CustomerPersonGroup;
+import com.objective.keystone.model.person.customer.group.GroupCustomerPersonManager;
 
 @Entity
 @Table(name="publisher_group")
@@ -49,13 +50,14 @@ public class Group extends BaseDomainObject implements ChildDomainObject {
 
 	@ManyToOne @JoinColumn(name="group_customer_id")				private Customer customer;
 	
-	// TODO: probably should convert this to O2M - M2O
-	// so we can cascade properly
-	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinTable(name="publisher_folder_group_lnk",
-    	joinColumns = @JoinColumn(name="group_id"),
-    	inverseJoinColumns = @JoinColumn(name="folder_id")
-    )																private Set<Folder> folders = new HashSet<Folder>();
+	@AttributeAccessor(collectionAccessor)
+	@OneToMany(mappedBy="group", cascade = CascadeType.ALL, orphanRemoval = true)
+																	private Set<GroupFolder> folders = new GroupFolderManager(this);
+	
+	@AttributeAccessor(collectionAccessor)
+	@OneToMany(mappedBy="group", cascade = CascadeType.ALL, orphanRemoval = true)
+    																private Set<CustomerPersonGroup> customerPersons = new GroupCustomerPersonManager(this);
+
 
 	protected Group() {}
 	
@@ -91,8 +93,12 @@ public class Group extends BaseDomainObject implements ChildDomainObject {
 		return getCustomer();
 	}
 	
-	public Set<Folder> getFolders() {
-		return folders;
+	public GroupFolderManager getFolders() {
+		return (GroupFolderManager) folders;
+	}
+
+	public GroupCustomerPersonManager getCustomerPersons() {
+		return (GroupCustomerPersonManager) customerPersons;
 	}
 
 

@@ -1,10 +1,6 @@
 package com.objective.dm.persistence;
 
 import java.io.Serializable;
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.Map;
 import java.util.Properties;
 
 import javax.persistence.ParameterMode;
@@ -13,9 +9,9 @@ import javax.persistence.StoredProcedureQuery;
 import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
+import org.hibernate.id.Configurable;
 import org.hibernate.id.IdentifierGenerator;
 import org.hibernate.service.ServiceRegistry;
-import org.hibernate.id.Configurable;
 import org.hibernate.type.Type;
 
 public class CustomTableIDGenerator implements IdentifierGenerator, Configurable {

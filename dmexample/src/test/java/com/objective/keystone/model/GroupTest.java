@@ -5,9 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.objective.dm.base.DomainCollectionManager;
 import com.objective.dm.base.DomainObjectCollectionManager;
-import com.objective.dm.base.DomainObjectManager;
 import com.objective.dm.test.BaseChildObjectPersistenceTests;
 import com.objective.keystone.model.customer.Customer;
 import com.objective.keystone.model.folder.Folder;
@@ -15,8 +13,6 @@ import com.objective.keystone.model.group.Group;
 
 public class GroupTest extends BaseChildObjectPersistenceTests<Group, Customer> {
 	
-	
-
 	@Override
 	protected void doSetupBeforeTransaction() {
 		model.getCustomers().create(getParentName());
@@ -50,9 +46,9 @@ public class GroupTest extends BaseChildObjectPersistenceTests<Group, Customer> 
 		Folder f = getParent().getFolders().create("testFolder");
 		
 		assertTrue(g.getFolders().isEmpty());
-		g.getFolders().add(f);
+		g.getFolders().create(f);
 		assertFalse(g.getFolders().isEmpty());
-		g.getFolders().remove(f);
+		g.getFolders().removeAssociate(f);
 		getParent().getGroups().remove(g);
 		assertTrue(g.getFolders().isEmpty());
 		

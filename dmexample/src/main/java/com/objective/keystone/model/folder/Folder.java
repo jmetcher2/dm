@@ -1,7 +1,9 @@
 package com.objective.keystone.model.folder;
 
+import java.util.Set;
 import java.util.UUID;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -11,18 +13,22 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.AttributeAccessor;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.annotations.Parameter;
+import org.hibernate.validator.constraints.NotBlank;
 
 import com.objective.dm.base.BaseDomainObject;
 import com.objective.dm.base.ChildDomainObject;
 import com.objective.dm.base.TextKey;
 import com.objective.keystone.model.customer.Customer;
+import com.objective.keystone.model.group.folder.FolderGroupManager;
+import com.objective.keystone.model.group.folder.GroupFolder;
 
 @Entity
 @Table(name="publisher_folder")
@@ -54,6 +60,10 @@ public class Folder extends BaseDomainObject implements ChildDomainObject {
 	@NotBlank														private String eTag;
 
 	@ManyToOne @JoinColumn(name="folder_customer_id")				private Customer customer;
+	
+	@OneToMany(mappedBy="folder", cascade=CascadeType.ALL, orphanRemoval = true)
+	@AttributeAccessor(collectionAccessor)
+																	private Set<GroupFolder> groups = new FolderGroupManager(this);
 	
 	protected Folder() {}
 	
@@ -92,6 +102,10 @@ public class Folder extends BaseDomainObject implements ChildDomainObject {
 	
 	public Customer getParent() {
 		return getCustomer();
+	}
+	
+	public FolderGroupManager getGroups() {
+		return (FolderGroupManager) groups;
 	}
 
 

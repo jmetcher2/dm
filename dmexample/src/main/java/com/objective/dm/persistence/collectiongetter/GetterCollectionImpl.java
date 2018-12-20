@@ -8,7 +8,6 @@ import java.lang.reflect.Method;
 import java.util.Locale;
 import java.util.Map;
 
-import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.property.access.internal.AbstractFieldSerialForm;
 import org.hibernate.property.access.spi.Getter;

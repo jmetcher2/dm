@@ -1,8 +1,9 @@
-package com.objective.keystone.model.person;
+package com.objective.keystone.model.person.customer;
 
 import com.objective.dm.base.AssociationCollectionManager;
 import com.objective.dm.base.BaseDomainObject;
 import com.objective.keystone.model.customer.Customer;
+import com.objective.keystone.model.person.Person;
 
 public class PersonCustomerManager extends AssociationCollectionManager<Person, CustomerPerson, Customer> {
 

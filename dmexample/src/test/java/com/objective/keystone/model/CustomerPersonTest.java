@@ -7,9 +7,9 @@ import org.junit.Test;
 import com.objective.dm.base.DomainObjectCollectionManager;
 import com.objective.dm.test.AssociationPersistenceTests;
 import com.objective.keystone.model.customer.Customer;
-import com.objective.keystone.model.person.CustomerPerson;
-import com.objective.keystone.model.person.CustomerPersonManager;
 import com.objective.keystone.model.person.Person;
+import com.objective.keystone.model.person.customer.CustomerPerson;
+import com.objective.keystone.model.person.customer.CustomerPersonManager;
 
 public class CustomerPersonTest extends AssociationPersistenceTests<CustomerPerson, Customer, Person> {
 	

@@ -1,6 +1,5 @@
-package com.objective.keystone.model.person;
+package com.objective.keystone.model.person.customer;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -13,20 +12,20 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.AttributeAccessor;
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.objective.dm.base.AssociationParents;
 import com.objective.dm.base.BaseAssociationDomainObject;
-import com.objective.dm.base.BaseDomainObject;
 import com.objective.keystone.model.customer.Customer;
-import com.objective.keystone.model.folder.Folder;
-import com.objective.keystone.model.group.Group;
+import com.objective.keystone.model.person.Person;
+import com.objective.keystone.model.person.customer.group.CustomerPersonGroup;
+import com.objective.keystone.model.person.customer.group.CustomerPersonGroupManager;
 
 @Entity
 @Table(name="publisher_customer_person_lnk")
@@ -45,11 +44,9 @@ public class CustomerPerson extends BaseAssociationDomainObject<Customer, Person
 	@ManyToOne @JoinColumn(name="link_customer_id")					private Customer customer;
 	@ManyToOne @JoinColumn(name="link_person_id")					private Person person;
 	
-	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinTable(name="publisher_group_person_lnk",
-    	joinColumns = @JoinColumn(name="link_id"),
-    	inverseJoinColumns = @JoinColumn(name="group_id")
-    )																private Set<Group> groups = new HashSet<Group>();
+	@AttributeAccessor(collectionAccessor)
+	@OneToMany(mappedBy="customerPerson", cascade = CascadeType.ALL, orphanRemoval = true)
+    																private Set<CustomerPersonGroup> groups = new CustomerPersonGroupManager(this);
 	
 	protected CustomerPerson() {}
 	
@@ -117,6 +114,10 @@ public class CustomerPerson extends BaseAssociationDomainObject<Customer, Person
 		} else if (!person.equals(other.person))
 			return false;
 		return true;
+	}
+
+	public CustomerPersonGroupManager getGroups() {
+		return (CustomerPersonGroupManager) groups;
 	}
 	
 	

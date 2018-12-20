@@ -1,20 +1,9 @@
 package com.objective.dm.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Ignore;
-import org.junit.Test;
-
 import com.objective.dm.base.AssociationCollectionManager;
-import com.objective.dm.base.AssociationManager;
 import com.objective.dm.base.BaseAssociationDomainObject;
 import com.objective.dm.base.BaseDomainObject;
 import com.objective.dm.base.DomainObjectCollectionManager;
-import com.objective.dm.base.DomainObjectManager;
-import com.objective.keystone.model.customer.Customer;
-import com.objective.keystone.model.person.CustomerPerson;
-import com.objective.keystone.model.person.Person;
 
 /**
  * 

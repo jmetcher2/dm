@@ -1,14 +1,9 @@
 package au.id.lagod.dmexample;
 
-import static org.junit.Assert.*;
-
-import java.util.List;
-
 import org.junit.Test;
 
 import com.objective.dm.config.Bootstrapper;
 import com.objective.dm.config.NullBootstrap;
-import com.objective.keystone.config.HardcodedBootstrap;
 import com.objective.keystone.model.Model;
 
 public class ModelTest  extends BaseTest{

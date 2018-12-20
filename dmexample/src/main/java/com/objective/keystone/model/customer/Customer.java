@@ -24,9 +24,8 @@ import com.objective.keystone.model.folder.Folder;
 import com.objective.keystone.model.folder.FolderManager;
 import com.objective.keystone.model.group.Group;
 import com.objective.keystone.model.group.GroupManager;
-import com.objective.keystone.model.person.CustomerPerson;
-import com.objective.keystone.model.person.CustomerPersonManager;
-import com.objective.keystone.model.person.PersonCustomerManager;
+import com.objective.keystone.model.person.customer.CustomerPerson;
+import com.objective.keystone.model.person.customer.CustomerPersonManager;
 
 @Entity
 @Table(name="publisher_customer")

@@ -1,30 +1,9 @@
 package com.objective.dm.test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.validation.ConstraintViolation;
-
-import org.hibernate.LockMode;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.mapping.Column;
-import org.hibernate.mapping.PersistentClass;
-import org.hibernate.mapping.Table;
-import org.hibernate.metadata.ClassMetadata;
-import org.hibernate.persister.entity.AbstractEntityPersister;
-import org.junit.Ignore;
-import org.junit.Test;
 
 import com.objective.dm.base.BaseDomainObject;
-import com.objective.dm.base.DomainCollectionManager;
 import com.objective.dm.base.DomainObjectCollectionManager;
-import com.objective.dm.base.DomainObjectManager;
-import com.objective.dm.base.Utility;
 
 /**
  * 

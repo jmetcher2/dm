@@ -1,6 +1,5 @@
 package com.objective.keystone.model.person;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -21,6 +20,8 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import com.objective.dm.base.BaseDomainObject;
 import com.objective.dm.base.TextKey;
+import com.objective.keystone.model.person.customer.CustomerPerson;
+import com.objective.keystone.model.person.customer.PersonCustomerManager;
 
 @Entity
 @Table(name="publisher_person")
