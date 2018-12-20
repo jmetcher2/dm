@@ -6,6 +6,9 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
 import javax.validation.constraints.AssertTrue;
 
+import com.objective.dm.base.DomainCollectionManager.AddDomainObject;
+import com.objective.dm.validators.Restricted;
+
 public abstract class DomainObjectCollectionManager<T extends BaseDomainObject> extends DomainCollectionManager<T> implements 
 		DomainObjectManager<T> {
 
@@ -35,6 +38,12 @@ public abstract class DomainObjectCollectionManager<T extends BaseDomainObject> 
 		return t;
 	}
 	
+	@Restricted
+	public boolean add(T o) {
+		new AddDomainObject(o).execute();
+		return true;
+	}
+
 	protected class AddDomainObject extends ValidatedCommand<Boolean> {
 		
 		@Valid 		private T domainObject;

@@ -1,54 +1,91 @@
 package com.objective.keystone.model;
 
-import com.objective.dm.base.AssociationManager;
-import com.objective.dm.base.DomainObjectManager;
-import com.objective.dm.test.BaseAssociationPersistenceTests;
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
+
+import com.objective.dm.base.DomainObjectCollectionManager;
+import com.objective.dm.test.AssociationPersistenceTests;
 import com.objective.keystone.model.customer.Customer;
 import com.objective.keystone.model.person.CustomerPerson;
 import com.objective.keystone.model.person.CustomerPersonManager;
 import com.objective.keystone.model.person.Person;
 
-public class CustomerPersonTest extends BaseAssociationPersistenceTests<CustomerPerson, Customer, Person> {
+public class CustomerPersonTest extends AssociationPersistenceTests<CustomerPerson, Customer, Person> {
 	
 	@Override
 	protected void doSetupBeforeTransaction(){
-		Customer c = model.getCustomers().create(getParentName());
-		Person p = model.getPersons().create(parent2Name1);
-		model.getPersons().create(parent2Name2);
-
-		//domainObject = c.getCustomerPersons().create(p);
+		getParent1Manager().create(parent1Name);
+		getParent2Manager().create(parent2Name);
+		getParent2Manager().create(parent2InTestName);
 		super.doSetupBeforeTransaction();
 	}
 	
 	@Override
 	protected void doTeardownAfterTransaction(){
 		super.doTeardownAfterTransaction();
-		model.getPersons().remove(model.persons(parent2Name1));
-		model.getPersons().remove(model.persons(parent2Name2));
-		model.getCustomers().remove(getParent());
+		getParent2Manager().remove(getParent2InTest());
+		getParent2Manager().remove(getParent2());
+		getParent1Manager().remove(getParent1());
 	}
 
 
+	@Override
+	protected DomainObjectCollectionManager<Customer> getParent1Manager() {
+		return model.getCustomers();
+	}
+
+	@Override
+	protected DomainObjectCollectionManager<Person> getParent2Manager() {
+		return model.getPersons();
+	}
 
 	@Override
 	protected CustomerPersonManager getChildObjectManager() {
-		return getParent().getCustomerPersons();
+		return getParent1().getCustomerPersons();
+	}
+
+	@Override
+	public Customer getParent1() {
+		return getParent1Manager().get(parent1Name);
 	}
 
 	@Override
 	protected Person getParent2() {
-		return model.persons(parent2Name1);
+		return getParent2Manager().get(parent2Name);
 	}
 
 	@Override
-	protected void removeParent() {
-		model.getCustomers().remove(getParent());
+	protected Person getParent2InTest() {
+		return getParent2Manager().get(parent2InTestName);
+	}
+
+	@Override
+	protected String getFindKey() {
+		return "person." + Person.getTextKeyField(Person.class);
+	}
+
+	@Override
+	protected Object getFindValue() {
+		return getParent2().getTextKey();
+	}
+	
+	@Override
+	@Test
+	public void testGetAttached() {
+		sf.getCurrentSession().update(domainObject);
+		sf.getCurrentSession().update(((CustomerPerson) domainObject).getPerson());
 		
+		CustomerPerson domainObject2 = getChildObject();
+		
+		assertEquals(domainObject.getId(), domainObject2.getId());
+		assertEquals(domainObject, domainObject2);
+
+		checkCreatedObject(domainObject2);
 	}
 
-	@Override
-	public Customer getParent() {
-		return model.customers(getParentName());
-	}
+
+
+
 
 }

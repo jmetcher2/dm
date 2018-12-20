@@ -27,7 +27,7 @@ import com.objective.dm.base.BaseDomainObject;
  * which will go through getParent() instead. 
  * 
  */
-public abstract class BaseChildObjectPersistenceTests<ObjectType extends BaseDomainObject, ParentType extends BaseDomainObject> extends BaseCollectionPersistenceTests<ObjectType> {
+public abstract class BaseChildObjectPersistenceTests<ObjectType extends BaseDomainObject, ParentType extends BaseDomainObject> extends TextKeyCollectionPersistenceTests<ObjectType> {
 	
 	private String parentName = "parentObj";
 	

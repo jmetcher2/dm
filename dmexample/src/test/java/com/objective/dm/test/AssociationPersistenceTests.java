@@ -10,8 +10,10 @@ import com.objective.dm.base.AssociationCollectionManager;
 import com.objective.dm.base.AssociationManager;
 import com.objective.dm.base.BaseAssociationDomainObject;
 import com.objective.dm.base.BaseDomainObject;
+import com.objective.dm.base.DomainObjectCollectionManager;
 import com.objective.dm.base.DomainObjectManager;
 import com.objective.keystone.model.customer.Customer;
+import com.objective.keystone.model.person.CustomerPerson;
 import com.objective.keystone.model.person.Person;
 
 /**
@@ -70,41 +72,12 @@ import com.objective.keystone.model.person.Person;
  * getChildObject2(), getFindKey(), getFindValue(), getTextIDName(), getTextIDValue() and hasTextIDValue().
  * 
  */
-public abstract class BaseAssociationPersistenceTests<ObjectType extends BaseAssociationDomainObject, ParentType extends BaseDomainObject, Parent2Type extends BaseDomainObject> extends BaseChildObjectPersistenceTests<ObjectType,ParentType> {
+public abstract class AssociationPersistenceTests<ObjectType extends BaseAssociationDomainObject, Parent1Type extends BaseDomainObject, Parent2Type extends BaseDomainObject> extends CollectionPersistenceTests<ObjectType> {
 	
-	protected String parent2Name1 = "p2Obj11";
-	protected String parent2Name2 = "p2Obj22";
-	
-	/*
-	 * Base tests
-	 */
-	
-	@Test(expected=javax.validation.ConstraintViolationException.class)
-	public void testCreateFromParent2ByString_Notfound() {
-		org.junit.Assume.assumeTrue(hasTextIDName());
+	protected String parent1Name = "parent1";
+	protected String parent2Name = "parent2";
+	protected String parent2InTestName = "parent2InTest";
 
-		createChildObject("Bogus");
-			
-		sf.getCurrentSession().flush();
-	}
-	
-	/*
-	 * Template methods
-	 */
-	@Override
-	protected void doSetupBeforeTransaction() {
-		testObjectName = parent2Name1;
-		testObject2Name = parent2Name2;
-		super.doSetupBeforeTransaction();
-	}
-
-	
-	@Override
-	protected Object getFindValue() {
-		return getTestObjectName();
-	}
-
-	
 	/*
 	 * Base class methods
 	 */
@@ -113,9 +86,44 @@ public abstract class BaseAssociationPersistenceTests<ObjectType extends BaseAss
 	// The base DomainObjectManager does not define create(Parent2Type), which we need
 	// for our create-by-object tests.
 	@Override
-	protected abstract AssociationCollectionManager<ParentType, ObjectType, Parent2Type> getChildObjectManager();
-
+	protected abstract AssociationCollectionManager<Parent1Type, ObjectType, Parent2Type> getChildObjectManager();
+	
+	protected abstract DomainObjectCollectionManager<Parent1Type> getParent1Manager();
+	protected abstract DomainObjectCollectionManager<Parent2Type> getParent2Manager();
+	
+	protected abstract Parent1Type getParent1();
 	protected abstract Parent2Type getParent2();
+	protected abstract Parent2Type getParent2InTest();
 	
 	
+	protected ObjectType createChildObject() {
+		return getChildObjectManager().create(getParent2());
+	}
+	
+	protected ObjectType getChildObject() {
+		return getChildObjectManager().get(getParent2());
+	}
+
+
+	protected void removeParent1() {
+		getParent1Manager().remove(getParent1());
+		
+	}
+
+	protected void removeParent2() {
+		getParent2Manager().remove(getParent2());
+	}
+	
+	protected ObjectType getChildObjectInTest() {
+		return getChildObjectManager().get(getParent2InTest());
+	}
+
+	protected ObjectType createChildObjectInTest() {
+		return getChildObjectManager().create(getParent2InTest());
+	}
+
+
+
+
+
 }
