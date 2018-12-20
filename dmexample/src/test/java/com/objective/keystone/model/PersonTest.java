@@ -12,6 +12,7 @@ import com.objective.keystone.model.group.Group;
 import com.objective.keystone.model.person.Person;
 import com.objective.keystone.model.person.PersonManager;
 import com.objective.keystone.model.person.customer.CustomerPerson;
+import com.objective.keystone.model.person.customer.group.CustomerPersonGroup;
 
 public class PersonTest extends TextKeyCollectionPersistenceTests<Person> {
 
@@ -32,6 +33,7 @@ public class PersonTest extends TextKeyCollectionPersistenceTests<Person> {
 		folderA.getGroups().create(groupA);
 		
 		CustomerPerson personCustomer = person.getPersonCustomers().create(customer);
+		CustomerPersonGroup cpg = personCustomer.getGroups().create(groupA);
 		
 		System.out.println(folderA.getGroups().isEmpty());
 		System.out.println(groupA.getFolders().isEmpty());
@@ -42,6 +44,7 @@ public class PersonTest extends TextKeyCollectionPersistenceTests<Person> {
 		Customer customer = model.customers("testCustomer");
 		Folder folderA = customer.folders("testFolderA");
 		Group groupA = customer.groups("testGroupA");
+		Person person = model.persons("testPerson");
 		
 		assertFalse(folderA.getGroups().isEmpty());
 		assertFalse(groupA.getFolders().isEmpty());
@@ -49,6 +52,11 @@ public class PersonTest extends TextKeyCollectionPersistenceTests<Person> {
 		assertTrue(folderA.getGroups().hasAssociate(groupA));
 		assertTrue(groupA.getFolders().hasAssociate(folderA));
 		
+		// User is in group A
+		assertTrue(person.getPersonCustomers().get(customer).getGroups().hasAssociate(groupA));
+		
+		// User is in a group that has access to folder A 
+		assertTrue(person.getPersonCustomers().get(customer).getGroups().get(groupA).getGroup().getFolders().hasAssociate(folderA));
 	}
 
 	@Override

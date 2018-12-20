@@ -13,7 +13,7 @@ public class PersonCustomerManager extends AssociationCollectionManager<Person, 
 	
 	@Override
 	public String getAssociateName() {
-		return "person";
+		return "customer";
 	}
 
 	@Override
