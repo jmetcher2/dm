@@ -1,5 +1,6 @@
 package com.objective.keystone.model;
 
+import com.objective.dm.base.DomainCollectionManager;
 import com.objective.dm.base.DomainObjectManager;
 import com.objective.dm.test.BaseChildObjectPersistenceTests;
 import com.objective.keystone.model.customer.Customer;
@@ -33,7 +34,7 @@ public class FolderTest extends BaseChildObjectPersistenceTests<Folder, Customer
 	}
 
 	@Override
-	protected DomainObjectManager<Folder> getChildObjectManager() {
+	protected DomainCollectionManager<Folder> getChildObjectManager() {
 		return getParent().getFolders();
 	}
 

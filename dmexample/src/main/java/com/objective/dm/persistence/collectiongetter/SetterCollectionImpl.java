@@ -19,6 +19,7 @@ import com.objective.dm.base.DomainCollectionManager;
  *
  * @author Steve Ebersole
  */
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class SetterCollectionImpl implements Setter {
 	private final Class containerClass;
 	private final String propertyName;

@@ -6,7 +6,9 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.objective.dm.base.AssociationCollectionManager;
 import com.objective.dm.base.AssociationManager;
+import com.objective.dm.base.BaseAssociationDomainObject;
 import com.objective.dm.base.BaseDomainObject;
 import com.objective.dm.base.DomainObjectManager;
 import com.objective.keystone.model.customer.Customer;
@@ -68,7 +70,7 @@ import com.objective.keystone.model.person.Person;
  * getChildObject2(), getFindKey(), getFindValue(), getTextIDName(), getTextIDValue() and hasTextIDValue().
  * 
  */
-public abstract class BaseAssociationPersistenceTests<ObjectType extends BaseDomainObject, ParentType extends BaseDomainObject, Parent2Type extends BaseDomainObject> extends BaseChildObjectPersistenceTests<ObjectType,ParentType> {
+public abstract class BaseAssociationPersistenceTests<ObjectType extends BaseAssociationDomainObject, ParentType extends BaseDomainObject, Parent2Type extends BaseDomainObject> extends BaseChildObjectPersistenceTests<ObjectType,ParentType> {
 	
 	protected String parent2Name1 = "p2Obj11";
 	protected String parent2Name2 = "p2Obj22";
@@ -84,22 +86,6 @@ public abstract class BaseAssociationPersistenceTests<ObjectType extends BaseDom
 		createChildObject("Bogus");
 			
 		sf.getCurrentSession().flush();
-	}
-	
-	@Test
-	@Ignore
-	public void testCreateByObject() {
-		// TODO: what's this test doing?  looks like create by string.  Check SVN history
-		// to see if it has been refactored away from genuine create by object
-		
-		ObjectType child = createChildObject2();
-		sf.getCurrentSession().flush();
-		
-		boolean exists = checkRecordExists(child.getId());
-		
-		assertTrue(exists);
-		// assertEquals(2, getChildObjectManager().size());  TODO: reinstate once we've refactored collection managers
-		assertEquals(child, getChildObjectManager().get(getParent2()));
 	}
 	
 	/*
@@ -127,7 +113,7 @@ public abstract class BaseAssociationPersistenceTests<ObjectType extends BaseDom
 	// The base DomainObjectManager does not define create(Parent2Type), which we need
 	// for our create-by-object tests.
 	@Override
-	protected abstract DomainObjectManager<ObjectType> getChildObjectManager();
+	protected abstract AssociationCollectionManager<ParentType, ObjectType, Parent2Type> getChildObjectManager();
 
 	protected abstract Parent2Type getParent2();
 	

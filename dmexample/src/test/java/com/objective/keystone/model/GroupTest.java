@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import com.objective.dm.base.DomainCollectionManager;
 import com.objective.dm.base.DomainObjectManager;
 import com.objective.dm.test.BaseChildObjectPersistenceTests;
 import com.objective.keystone.model.customer.Customer;
@@ -38,7 +39,7 @@ public class GroupTest extends BaseChildObjectPersistenceTests<Group, Customer> 
 	}
 
 	@Override
-	protected DomainObjectManager<Group> getChildObjectManager() {
+	protected DomainCollectionManager<Group> getChildObjectManager() {
 		return getParent().getGroups();
 	}
 	

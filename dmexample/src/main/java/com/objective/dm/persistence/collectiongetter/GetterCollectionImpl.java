@@ -21,6 +21,7 @@ import com.objective.dm.base.DomainCollectionManager;
  * Implementation of Getter for delegated collections in CollectManagers
  *
  */
+@SuppressWarnings({ "rawtypes" })
 public class GetterCollectionImpl implements Getter {
 	private final Class containerClass;
 	private final String propertyName;

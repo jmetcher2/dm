@@ -21,6 +21,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.objective.dm.base.BaseDomainObject;
+import com.objective.dm.base.DomainCollectionManager;
 import com.objective.dm.base.DomainObjectManager;
 import com.objective.dm.base.Utility;
 
@@ -192,7 +193,7 @@ public abstract class BaseCollectionPersistenceTests<ObjectType extends BaseDoma
 	/*
 	 * Template methods
 	 */
-	protected abstract DomainObjectManager<ObjectType> getChildObjectManager();
+	protected abstract DomainCollectionManager<ObjectType> getChildObjectManager();
 	
 	protected String getTestObjectName() {
 		return testObjectName;

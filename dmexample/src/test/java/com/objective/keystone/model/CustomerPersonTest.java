@@ -1,9 +1,11 @@
 package com.objective.keystone.model;
 
 import com.objective.dm.base.AssociationManager;
+import com.objective.dm.base.DomainObjectManager;
 import com.objective.dm.test.BaseAssociationPersistenceTests;
 import com.objective.keystone.model.customer.Customer;
 import com.objective.keystone.model.person.CustomerPerson;
+import com.objective.keystone.model.person.CustomerPersonManager;
 import com.objective.keystone.model.person.Person;
 
 public class CustomerPersonTest extends BaseAssociationPersistenceTests<CustomerPerson, Customer, Person> {
@@ -29,7 +31,7 @@ public class CustomerPersonTest extends BaseAssociationPersistenceTests<Customer
 
 
 	@Override
-	protected AssociationManager<CustomerPerson, Person> getChildObjectManager() {
+	protected CustomerPersonManager getChildObjectManager() {
 		return getParent().getCustomerPersons();
 	}
 
