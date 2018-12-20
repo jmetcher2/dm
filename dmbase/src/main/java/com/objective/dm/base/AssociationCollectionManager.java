@@ -2,6 +2,8 @@ package com.objective.dm.base;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 import javax.validation.constraints.AssertFalse;
@@ -116,7 +118,7 @@ public abstract class AssociationCollectionManager<A extends BaseDomainObject,T 
 	/**
 	 * Get an association object by specifying the foreign end of the the association
 	 */
-	public T get(B associate) {
+	public T getAssociationWith(B associate) {
 		return findOne(getAssociateName(), associate);
 	}
 
@@ -124,14 +126,14 @@ public abstract class AssociationCollectionManager<A extends BaseDomainObject,T 
 	 * Remove an association object by specifying the foreign end of the the association
 	 */
 	public boolean removeAssociate(B associate) {
-		return remove(get(associate));
+		return remove(getAssociationWith(associate));
 	}
 	
 	/**
 	 * Return true if this collection contains an association with the given object
 	 */
 	public boolean hasAssociate(B associate) {
-		return get(associate) != null;
+		return getAssociationWith(associate) != null;
 	}
 
 	/**
@@ -148,6 +150,12 @@ public abstract class AssociationCollectionManager<A extends BaseDomainObject,T 
 			return false;
 		}
 	}
+	
+	public Set<B> getAssociates() {
+		return collection.stream().map(e -> getAssociate(e)).collect(Collectors.toSet());
+	}
+	
+	protected abstract B getAssociate(T ao);
 	
 	/** 
 	 * Add an 

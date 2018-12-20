@@ -33,4 +33,9 @@ public class PersonCustomerManager extends AssociationCollectionManager<Person, 
 		return CustomerPerson.class;
 	}
 
+	@Override
+	protected Customer getAssociate(CustomerPerson ao) {
+		return ao.getCustomer();
+	}
+
 }

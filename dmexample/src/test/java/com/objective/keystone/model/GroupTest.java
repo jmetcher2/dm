@@ -45,12 +45,12 @@ public class GroupTest extends BaseChildObjectPersistenceTests<Group, Customer> 
 		Group g = getChildObject();
 		Folder f = getParent().getFolders().create("testFolder");
 		
-		assertTrue(g.getFolders().isEmpty());
-		g.getFolders().create(f);
-		assertFalse(g.getFolders().isEmpty());
-		g.getFolders().removeAssociate(f);
+		assertTrue(g.getGroupFolders().isEmpty());
+		g.getGroupFolders().create(f);
+		assertFalse(g.getGroupFolders().isEmpty());
+		g.getGroupFolders().removeAssociate(f);
 		getParent().getGroups().remove(g);
-		assertTrue(g.getFolders().isEmpty());
+		assertTrue(g.getGroupFolders().isEmpty());
 		
 	}
 

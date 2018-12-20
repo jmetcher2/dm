@@ -93,11 +93,11 @@ public class Group extends BaseDomainObject implements ChildDomainObject {
 		return getCustomer();
 	}
 	
-	public GroupFolderManager getFolders() {
+	public GroupFolderManager getGroupFolders() {
 		return (GroupFolderManager) folders;
 	}
 
-	public GroupCustomerPersonManager getCustomerPersons() {
+	public GroupCustomerPersonManager getCustomerPersonGroups() {
 		return (GroupCustomerPersonManager) customerPersons;
 	}
 

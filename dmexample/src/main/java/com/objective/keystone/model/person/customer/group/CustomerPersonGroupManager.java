@@ -31,4 +31,9 @@ public class CustomerPersonGroupManager extends AssociationCollectionManager<Cus
 		return CustomerPersonGroup.class;
 	}
 
+	@Override
+	protected Group getAssociate(CustomerPersonGroup ao) {
+		return ao.getGroup();
+	}
+
 }

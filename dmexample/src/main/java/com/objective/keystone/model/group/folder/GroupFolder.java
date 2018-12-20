@@ -38,7 +38,7 @@ public class GroupFolder extends BaseAssociationDomainObject<Group, Folder> {
 	
 	@Override
 	public AssociationParents<Group, ? extends BaseAssociationDomainObject<Group, Folder>, Folder> getAssociationParents() {
-		return new AssociationParents<Group, GroupFolder, Folder>(group.getFolders(), folder.getGroups());
+		return new AssociationParents<Group, GroupFolder, Folder>(group.getGroupFolders(), folder.getGroups());
 	}
 
 	@Override

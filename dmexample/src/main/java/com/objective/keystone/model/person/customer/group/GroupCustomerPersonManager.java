@@ -31,4 +31,9 @@ public class GroupCustomerPersonManager extends AssociationCollectionManager<Gro
 		return CustomerPersonGroup.class;
 	}
 
+	@Override
+	protected CustomerPerson getAssociate(CustomerPersonGroup ao) {
+		return ao.getCustomerPerson();
+	}
+
 }

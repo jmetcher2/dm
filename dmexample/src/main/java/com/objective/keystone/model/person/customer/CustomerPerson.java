@@ -116,7 +116,7 @@ public class CustomerPerson extends BaseAssociationDomainObject<Customer, Person
 		return true;
 	}
 
-	public CustomerPersonGroupManager getGroups() {
+	public CustomerPersonGroupManager getCustomerPersonGroups() {
 		return (CustomerPersonGroupManager) groups;
 	}
 	

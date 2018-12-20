@@ -3,6 +3,11 @@ package com.objective.keystone.model;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import org.junit.Test;
 
 import com.objective.dm.test.TextKeyCollectionPersistenceTests;
@@ -33,10 +38,10 @@ public class PersonTest extends TextKeyCollectionPersistenceTests<Person> {
 		folderA.getGroups().create(groupA);
 		
 		CustomerPerson personCustomer = person.getPersonCustomers().create(customer);
-		CustomerPersonGroup cpg = personCustomer.getGroups().create(groupA);
+		CustomerPersonGroup cpg = personCustomer.getCustomerPersonGroups().create(groupA);
 		
 		System.out.println(folderA.getGroups().isEmpty());
-		System.out.println(groupA.getFolders().isEmpty());
+		System.out.println(groupA.getGroupFolders().isEmpty());
 	}
 	
 	@Test
@@ -47,16 +52,37 @@ public class PersonTest extends TextKeyCollectionPersistenceTests<Person> {
 		Person person = model.persons("testPerson");
 		
 		assertFalse(folderA.getGroups().isEmpty());
-		assertFalse(groupA.getFolders().isEmpty());
+		assertFalse(groupA.getGroupFolders().isEmpty());
 		
 		assertTrue(folderA.getGroups().hasAssociate(groupA));
-		assertTrue(groupA.getFolders().hasAssociate(folderA));
+		assertTrue(groupA.getGroupFolders().hasAssociate(folderA));
 		
 		// User is in group A
-		assertTrue(person.getPersonCustomers().get(customer).getGroups().hasAssociate(groupA));
+		assertTrue(person.getPersonCustomers().getAssociationWith(customer).getCustomerPersonGroups().hasAssociate(groupA));
 		
 		// User is in a group that has access to folder A 
-		assertTrue(person.getPersonCustomers().get(customer).getGroups().get(groupA).getGroup().getFolders().hasAssociate(folderA));
+		assertTrue(person.getPersonCustomers().getAssociationWith(customer).getCustomerPersonGroups().getAssociationWith(groupA).getGroup().getGroupFolders().hasAssociate(folderA));
+		
+		CustomerPerson cp = person.getPersonCustomers().getAssociationWith(customer);
+		
+		// Get all the user's folders
+		Set<Folder> folders = 
+		cp.getCustomerPersonGroups().stream().map( 
+			cpg -> cpg.getGroup().getGroupFolders().getAssociates()
+		)
+		.reduce(new HashSet<Folder>(), (a, b) -> { a.addAll(b); return a; } );
+		
+		// And then see if the set contains folder A
+		assertTrue(folders.contains(folderA));
+		
+		// Or the old-fashioned way
+		Set<Folder> yeOldeFolders = new HashSet<Folder>();
+		for (CustomerPersonGroup cpg: cp.getCustomerPersonGroups()) {
+			for (Folder f: cpg.getGroup().getGroupFolders().getAssociates()) {
+				yeOldeFolders.add(f);
+			}
+		}
+		assertTrue(yeOldeFolders.contains(folderA));
 	}
 
 	@Override

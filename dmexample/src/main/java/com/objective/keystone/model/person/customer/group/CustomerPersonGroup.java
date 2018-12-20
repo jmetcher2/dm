@@ -39,7 +39,7 @@ public class CustomerPersonGroup extends BaseAssociationDomainObject<CustomerPer
 
 	@Override
 	public AssociationParents<CustomerPerson, ? extends BaseAssociationDomainObject<CustomerPerson, Group>, Group> getAssociationParents() {
-		return new AssociationParents<CustomerPerson, CustomerPersonGroup, Group>(customerPerson.getGroups(), group.getCustomerPersons());
+		return new AssociationParents<CustomerPerson, CustomerPersonGroup, Group>(customerPerson.getCustomerPersonGroups(), group.getCustomerPersonGroups());
 	}
 
 	@Override

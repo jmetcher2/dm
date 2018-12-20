@@ -5,7 +5,7 @@ public interface AssociationManager<T extends BaseDomainObject,B extends BaseDom
 	
 	public T create(B associate);
 	
-	public T get (B associate);
+	public T getAssociationWith (B associate);
 	
 	public boolean removeAssociate(B associate);
 

@@ -90,7 +90,7 @@ public abstract class AssociationPersistenceTests<ObjectType extends BaseAssocia
 	}
 	
 	protected ObjectType getChildObject() {
-		return getChildObjectManager().get(getParent2());
+		return getChildObjectManager().getAssociationWith(getParent2());
 	}
 
 
@@ -104,7 +104,7 @@ public abstract class AssociationPersistenceTests<ObjectType extends BaseAssocia
 	}
 	
 	protected ObjectType getChildObjectInTest() {
-		return getChildObjectManager().get(getParent2InTest());
+		return getChildObjectManager().getAssociationWith(getParent2InTest());
 	}
 
 	protected ObjectType createChildObjectInTest() {

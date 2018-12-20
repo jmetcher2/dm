@@ -31,4 +31,9 @@ public class GroupFolderManager extends AssociationCollectionManager<Group, Grou
 		return GroupFolder.class;
 	}
 
+	@Override
+	protected Folder getAssociate(GroupFolder ao) {
+		return ao.getFolder();
+	}
+
 }
