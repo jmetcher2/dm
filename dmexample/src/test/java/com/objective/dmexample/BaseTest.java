@@ -1,4 +1,4 @@
-package au.id.lagod.dmexample;
+package com.objective.dmexample;
 
 import org.junit.Before;
 

@@ -1,4 +1,4 @@
-package au.id.lagod.dm.test;
+package com.objective.dm.test;
 
 import com.objective.dm.base.DomainObjectCollectionManager;
 

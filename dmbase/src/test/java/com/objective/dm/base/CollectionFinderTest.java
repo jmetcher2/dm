@@ -1,4 +1,4 @@
-package au.id.lagod.dm.base;
+package com.objective.dm.base;
 
 import static org.junit.Assert.*;
 
@@ -11,8 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.objective.dm.base.CollectionFinder;
-
-import au.id.lagod.dm.test.TestObject;
+import com.objective.dm.test.TestObject;
 
 public class CollectionFinderTest {
 	List<TestObject> list;

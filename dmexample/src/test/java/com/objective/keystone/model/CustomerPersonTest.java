@@ -2,6 +2,7 @@ package com.objective.keystone.model;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.objective.dm.base.DomainObjectCollectionManager;
@@ -70,6 +71,7 @@ public class CustomerPersonTest extends AssociationPersistenceTests<CustomerPers
 		return getParent2().getTextKey();
 	}
 	
+	@Ignore
 	@Override
 	@Test
 	public void testGetAttached() {

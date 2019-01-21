@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -29,6 +30,7 @@ import com.objective.dm.base.TextKey;
 import com.objective.keystone.model.customer.Customer;
 import com.objective.keystone.model.group.folder.FolderGroupManager;
 import com.objective.keystone.model.group.folder.GroupFolder;
+import com.objective.keystone.persistence.FolderTypeConverter;
 
 @Entity
 @Table(name="publisher_folder")
@@ -45,7 +47,7 @@ public class Folder extends BaseDomainObject implements ChildDomainObject {
 		)
 	@Column(name = "folder_id", updatable = false, nullable = false)	private Long id;
 	
-	@Enumerated(EnumType.STRING)
+	@Convert(converter=FolderTypeConverter.class)
     @Column(name="folder_type", length = 12 )
 	@NotNull														private FolderType type;
 	

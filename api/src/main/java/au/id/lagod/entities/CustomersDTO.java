@@ -14,6 +14,8 @@ import au.id.lagod.jersey_poc.services.RootService;
 public class CustomersDTO extends BaseModel {
 	public Set<CustomerEmbedDTO> customers = new HashSet<CustomerEmbedDTO>();
 	
+	public CustomersDTO() {};
+	
 	public CustomersDTO(UriInfo uriInfo) { super(uriInfo); }
 	
 	public CustomersDTO(UriInfo uriInfo, CustomerManager customers) {

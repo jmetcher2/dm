@@ -5,8 +5,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.junit.Test;
 
@@ -38,10 +36,7 @@ public class PersonTest extends TextKeyCollectionPersistenceTests<Person> {
 		folderA.getGroups().create(groupA);
 		
 		CustomerPerson personCustomer = person.getPersonCustomers().create(customer);
-		CustomerPersonGroup cpg = personCustomer.getCustomerPersonGroups().create(groupA);
-		
-		System.out.println(folderA.getGroups().isEmpty());
-		System.out.println(groupA.getGroupFolders().isEmpty());
+		personCustomer.getCustomerPersonGroups().create(groupA);
 	}
 	
 	@Test
@@ -50,6 +45,8 @@ public class PersonTest extends TextKeyCollectionPersistenceTests<Person> {
 		Folder folderA = customer.folders("testFolderA");
 		Group groupA = customer.groups("testGroupA");
 		Person person = model.persons("testPerson");
+
+		CustomerPerson cp = person.getPersonCustomers().getAssociationWith(customer);
 		
 		assertFalse(folderA.getGroups().isEmpty());
 		assertFalse(groupA.getGroupFolders().isEmpty());
@@ -58,12 +55,18 @@ public class PersonTest extends TextKeyCollectionPersistenceTests<Person> {
 		assertTrue(groupA.getGroupFolders().hasAssociate(folderA));
 		
 		// User is in group A
-		assertTrue(person.getPersonCustomers().getAssociationWith(customer).getCustomerPersonGroups().hasAssociate(groupA));
+		assertTrue(cp.getCustomerPersonGroups().hasAssociate(groupA));
 		
 		// User is in a group that has access to folder A 
-		assertTrue(person.getPersonCustomers().getAssociationWith(customer).getCustomerPersonGroups().getAssociationWith(groupA).getGroup().getGroupFolders().hasAssociate(folderA));
+		assertTrue(
+				cp
+				.getCustomerPersonGroups()
+				.getAssociationWith(groupA)
+				.getGroup()
+				.getGroupFolders()
+				.hasAssociate(folderA)
+		);
 		
-		CustomerPerson cp = person.getPersonCustomers().getAssociationWith(customer);
 		
 		// Get all the user's folders
 		Set<Folder> folders = 

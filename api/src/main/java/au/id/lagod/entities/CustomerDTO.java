@@ -5,6 +5,7 @@ import javax.ws.rs.core.UriInfo;
 import com.objective.keystone.model.customer.Customer;
 
 import au.id.lagod.jersey_poc.services.CustomerService;
+import au.id.lagod.jersey_poc.services.FolderService;
 
 public class CustomerDTO extends BaseModel {
 	public Long id;
@@ -19,6 +20,7 @@ public class CustomerDTO extends BaseModel {
 		this.id = customer.getId();
 		
 		_links.addParametrizedLink ("self", CustomerService.class, "getCustomer", param("customerIdentifier", identifier) );
+		_links.addParametrizedLink ("folders", FolderService.class, "getFolders", param("customerIdentifier", identifier) );
 		_links.addLink("parent", CustomerService.class);
 	}
 

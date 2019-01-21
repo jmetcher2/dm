@@ -9,6 +9,8 @@ import au.id.lagod.jersey_poc.services.RootService;
 public class APIRoot extends BaseModel {
 	public String name = "I am an API root";
 	
+	public APIRoot() {}
+	
 	public APIRoot(UriInfo uriInfo) {
 		super(uriInfo);
 		_links.addLink("customers", CustomerService.class);

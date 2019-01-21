@@ -28,22 +28,19 @@ repositories {
 def jersey_version = '2.27'
 
 dependencies {
-	compile project (':dmbase')
 	compile project (':dmexample')
 
-   compile "org.glassfish.jersey.containers:jersey-container-servlet:${jersey_version}"
-   compile "org.glassfish.jersey.inject:jersey-hk2:${jersey_version}"
-   compile "org.glassfish.jersey.media:jersey-media-json-jackson:${jersey_version}"
-   compile "org.glassfish.jersey.ext:jersey-spring4:${jersey_version}"
+	compile "org.glassfish.jersey.containers:jersey-container-servlet:${jersey_version}"
+	compile "org.glassfish.jersey.inject:jersey-hk2:${jersey_version}"
+ 	compile "org.glassfish.jersey.media:jersey-media-json-jackson:${jersey_version}"
+	compile "org.glassfish.jersey.ext:jersey-spring4:${jersey_version}"
    
     compile "javax.xml.bind:jaxb-api:2.2.11"
  	compile "com.sun.xml.bind:jaxb-core:2.2.11"
  	compile "com.sun.xml.bind:jaxb-impl:2.2.11"
  	compile "javax.activation:activation:1.1.1"
       
-   testCompile 'junit:junit:4.+';
-   testCompile "org.glassfish.jersey.core:jersey-client:${jersey_version}"
-	testCompile "org.springframework:spring-test:${springVersion}"
+    testCompile project(path: ':dmexample', configuration: 'testArtifacts')
    
    // compile 'org.eclipse.persistence:org.eclipse.persistence.moxy:2.5.2'
    // compile 'org.glassfish.jersey.media:jersey-media-moxy:${jersey_version}'

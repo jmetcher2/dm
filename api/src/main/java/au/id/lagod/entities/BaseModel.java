@@ -39,7 +39,7 @@ public class BaseModel {
 		this._links = new Links(uriInfo);
 	}
 
-	protected Links _links;
+	protected Links _links = new Links(null);
 	
 	@XmlElement(name="_links")
 	public Map<String, Link> getLinks() {
