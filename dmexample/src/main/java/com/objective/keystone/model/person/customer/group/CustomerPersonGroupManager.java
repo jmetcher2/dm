@@ -35,5 +35,7 @@ public class CustomerPersonGroupManager extends AssociationCollectionManager<Cus
 	protected Group getAssociate(CustomerPersonGroup ao) {
 		return ao.getGroup();
 	}
+	
+	
 
 }

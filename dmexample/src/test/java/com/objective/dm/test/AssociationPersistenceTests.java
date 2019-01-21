@@ -3,6 +3,7 @@ package com.objective.dm.test;
 import com.objective.dm.base.AssociationCollectionManager;
 import com.objective.dm.base.BaseAssociationDomainObject;
 import com.objective.dm.base.BaseDomainObject;
+import com.objective.dm.base.DomainCollectionManager;
 import com.objective.dm.base.DomainObjectCollectionManager;
 
 /**
@@ -77,8 +78,8 @@ public abstract class AssociationPersistenceTests<ObjectType extends BaseAssocia
 	@Override
 	protected abstract AssociationCollectionManager<Parent1Type, ObjectType, Parent2Type> getChildObjectManager();
 	
-	protected abstract DomainObjectCollectionManager<Parent1Type> getParent1Manager();
-	protected abstract DomainObjectCollectionManager<Parent2Type> getParent2Manager();
+	protected abstract DomainCollectionManager<Parent1Type> getParent1Manager();
+	protected abstract DomainCollectionManager<Parent2Type> getParent2Manager();
 	
 	protected abstract Parent1Type getParent1();
 	protected abstract Parent2Type getParent2();

@@ -57,5 +57,38 @@ public class CustomerPersonGroup extends BaseAssociationDomainObject<CustomerPer
 	public CustomerPerson getCustomerPerson() {
 		return customerPerson;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((customerPerson == null) ? 0 : customerPerson.hashCode());
+		result = prime * result + ((group == null) ? 0 : group.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		CustomerPersonGroup other = (CustomerPersonGroup) obj;
+		if (customerPerson == null) {
+			if (other.customerPerson != null)
+				return false;
+		} else if (!customerPerson.equals(other.customerPerson))
+			return false;
+		if (group == null) {
+			if (other.group != null)
+				return false;
+		} else if (!group.equals(other.group))
+			return false;
+		return true;
+	}
+	
+	
 	
 }
