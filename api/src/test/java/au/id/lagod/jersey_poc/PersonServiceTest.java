@@ -13,18 +13,10 @@ import com.objective.keystone.model.person.Person;
 import au.id.lagod.entities.APIRoot;
 import au.id.lagod.entities.CustomerDTO;
 import au.id.lagod.entities.CustomersDTO;
+import au.id.lagod.entities.PersonDTO;
+import au.id.lagod.entities.PersonsDTO;
 
 public class PersonServiceTest extends BaseTest {
-	
-	@Test
-	public void testGetCustomers() {
-		Response response = rsGet(rootUrl + "/customers",MediaType.APPLICATION_JSON, "");
-		CustomersDTO customers = response.readEntity(CustomersDTO.class);
-		
-		System.out.println(customers);
-		
-		assertEquals(3, customers.customers.size());
-	}
 	
 	@Override
 	protected void doSetupBeforeTransaction() {
@@ -39,13 +31,24 @@ public class PersonServiceTest extends BaseTest {
 	}
 
 	@Test 
-	public void testGetCustomer() {
-		Response response = rsGet(rootUrl + "/customers/test1",MediaType.APPLICATION_JSON, "");
-		CustomerDTO customer = response.readEntity(CustomerDTO.class);
+	public void testGetPerson() {
+		Response response = rsGet(rootUrl + "/persons/testPerson1",MediaType.APPLICATION_JSON, "");
+		PersonDTO person = response.readEntity(PersonDTO.class);
 		
-		assertTrue(customer != null);
+		assertTrue(person != null);
 		
-		assertEquals("test1", customer.identifier);
+		assertEquals("testPerson1", person.userName);
+		assertTrue(person.customerPersons.size() == 1);
+	}
+	
+	@Test
+	public void testGetPersons() {
+		Response response = rsGet(rootUrl + "/persons",MediaType.APPLICATION_JSON, "");
+		PersonsDTO persons = response.readEntity(PersonsDTO.class);
+		
+		System.out.println(persons);
+		
+		assertEquals(3, persons.persons.size());
 	}
 	
 	@Override

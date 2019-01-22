@@ -1,4 +1,4 @@
-package au.id.lagod.entities;
+package au.id.lagod.jersey_poc.links;
 
 public class LinkParameter {
 	

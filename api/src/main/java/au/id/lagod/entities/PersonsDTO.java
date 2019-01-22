@@ -13,18 +13,18 @@ import com.objective.keystone.model.person.PersonManager;
 import au.id.lagod.jersey_poc.services.PersonService;
 import au.id.lagod.jersey_poc.services.RootService;
 
-public class PersonsDTO extends BaseModel {
+public class PersonsDTO extends BaseDTO {
 	public Set<PersonDTO> persons = new HashSet<PersonDTO>();
 	
-	public PersonsDTO(UriInfo uriInfo, PersonManager persons) {
-		super(uriInfo);
-		
+	public PersonsDTO() {}
+	
+	public PersonsDTO(PersonManager persons) {
 		for (Person p: persons) {
-			this.persons.add(new PersonDTO(uriInfo, p));
+			this.persons.add(new PersonDTO(p));
 		}
 		
-		_links.addLink("this", PersonService.class);
-		_links.addLink("parent", RootService.class);
+		_links.addLink("this", PersonService.personsLink());
+		_links.addLink("parent", RootService.rootLink());
 	}
 
 }

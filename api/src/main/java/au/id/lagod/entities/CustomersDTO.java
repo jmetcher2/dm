@@ -11,20 +11,17 @@ import com.objective.keystone.model.customer.CustomerManager;
 import au.id.lagod.jersey_poc.services.CustomerService;
 import au.id.lagod.jersey_poc.services.RootService;
 
-public class CustomersDTO extends BaseModel {
+public class CustomersDTO extends BaseDTO {
 	public Set<CustomerEmbedDTO> customers = new HashSet<CustomerEmbedDTO>();
 	
 	public CustomersDTO() {};
 	
-	public CustomersDTO(UriInfo uriInfo) { super(uriInfo); }
-	
-	public CustomersDTO(UriInfo uriInfo, CustomerManager customers) {
-		super(uriInfo);
+	public CustomersDTO(CustomerManager customers) {
 		for (Customer c: customers) {
-			this.customers.add(new CustomerEmbedDTO(uriInfo, c));
+			this.customers.add(new CustomerEmbedDTO());
 		}
-		_links.addLink("this", CustomerService.class);
-		_links.addLink("parent", RootService.class);
+		_links.addLink("this", CustomerService.customersLink());
+		_links.addLink("parent", RootService.rootLink());
 	}
 
 }

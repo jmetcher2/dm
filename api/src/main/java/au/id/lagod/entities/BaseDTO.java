@@ -2,6 +2,7 @@ package au.id.lagod.entities;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.ws.rs.core.UriInfo;
 import javax.xml.bind.annotation.XmlElement;
@@ -9,7 +10,9 @@ import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+import au.id.lagod.jersey_poc.links.LinkSpec;
 
 /*
  * This class pretty much does nothing at the moment.  We'll remove it if no reason to keep it emerges.
@@ -22,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;;
  */
 @XmlTransient
 @JsonInclude(Include.NON_NULL)
-public class BaseModel {
+public class BaseDTO {
 	
 	/*
 	 * The default marshalling would be yyyy-mm-dd.  The annotation tells JAXB to 
@@ -32,22 +35,20 @@ public class BaseModel {
 	@XmlSchemaType(name = "dateTime")
 	protected Date timestamp = new Date();
 
-	// No-arg constructor for unmarshalling
-	public BaseModel() {}
+	public BaseDTO() {}
 	
-	public BaseModel(UriInfo uriInfo) {
-		this._links = new Links(uriInfo);
-	}
-
-	protected Links _links = new Links(null);
+	protected Links _links = new Links();
 	
 	@XmlElement(name="_links")
 	public Map<String, Link> getLinks() {
 		return _links.links;
 	}
 
-	protected LinkParameter param(String key, Object value) {
-		return new LinkParameter(key, value);
+	public void resolveLinkSpecs(UriInfo uriInfo) {
+		for (Entry<String, LinkSpec> spec: _links.linkSpecs.entrySet()) {
+			_links.links.put(spec.getKey(), spec.getValue().resolve(uriInfo));
+		}
+		
 	}
 	
 }

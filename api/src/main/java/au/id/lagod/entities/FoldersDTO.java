@@ -14,21 +14,15 @@ import au.id.lagod.jersey_poc.services.CustomerService;
 import au.id.lagod.jersey_poc.services.FolderService;
 import au.id.lagod.jersey_poc.services.RootService;
 
-public class FoldersDTO extends BaseModel {
+public class FoldersDTO extends BaseDTO {
 	public Set<FolderDTO> folders = new HashSet<FolderDTO>();
 	
-	public FoldersDTO(UriInfo uriInfo) { super(uriInfo); }
-	
-	public FoldersDTO(UriInfo uriInfo, FolderManager folders) {
-		super(uriInfo);
+	public FoldersDTO(FolderManager folders) {
 		for (Folder f: folders) {
-			this.folders.add(new FolderDTO(uriInfo, f));
+			this.folders.add(new FolderDTO(f));
 		}
-		_links.addLink("this", FolderService.class);
-		_links.addLink("parent", RootService.class);
-		_links.addParametrizedLink ("parent", CustomerService.class, "getCustomer", 
-				param("customerIdentifier", folders.getCustomer().getIdentifier())
-				);
+		_links.addLink("this", FolderService.foldersLink(folders.getCustomer()));
+		_links.addLink("parent", CustomerService.customerLink(folders.getCustomer()));
 
 	}
 

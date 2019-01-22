@@ -44,7 +44,7 @@ dependencies {
    
    // compile 'org.eclipse.persistence:org.eclipse.persistence.moxy:2.5.2'
    // compile 'org.glassfish.jersey.media:jersey-media-moxy:${jersey_version}'
-   // compile 'org.glassfish.jersey.ext:jersey-declarative-linking:${jersey_version}'
+   compile "org.glassfish.jersey.ext:jersey-declarative-linking:${jersey_version}"
    //compile "org.springframework:spring-aspects:${springVersion}"
    
    	compile "javax.transaction:javax.transaction-api:1.2"
