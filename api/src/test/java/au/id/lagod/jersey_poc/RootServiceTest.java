@@ -7,12 +7,7 @@ import javax.ws.rs.core.Response;
 
 import org.junit.Test;
 
-import com.objective.keystone.model.customer.Customer;
-import com.objective.keystone.model.person.Person;
-
 import au.id.lagod.entities.APIRoot;
-import au.id.lagod.entities.CustomerDTO;
-import au.id.lagod.entities.CustomersDTO;
 
 public class RootServiceTest extends BaseTest {
 	

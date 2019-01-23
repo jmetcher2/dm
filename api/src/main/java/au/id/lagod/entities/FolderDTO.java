@@ -16,8 +16,8 @@ public class FolderDTO extends BaseDTO {
 		this.id = folder.getId();
 		this.folderType = folder.getType().toString();
 
-		_links.addLink("self", FolderService.folderLink(folder));
-		_links.addLink("parent", FolderService.foldersLink(folder.getCustomer()));
+		_links.put("self", FolderService.folderLink(folder));
+		_links.put("parent", FolderService.foldersLink(folder.getCustomer()));
 	}
 
 

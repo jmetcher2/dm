@@ -1,17 +1,14 @@
 package au.id.lagod.entities;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
-
-import javax.ws.rs.core.UriInfo;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-
 import au.id.lagod.jersey_poc.links.LinkSpec;
 
 /*
@@ -37,18 +34,11 @@ public class BaseDTO {
 
 	public BaseDTO() {}
 	
-	protected Links _links = new Links();
+	protected Map<String, LinkSpec> _links = new HashMap<String, LinkSpec>();
 	
 	@XmlElement(name="_links")
-	public Map<String, Link> getLinks() {
-		return _links.links;
+	public Map<String, LinkSpec> getLinks() {
+		return _links;
 	}
 
-	public void resolveLinkSpecs(UriInfo uriInfo) {
-		for (Entry<String, LinkSpec> spec: _links.linkSpecs.entrySet()) {
-			_links.links.put(spec.getKey(), spec.getValue().resolve(uriInfo));
-		}
-		
-	}
-	
 }

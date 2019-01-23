@@ -17,9 +17,9 @@ public class CustomerDTO extends BaseDTO {
 		this.identifier = customer.getIdentifier();
 		this.id = customer.getId();
 		
-		_links.addLink("self", CustomerService.customerLink(customer));
-		_links.addLink("folders", FolderService.foldersLink(customer));
-		_links.addLink("parent", CustomerService.customersLink());
+		_links.put("self", CustomerService.customerLink(customer));
+		_links.put("folders", FolderService.foldersLink(customer));
+		_links.put("parent", CustomerService.customersLink());
 	}
 
 }

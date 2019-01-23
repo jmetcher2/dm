@@ -9,9 +9,6 @@ import com.objective.keystone.model.folder.Folder;
 
 import au.id.lagod.entities.FolderDTO;
 import au.id.lagod.entities.FoldersDTO;
-import au.id.lagod.entities.Link;
-import au.id.lagod.entities.Links;
-import au.id.lagod.jersey_poc.links.LinkParameter;
 import au.id.lagod.jersey_poc.links.LinkSpec;
 
 @Path("/customers/{customerIdentifier}/folders")

@@ -8,9 +8,9 @@ public class APIRoot extends BaseDTO {
 	public String name = "I am an API root";
 	
 	public APIRoot() {
-		_links.addLink("customers", CustomerService.customersLink());
-		_links.addLink("persons", PersonService.personsLink());
-		_links.addLink("this", RootService.rootLink());
+		_links.put("customers", CustomerService.customersLink());
+		_links.put("persons", PersonService.personsLink());
+		_links.put("this", RootService.rootLink());
 	}
 	
 }

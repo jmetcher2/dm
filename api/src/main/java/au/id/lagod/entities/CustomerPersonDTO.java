@@ -13,7 +13,7 @@ public class CustomerPersonDTO extends BaseDTO {
 	public CustomerPersonDTO(CustomerPerson cp) {
 		this.type = cp.getType().toString();
 		
-		_links.addLink("customer", CustomerService.customerLink(cp.getCustomer()));
+		_links.put("customer", CustomerService.customerLink(cp.getCustomer()));
 	}
 
 }

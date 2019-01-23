@@ -23,8 +23,8 @@ public class PersonDTO extends BaseDTO {
 			customerPersons.add(new CustomerPersonDTO(cp));
 		}
 		
-		_links.addLink("self", PersonService.personLink(person) );
-		_links.addLink("parent", PersonService.personsLink());
+		_links.put("self", PersonService.personLink(person) );
+		_links.put("parent", PersonService.personsLink());
 	}
 
 }

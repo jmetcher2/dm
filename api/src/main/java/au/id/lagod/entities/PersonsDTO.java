@@ -3,10 +3,6 @@ package au.id.lagod.entities;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.ws.rs.core.UriInfo;
-
-import com.objective.keystone.model.customer.Customer;
-import com.objective.keystone.model.customer.CustomerManager;
 import com.objective.keystone.model.person.Person;
 import com.objective.keystone.model.person.PersonManager;
 
@@ -23,8 +19,8 @@ public class PersonsDTO extends BaseDTO {
 			this.persons.add(new PersonDTO(p));
 		}
 		
-		_links.addLink("this", PersonService.personsLink());
-		_links.addLink("parent", RootService.rootLink());
+		_links.put("this", PersonService.personsLink());
+		_links.put("parent", RootService.rootLink());
 	}
 
 }

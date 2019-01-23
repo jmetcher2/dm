@@ -18,7 +18,7 @@ public class CustomerEmbedDTO extends BaseDTO {
 		this.identifier = customer.getIdentifier();
 		this.id = customer.getId();
 		
-		_links.addLink ("self", CustomerService.customerLink(customer));
+		_links.put ("self", CustomerService.customerLink(customer));
 	}
 
 }
