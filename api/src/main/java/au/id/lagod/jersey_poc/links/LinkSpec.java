@@ -7,9 +7,15 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @JsonSerialize(using = LinkSpecSerializer.class)
 public class LinkSpec {
+	// Serialization
 	Class<?> clazz;
 	String methodName;
 	LinkParameter[] params;
+	
+	// Deserialization
+	public String href;
+	
+	public LinkSpec() {}
 	
 	public LinkSpec(Class<?> clazz, String methodName, LinkParameter... params) {
 		super();

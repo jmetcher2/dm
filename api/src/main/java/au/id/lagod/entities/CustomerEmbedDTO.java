@@ -1,7 +1,5 @@
 package au.id.lagod.entities;
 
-import javax.ws.rs.core.UriInfo;
-
 import com.objective.keystone.model.customer.Customer;
 
 import au.id.lagod.jersey_poc.services.CustomerService;
@@ -13,7 +11,7 @@ public class CustomerEmbedDTO extends BaseDTO {
 	public CustomerEmbedDTO() {
 	}
 	
-	public CustomerEmbedDTO (UriInfo uriInfo, Customer customer) {
+	public CustomerEmbedDTO (Customer customer) {
 		this.timestamp = null;
 		this.identifier = customer.getIdentifier();
 		this.id = customer.getId();

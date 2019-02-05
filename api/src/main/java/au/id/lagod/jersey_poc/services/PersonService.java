@@ -4,15 +4,12 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 
-import org.glassfish.jersey.jackson.internal.jackson.jaxrs.cfg.ObjectWriterInjector;
-
 import com.objective.keystone.model.person.Person;
 
 import au.id.lagod.entities.BaseDTO;
 import au.id.lagod.entities.PersonDTO;
 import au.id.lagod.entities.PersonsDTO;
 import au.id.lagod.jersey_poc.links.LinkSpec;
-import au.id.lagod.jersey_poc.config.ObjectWriterPlusUriInfo;
 
 @Path("/persons")
 public class PersonService extends BaseService {

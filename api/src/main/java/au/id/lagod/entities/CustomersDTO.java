@@ -16,7 +16,7 @@ public class CustomersDTO extends BaseDTO {
 	
 	public CustomersDTO(CustomerManager customers) {
 		for (Customer c: customers) {
-			this.customers.add(new CustomerEmbedDTO());
+			this.customers.add(new CustomerEmbedDTO(c));
 		}
 		_links.put("this", CustomerService.customersLink());
 		_links.put("parent", RootService.rootLink());

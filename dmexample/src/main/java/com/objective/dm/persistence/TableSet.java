@@ -60,6 +60,9 @@ public class TableSet<T extends BaseDomainObject>  extends AbstractSet<T> implem
 		 * Therefore if the object is the right type and it can be loaded, it is by
 		 * definition contained in this collection 
 		 */
+		if (arg0 == null) 
+			return false;
+		
 		if (!arg0.getClass().equals(clazz)) {
 			return false;
 		}

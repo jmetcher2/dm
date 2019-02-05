@@ -17,6 +17,7 @@ public class PersonServiceTest extends BaseTest {
 	
 	@Override
 	protected void doSetupBeforeTransaction() {
+		doTeardownAfterTransaction();
 		Customer c1 = model.getCustomers().create("test1");
 		Customer c2 = model.getCustomers().create("test2");
 		Person p1 = model.getPersons().create("testPerson1");
