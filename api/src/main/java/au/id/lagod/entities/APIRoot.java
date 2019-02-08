@@ -1,16 +1,20 @@
 package au.id.lagod.entities;
 
+import au.id.lagod.jersey_poc.services.BaseService;
 import au.id.lagod.jersey_poc.services.CustomerService;
 import au.id.lagod.jersey_poc.services.PersonService;
-import au.id.lagod.jersey_poc.services.RootService;
 
 public class APIRoot extends BaseDTO {
 	public String name = "I am an API root";
 	
-	public APIRoot() {
-		_links.put("customers", CustomerService.customersLink());
-		_links.put("persons", PersonService.personsLink());
-		_links.put("this", RootService.rootLink());
+	public APIRoot() {}
+	
+	public APIRoot(BaseService service) {
+		super(false, service);
+		
+		_links.put("customers", link(CustomerService.class));
+		_links.put("persons", link(PersonService.class));
+		_links.put("this", link("getRoot"));
 	}
 	
 }

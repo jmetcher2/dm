@@ -3,33 +3,67 @@ package au.id.lagod.jersey_poc.services;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.core.Context;
 
-import com.objective.keystone.model.person.Person;
+import com.objective.keystone.model.customer.Customer;
+import com.objective.keystone.model.person.customer.CustomerPerson;
 
 import au.id.lagod.entities.BaseDTO;
+import au.id.lagod.entities.CustomerPersonDTO;
+import au.id.lagod.entities.CustomerPersonsDTO;
 import au.id.lagod.entities.PersonDTO;
+import au.id.lagod.entities.PersonFoldersDTO;
 import au.id.lagod.entities.PersonsDTO;
-import au.id.lagod.jersey_poc.links.LinkSpec;
 
 @Path("/persons")
 public class PersonService extends BaseService {
+	@Context
+	FolderService folderService;
+	@Context
+	GroupService groupService;
 
 	@GET
 	@Path("/")
 	public PersonsDTO getPersons() {
-		return new PersonsDTO(model.getPersons());
+		return new PersonsDTO(this, model.getPersons());
 	}
 	
 	@GET
 	@Path("{userName}")
 	public BaseDTO getPerson(@PathParam("userName") String userName) {
-		return new PersonDTO(model.persons(userName));
+		return new PersonDTO(this, model.persons(userName), false);
+	}
+	
+	@GET
+	@Path("{userName}/customerpersons")
+	public CustomerPersonsDTO getCustomerPersons(@PathParam("userName") String userName) {
+		return new CustomerPersonsDTO(this, model.persons(userName).getPersonCustomers());
 	}
 
-	public static LinkSpec personsLink() {
-		return new LinkSpec(PersonService.class, "getPersons");
+	@GET
+	@Path("{userName}/customerpersons/{customerIdentifier}")
+	public CustomerPersonDTO getCustomerPerson(@PathParam("userName") String userName,
+			@PathParam("customerIdentifier") String customerName) {
+		Customer c = model.customers(customerName);
+		CustomerPerson cp = model.persons(userName).getPersonCustomers().findOne("customer", c);
+		return new CustomerPersonDTO(this, cp, false);
 	}
-	public static LinkSpec personLink(Person person) {
-		return new LinkSpec(PersonService.class, "getPerson", param("userName", person.getUserName()));
+
+	@GET
+	@Path("{userName}/folders/{customerIdentifier}")
+	public PersonFoldersDTO getFolders(@PathParam("userName") String userName,
+			@PathParam("customerIdentifier") String customerName) {
+		Customer c = model.customers(customerName);
+		CustomerPerson cp = model.persons(userName).getPersonCustomers().findOne("customer", c);
+		return new PersonFoldersDTO(this, cp.getFolders());
 	}
+
+	public FolderService getFolderService() {
+		return folderService;
+	}
+
+	public GroupService getGroupService() {
+		return groupService;
+	}
+
 }

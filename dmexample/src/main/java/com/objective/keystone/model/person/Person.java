@@ -1,5 +1,7 @@
 package com.objective.keystone.model.person;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -20,8 +22,10 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import com.objective.dm.base.BaseDomainObject;
 import com.objective.dm.base.TextKey;
+import com.objective.keystone.model.folder.Folder;
 import com.objective.keystone.model.person.customer.CustomerPerson;
 import com.objective.keystone.model.person.customer.PersonCustomerManager;
+import com.objective.keystone.model.person.customer.group.CustomerPersonGroup;
 
 @Entity
 @Table(name="publisher_person")
@@ -81,8 +85,5 @@ public class Person extends BaseDomainObject {
 	public PersonCustomerManager getPersonCustomers() {
 		return (PersonCustomerManager) personCustomers;
 	}
-	
-	
-	
 
 }

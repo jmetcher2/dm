@@ -8,7 +8,10 @@ import javax.ws.rs.core.Response;
 import org.junit.Test;
 
 import com.objective.keystone.model.customer.Customer;
+import com.objective.keystone.model.folder.Folder;
+import com.objective.keystone.model.group.Group;
 import com.objective.keystone.model.person.Person;
+import com.objective.keystone.model.person.customer.CustomerPerson;
 
 import au.id.lagod.entities.PersonDTO;
 import au.id.lagod.entities.PersonsDTO;
@@ -49,8 +52,10 @@ public class PersonServiceTest extends BaseTest {
 		assertEquals(3, persons.persons.size());
 	}
 	
+
 	@Override
 	protected void doTeardownAfterTransaction() {
+		model.getCustomers().remove(model.customers("testCustomer"));
 		model.getCustomers().remove(model.customers("test1"));
 		model.getCustomers().remove(model.customers("test2"));
 		model.getPersons().remove(model.persons("testPerson1"));

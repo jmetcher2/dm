@@ -3,13 +3,16 @@ package au.id.lagod.entities;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import javax.xml.bind.annotation.XmlElement;
+
+import javax.ws.rs.core.UriBuilder;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import au.id.lagod.jersey_poc.links.LinkSpec;
+import com.objective.dm.base.BaseDomainObject;
+
+import au.id.lagod.jersey_poc.services.BaseService;
 
 /*
  * This class pretty much does nothing at the moment.  We'll remove it if no reason to keep it emerges.
@@ -30,15 +33,38 @@ public class BaseDTO {
 	 */
 	
 	@XmlSchemaType(name = "dateTime")
-	protected Date timestamp = new Date();
+	protected Date timestamp;
+	
+	private BaseService service;
 
 	public BaseDTO() {}
 	
-	protected Map<String, LinkSpec> _links = new HashMap<String, LinkSpec>();
+	public BaseDTO(boolean embedded, BaseService service) {
+		this.timestamp = embedded ? null : new Date();
+		this.service = service;
+	}
 	
-	@XmlElement(name="_links")
-	public Map<String, LinkSpec> getLinks() {
-		return _links;
+	public Map<String, Object> _links = new HashMap<String, Object>();
+	
+	protected String link(Class<?> clazz) {
+		UriBuilder uriPath = service.getUriInfo().getBaseUriBuilder().path(clazz);
+		return uriPath.build().toString();
+	}
+
+	protected <T extends BaseDomainObject> String link(Class<? extends BaseService> clazz, String methodName,  T... params) {
+		UriBuilder uriPath = service.getUriInfo().getBaseUriBuilder().path(clazz).path(clazz, methodName);
+		for(int  i=0; i< params.length;i++){
+			uriPath = uriPath.resolveTemplate(service.paramName(params[i]), params[i].getTextKey());
+		}
+		return uriPath.build().toString();
+	}
+
+	protected <T extends BaseDomainObject> String link(String methodName,  T... params) {
+		return link(service.getClass(), methodName, params);
+	}
+
+	protected String link() {
+		return link(service.getClass());
 	}
 
 }

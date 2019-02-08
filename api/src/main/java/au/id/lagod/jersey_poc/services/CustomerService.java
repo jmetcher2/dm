@@ -8,11 +8,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
-import com.objective.keystone.model.customer.Customer;
-
 import au.id.lagod.entities.CustomerDTO;
 import au.id.lagod.entities.CustomersDTO;
-import au.id.lagod.jersey_poc.links.LinkSpec;
 
 @Path("/customers")
 @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -23,23 +20,13 @@ public class CustomerService extends BaseService {
 	@GET
 	@Path("/")
 	public CustomersDTO getCustomers() {
-		return new CustomersDTO(model.getCustomers());
+		return new CustomersDTO(this, model.getCustomers());
 	}
 	
 	@GET
 	@Path("{customerIdentifier}")
 	public CustomerDTO getCustomer(@PathParam("customerIdentifier") String customerIdentifier) {
-		return new CustomerDTO(model.customers(customerIdentifier));
+		return new CustomerDTO(this, model.customers(customerIdentifier));
 	}
 	
-	public static LinkSpec customerLink(Customer customer) {
-		return new LinkSpec(CustomerService.class, "getCustomer", param("customerIdentifier", customer.getIdentifier()));
-	}
-	
-	public static LinkSpec customersLink() {
-		return new LinkSpec(CustomerService.class, "getCustomers");
-	}
-	
-
-
 }

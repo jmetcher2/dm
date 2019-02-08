@@ -64,6 +64,10 @@ public abstract class AssociationCollectionManager<A extends BaseDomainObject,T 
 	public AssociationCollectionManager(Collection<T> c) {
 		super(c);
 	}
+	
+	public A getParent() {
+		return parent;
+	}
 
 	/* ******************************************************************************
 	 * 

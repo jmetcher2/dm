@@ -1,0 +1,31 @@
+package au.id.lagod.entities;
+
+import com.objective.keystone.model.group.Group;
+
+import au.id.lagod.jersey_poc.services.GroupService;
+
+public class GroupDTO extends BaseDTO {
+	public Long id;
+	public String type;
+	public String name;
+	public GroupFoldersDTO folders;
+	
+	public GroupDTO(GroupService service, Group group, boolean embed) {
+		super(embed, service);
+		
+		this.type = group.getType().toString();
+		this.name = group.getName();
+		
+		this._links.put("self", link("getGroup", group, group.getCustomer()));
+
+		if (!embed) {
+			this.id = group.getId();
+			this.folders = new GroupFoldersDTO(service, group.getGroupFolders());
+			this._links.put("parent", link("getGroups", group.getCustomer()));
+		}
+	}
+
+	public GroupDTO() {
+	}
+
+}

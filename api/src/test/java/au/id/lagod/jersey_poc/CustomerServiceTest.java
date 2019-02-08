@@ -7,7 +7,6 @@ import javax.ws.rs.core.Response;
 
 import org.junit.Test;
 
-import com.objective.keystone.model.customer.Customer;
 import au.id.lagod.entities.CustomerDTO;
 import au.id.lagod.entities.CustomersDTO;
 
@@ -25,8 +24,8 @@ public class CustomerServiceTest extends BaseTest {
 	
 	@Override
 	protected void doSetupBeforeTransaction() {
-		Customer c1 = model.getCustomers().create("test1");
-		Customer c2 = model.getCustomers().create("test2");
+		model.getCustomers().create("test1");
+		model.getCustomers().create("test2");
 		
 	}
 

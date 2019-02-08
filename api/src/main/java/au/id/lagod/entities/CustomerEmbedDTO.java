@@ -11,12 +11,12 @@ public class CustomerEmbedDTO extends BaseDTO {
 	public CustomerEmbedDTO() {
 	}
 	
-	public CustomerEmbedDTO (Customer customer) {
-		this.timestamp = null;
+	public CustomerEmbedDTO (CustomerService service, Customer customer) {
+		super(true, service);
 		this.identifier = customer.getIdentifier();
 		this.id = customer.getId();
 		
-		_links.put ("self", CustomerService.customerLink(customer));
+		_links.put("self", link("getCustomer", customer));
 	}
 
 }

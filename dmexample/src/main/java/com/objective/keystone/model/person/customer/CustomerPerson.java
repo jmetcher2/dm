@@ -1,5 +1,8 @@
 package com.objective.keystone.model.person.customer;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -23,6 +26,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import com.objective.dm.base.AssociationParents;
 import com.objective.dm.base.BaseAssociationDomainObject;
 import com.objective.keystone.model.customer.Customer;
+import com.objective.keystone.model.folder.Folder;
 import com.objective.keystone.model.person.Person;
 import com.objective.keystone.model.person.customer.group.CustomerPersonGroup;
 import com.objective.keystone.model.person.customer.group.CustomerPersonGroupManager;
@@ -67,6 +71,16 @@ public class CustomerPerson extends BaseAssociationDomainObject<Customer, Person
 	@Override
 	public Long getId() {
 		return id;
+	}
+	
+	public List<Folder> getFolders() {
+		List<Folder> folders = new ArrayList<Folder>();
+		for (CustomerPersonGroup cpg: getCustomerPersonGroups()) {
+			for (Folder f: cpg.getGroup().getGroupFolders().getAssociates()) {
+				folders.add(f);
+			}
+		}
+		return folders;
 	}
 
 	public CustomerPersonType getType() {

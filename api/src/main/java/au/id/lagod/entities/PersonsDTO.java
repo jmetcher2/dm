@@ -14,13 +14,15 @@ public class PersonsDTO extends BaseDTO {
 	
 	public PersonsDTO() {}
 	
-	public PersonsDTO(PersonManager persons) {
+	public PersonsDTO(PersonService service, PersonManager persons) {
+		super(false, service);
+		
 		for (Person p: persons) {
-			this.persons.add(new PersonDTO(p));
+			this.persons.add(new PersonDTO(service, p, true));
 		}
 		
-		_links.put("this", PersonService.personsLink());
-		_links.put("parent", RootService.rootLink());
+		_links.put("this", link("getPersons"));
+		_links.put("parent", link(RootService.class, "getRoot"));
 	}
 
 }

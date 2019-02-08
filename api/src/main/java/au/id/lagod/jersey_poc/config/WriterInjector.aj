@@ -1,7 +1,9 @@
 package au.id.lagod.jersey_poc.config;
 
-import org.glassfish.jersey.jackson.internal.jackson.jaxrs.cfg.ObjectWriterInjector;
 import javax.ws.rs.Path;
+
+import org.glassfish.jersey.jackson.internal.jackson.jaxrs.cfg.ObjectWriterInjector;
+
 import au.id.lagod.jersey_poc.services.BaseService;
 
 public aspect WriterInjector {

@@ -7,7 +7,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import au.id.lagod.entities.APIRoot;
-import au.id.lagod.jersey_poc.links.LinkSpec;
 
 @Path("/")
 @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -17,11 +16,7 @@ public class RootService extends BaseService {
 	@GET
 	@Path("/")
 	public APIRoot getRoot() {
-		return new APIRoot();
+		return new APIRoot(this);
 	}
 
-	public static LinkSpec rootLink() {
-		return new LinkSpec(RootService.class, "getRoot");
-	}
-	
 }

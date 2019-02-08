@@ -1,30 +1,30 @@
 package au.id.lagod.entities;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.objective.keystone.model.person.Person;
-import com.objective.keystone.model.person.customer.CustomerPerson;
 
 import au.id.lagod.jersey_poc.services.PersonService;
 
 public class PersonDTO extends BaseDTO {
 	public Long id;
 	public String userName;
-	public List<CustomerPersonDTO> customerPersons = new ArrayList<CustomerPersonDTO>();
+	public List<CustomerPersonDTO> customerPersons;
 	
 	public PersonDTO() {}
 	
-	public PersonDTO (Person person) {
+	public PersonDTO (PersonService service, Person person, Boolean embed) {
+		super(embed, service);
+		
 		this.userName = person.getUserName();
 		this.id = person.getId();
 		
-		for (CustomerPerson cp: person.getPersonCustomers()) {
-			customerPersons.add(new CustomerPersonDTO(cp));
+		if (!embed) {
+			_links.put("parent", link("getPersons"));
 		}
-		
-		_links.put("self", PersonService.personLink(person) );
-		_links.put("parent", PersonService.personsLink());
-	}
 
+		_links.put("customerpersons", link("getCustomerPersons", person));
+		_links.put("self", link("getPerson", person) );
+	
+	}
 }

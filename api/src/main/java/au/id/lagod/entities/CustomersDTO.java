@@ -14,12 +14,14 @@ public class CustomersDTO extends BaseDTO {
 	
 	public CustomersDTO() {};
 	
-	public CustomersDTO(CustomerManager customers) {
+	public CustomersDTO(CustomerService service, CustomerManager customers) {
+		super(false, service);
+		
 		for (Customer c: customers) {
-			this.customers.add(new CustomerEmbedDTO(c));
+			this.customers.add(new CustomerEmbedDTO(service, c));
 		}
-		_links.put("this", CustomerService.customersLink());
-		_links.put("parent", RootService.rootLink());
+		_links.put("this", link("getCustomers"));
+		_links.put("parent", link(RootService.class));
 	}
 
 }

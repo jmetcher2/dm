@@ -22,5 +22,9 @@ public class GroupManager extends DomainObjectCollectionManager<Group> {
 		return Group.class;
 	}
 	
+	public Customer getCustomer() {
+		return customer;
+	}
+	
 
 }
