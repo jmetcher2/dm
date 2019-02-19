@@ -11,7 +11,6 @@ import au.id.lagod.entities.FoldersDTO;
 
 @Path("/customers/{customerIdentifier}/folders")
 public class FolderService extends BaseService {
-
 	@GET
 	@Path("/")
 	public FoldersDTO getFolders(@PathParam("customerIdentifier") String customerIdentifier) {

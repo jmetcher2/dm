@@ -19,8 +19,10 @@ public class FolderDTO extends BaseDTO {
 		this.id = folder.getId();
 		this.folderType = folder.getType().toString();
 
-		_links.put("self", link("getFolder", folder, folder.getCustomer()));
-		_links.put("parent", link("getFolders", folder.getCustomer()));
+		String customerName = folder.getCustomer().getIdentifier();
+		
+		_links.put("self", service.getFolder(customerName, shortName));
+		_links.put("parent", service.getFolders(customerName));
 	}
 
 

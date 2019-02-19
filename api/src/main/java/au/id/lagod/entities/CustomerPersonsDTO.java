@@ -18,6 +18,7 @@ public class CustomerPersonsDTO extends BaseDTO {
 			this.customerPersons.add(new CustomerPersonDTO(service, cp, true));
 		}
 		
-		_links.put("parent", link("getPerson", personCustomerManager.getParent()));
+		String userName = personCustomerManager.getParent().getUserName();
+		_links.put("parent", service.getPerson(userName));
 	}
 }

@@ -6,7 +6,6 @@ import java.util.List;
 import com.objective.keystone.model.person.customer.CustomerPerson;
 import com.objective.keystone.model.person.customer.group.CustomerPersonGroup;
 
-import au.id.lagod.jersey_poc.services.CustomerService;
 import au.id.lagod.jersey_poc.services.PersonService;
 
 public class CustomerPersonDTO extends BaseDTO {
@@ -22,16 +21,19 @@ public class CustomerPersonDTO extends BaseDTO {
 		this.type = cp.getType().toString();
 		this.customerId = cp.getCustomer().getId();
 		
+		String customerIdf = cp.getCustomer().getIdentifier();
+		String userName = cp.getPerson().getUserName();
+		
 		for (CustomerPersonGroup cpg: cp.getCustomerPersonGroups()) {
 			groups.add(service.getGroupService().getGroupDTO(cpg.getGroup(), true));
 		}
 		
-		_links.put("customer", link(CustomerService.class, "getCustomer", cp.getCustomer()));
-		_links.put("folders", link("getFolders", cp.getCustomer(), cp.getPerson()));
-		_links.put("self", link("getCustomerPerson", cp.getCustomer(), cp.getPerson()));
+		_links.put("customer", service.getCustomerService().getCustomer(customerIdf));
+		_links.put("folders", service.getFolders(userName, customerIdf));
+		_links.put("self", service.getCustomerPerson(userName, customerIdf));
 		
 		if (!embed) {
-			_links.put("parent", link("getCustomerPersons", cp.getPerson()));
+			_links.put("parent", service.getCustomerPersons(userName));
 		}
 	}
 

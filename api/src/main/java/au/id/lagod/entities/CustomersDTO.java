@@ -7,7 +7,6 @@ import com.objective.keystone.model.customer.Customer;
 import com.objective.keystone.model.customer.CustomerManager;
 
 import au.id.lagod.jersey_poc.services.CustomerService;
-import au.id.lagod.jersey_poc.services.RootService;
 
 public class CustomersDTO extends BaseDTO {
 	public Set<CustomerEmbedDTO> customers = new HashSet<CustomerEmbedDTO>();
@@ -20,8 +19,8 @@ public class CustomersDTO extends BaseDTO {
 		for (Customer c: customers) {
 			this.customers.add(new CustomerEmbedDTO(service, c));
 		}
-		_links.put("this", link("getCustomers"));
-		_links.put("parent", link(RootService.class));
+		_links.put("this", service.getCustomers());
+		_links.put("parent", service.getRootService().getRoot());
 	}
 
 }

@@ -1,6 +1,7 @@
 package au.id.lagod.jersey_poc;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -8,10 +9,7 @@ import javax.ws.rs.core.Response;
 import org.junit.Test;
 
 import com.objective.keystone.model.customer.Customer;
-import com.objective.keystone.model.folder.Folder;
-import com.objective.keystone.model.group.Group;
 import com.objective.keystone.model.person.Person;
-import com.objective.keystone.model.person.customer.CustomerPerson;
 
 import au.id.lagod.entities.PersonDTO;
 import au.id.lagod.entities.PersonsDTO;
@@ -34,12 +32,13 @@ public class PersonServiceTest extends BaseTest {
 	@Test 
 	public void testGetPerson() {
 		Response response = rsGet(rootUrl + "/persons/testPerson1",MediaType.APPLICATION_JSON, "");
+		//System.out.println(response.readEntity(String.class));
 		PersonDTO person = response.readEntity(PersonDTO.class);
 		
 		assertTrue(person != null);
 		
 		assertEquals("testPerson1", person.userName);
-		assertTrue(person.customerPersons.size() == 1);
+		assertTrue(person.customerPersons.customerPersons.size() == 1);
 	}
 	
 	@Test

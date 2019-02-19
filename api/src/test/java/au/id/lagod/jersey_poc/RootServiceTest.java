@@ -1,6 +1,6 @@
 package au.id.lagod.jersey_poc;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;

@@ -7,7 +7,6 @@ import com.objective.keystone.model.person.Person;
 import com.objective.keystone.model.person.PersonManager;
 
 import au.id.lagod.jersey_poc.services.PersonService;
-import au.id.lagod.jersey_poc.services.RootService;
 
 public class PersonsDTO extends BaseDTO {
 	public Set<PersonDTO> persons = new HashSet<PersonDTO>();
@@ -21,8 +20,8 @@ public class PersonsDTO extends BaseDTO {
 			this.persons.add(new PersonDTO(service, p, true));
 		}
 		
-		_links.put("this", link("getPersons"));
-		_links.put("parent", link(RootService.class, "getRoot"));
+		_links.put("this", service.getPersons());
+		_links.put("parent", service.getRootService().getRoot());
 	}
 
 }

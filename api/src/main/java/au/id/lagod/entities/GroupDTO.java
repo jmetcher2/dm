@@ -16,12 +16,14 @@ public class GroupDTO extends BaseDTO {
 		this.type = group.getType().toString();
 		this.name = group.getName();
 		
-		this._links.put("self", link("getGroup", group, group.getCustomer()));
+		String customerName = group.getCustomer().getIdentifier();
+		
+		this._links.put("self", service.getGroup(customerName, name));
 
 		if (!embed) {
 			this.id = group.getId();
 			this.folders = new GroupFoldersDTO(service, group.getGroupFolders());
-			this._links.put("parent", link("getGroups", group.getCustomer()));
+			this._links.put("parent", service.getGroups(customerName));
 		}
 	}
 

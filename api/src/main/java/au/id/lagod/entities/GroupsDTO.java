@@ -6,7 +6,6 @@ import java.util.Set;
 import com.objective.keystone.model.group.Group;
 import com.objective.keystone.model.group.GroupManager;
 
-import au.id.lagod.jersey_poc.services.CustomerService;
 import au.id.lagod.jersey_poc.services.GroupService;
 
 public class GroupsDTO extends BaseDTO {
@@ -19,9 +18,13 @@ public class GroupsDTO extends BaseDTO {
 		for (Group g: groups) {
 			this.groups.add(new GroupDTO(service, g, true));
 		}
-		_links.put("this", link("getGroups", groups.getCustomer()));
-		_links.put("parent", link(CustomerService.class, "getCustomer", groups.getCustomer()));
+		
+		String customerName = groups.getCustomer().getIdentifier();
+		
+		_links.put("this", service.getGroups(customerName));
+		_links.put("parent", service.getCustomerService().getCustomer(customerName));
 
 	}
 
+	
 }

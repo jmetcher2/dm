@@ -3,12 +3,10 @@ package au.id.lagod.jersey_poc.services;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.core.Context;
 
 import com.objective.keystone.model.customer.Customer;
 import com.objective.keystone.model.person.customer.CustomerPerson;
 
-import au.id.lagod.entities.BaseDTO;
 import au.id.lagod.entities.CustomerPersonDTO;
 import au.id.lagod.entities.CustomerPersonsDTO;
 import au.id.lagod.entities.PersonDTO;
@@ -17,10 +15,6 @@ import au.id.lagod.entities.PersonsDTO;
 
 @Path("/persons")
 public class PersonService extends BaseService {
-	@Context
-	FolderService folderService;
-	@Context
-	GroupService groupService;
 
 	@GET
 	@Path("/")
@@ -30,7 +24,7 @@ public class PersonService extends BaseService {
 	
 	@GET
 	@Path("{userName}")
-	public BaseDTO getPerson(@PathParam("userName") String userName) {
+	public PersonDTO getPerson(@PathParam("userName") String userName) {
 		return new PersonDTO(this, model.persons(userName), false);
 	}
 	
@@ -56,14 +50,6 @@ public class PersonService extends BaseService {
 		Customer c = model.customers(customerName);
 		CustomerPerson cp = model.persons(userName).getPersonCustomers().findOne("customer", c);
 		return new PersonFoldersDTO(this, cp.getFolders());
-	}
-
-	public FolderService getFolderService() {
-		return folderService;
-	}
-
-	public GroupService getGroupService() {
-		return groupService;
 	}
 
 }
