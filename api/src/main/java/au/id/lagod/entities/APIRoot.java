@@ -8,7 +8,7 @@ public class APIRoot extends BaseDTO {
 	public APIRoot() {}
 	
 	public APIRoot(RootService service) {
-		super(false, service);
+		super();
 		
 		_links.put("customers", service.getCustomerService().getCustomers());
 		_links.put("persons", service.getPersonService().getPersons());

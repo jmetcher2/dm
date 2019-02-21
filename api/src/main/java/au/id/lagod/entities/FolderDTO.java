@@ -13,7 +13,7 @@ public class FolderDTO extends BaseDTO {
 	public FolderDTO() {}
 
 	public FolderDTO (FolderService service, Folder folder) {
-		super(true, service);
+		super();
 
 		this.shortName = folder.getShortName();
 		this.id = folder.getId();

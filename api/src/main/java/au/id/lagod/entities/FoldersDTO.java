@@ -14,7 +14,7 @@ public class FoldersDTO extends BaseDTO {
 	public FoldersDTO() {}
 	
 	public FoldersDTO(FolderService service, FolderManager folders) {
-		super(false, service);
+		super();
 		for (Folder f: folders) {
 			this.folders.add(new FolderDTO(service, f));
 		}

@@ -17,7 +17,7 @@ public class GroupFoldersDTO extends BaseDTO {
 	}
 
 	public GroupFoldersDTO(GroupService service, GroupFolderManager groupFolders) {
-		super(true, service);
+		super();
 		for (GroupFolder f: groupFolders) {
 			folders.add(service.getFolderService().getFolderDTO(f.getFolder()));
 		}

@@ -38,7 +38,7 @@ public class PersonServiceTest extends BaseTest {
 		assertTrue(person != null);
 		
 		assertEquals("testPerson1", person.userName);
-		assertTrue(person.customerPersons.customerPersons.size() == 1);
+		assertTrue(person.customerPersons.size() == 1);
 	}
 	
 	@Test
@@ -54,11 +54,11 @@ public class PersonServiceTest extends BaseTest {
 
 	@Override
 	protected void doTeardownAfterTransaction() {
-		model.getCustomers().remove(model.customers("testCustomer"));
-		model.getCustomers().remove(model.customers("test1"));
-		model.getCustomers().remove(model.customers("test2"));
-		model.getPersons().remove(model.persons("testPerson1"));
-		model.getPersons().remove(model.persons("testPerson2"));
+//		model.getCustomers().remove(model.customers("testCustomer"));
+//		model.getCustomers().remove(model.customers("test1"));
+//		model.getCustomers().remove(model.customers("test2"));
+//		model.getPersons().remove(model.persons("testPerson1"));
+//		model.getPersons().remove(model.persons("testPerson2"));
 	}
 
 

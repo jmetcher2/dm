@@ -14,7 +14,7 @@ public class PersonFoldersDTO extends BaseDTO {
 	public PersonFoldersDTO() {}
 	
 	public PersonFoldersDTO(PersonService service, List<Folder> folders) {
-		super(false, service);
+		super();
 		for (Folder f: folders) {
 			this.folders.add(service.getFolderService().getFolderDTO(f));
 		}

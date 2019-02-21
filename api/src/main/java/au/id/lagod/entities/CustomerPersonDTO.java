@@ -16,8 +16,8 @@ public class CustomerPersonDTO extends BaseDTO {
 	
 	public CustomerPersonDTO() {}
 
-	public CustomerPersonDTO(PersonService service, CustomerPerson cp, Boolean embed) {
-		super(embed, service);
+	public CustomerPersonDTO(PersonService service, CustomerPerson cp) {
+		super();
 		this.type = cp.getType().toString();
 		this.customerId = cp.getCustomer().getId();
 		
@@ -32,9 +32,7 @@ public class CustomerPersonDTO extends BaseDTO {
 		_links.put("folders", service.getFolders(userName, customerIdf));
 		_links.put("self", service.getCustomerPerson(userName, customerIdf));
 		
-		if (!embed) {
-			_links.put("parent", service.getCustomerPersons(userName));
-		}
+		_links.put("parent", service.getCustomerPersons(userName));
 	}
 
 }

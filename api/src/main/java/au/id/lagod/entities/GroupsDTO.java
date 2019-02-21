@@ -14,7 +14,7 @@ public class GroupsDTO extends BaseDTO {
 	public GroupsDTO() {}
 	
 	public GroupsDTO(GroupService service, GroupManager groups) {
-		super(false, service);
+		super();
 		for (Group g: groups) {
 			this.groups.add(new GroupDTO(service, g, true));
 		}

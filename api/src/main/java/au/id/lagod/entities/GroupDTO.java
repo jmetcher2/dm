@@ -11,7 +11,7 @@ public class GroupDTO extends BaseDTO {
 	public GroupFoldersDTO folders;
 	
 	public GroupDTO(GroupService service, Group group, boolean embed) {
-		super(embed, service);
+		super();
 		
 		this.type = group.getType().toString();
 		this.name = group.getName();

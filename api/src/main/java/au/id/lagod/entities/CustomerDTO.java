@@ -12,7 +12,7 @@ public class CustomerDTO extends BaseDTO {
 	}
 	
 	public CustomerDTO (CustomerService service, Customer customer) {
-		super(false, service);
+		super();
 		
 		this.identifier = customer.getIdentifier();
 		this.id = customer.getId();

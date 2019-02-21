@@ -2,7 +2,6 @@ package au.id.lagod.entities;
 
 import java.util.Date;
 
-import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -20,17 +19,17 @@ import au.id.lagod.jersey_poc.services.BaseService;
  */
 @XmlTransient
 @JsonInclude(Include.NON_NULL)
-public class BaseDTO {
+public class BaseEmbedDTO {
 	
-	/*
-	 * The default marshalling would be yyyy-mm-dd.  The annotation tells JAXB to 
-	 * add the timestamp.
-	 */
+	private BaseService service;
 	
-	@XmlSchemaType(name = "dateTime")
-	protected Date timestamp = new Date();
+	public BaseEmbedDTO() {}
+
+	public BaseEmbedDTO(BaseService service) {
+		this.service = service;
+	}
 	
-	public String selfLink; // link to the endpoint that created this DTO
+	@JsonInclude(Include.NON_EMPTY)
 	public Links _links = new Links();
-	
+
 }
