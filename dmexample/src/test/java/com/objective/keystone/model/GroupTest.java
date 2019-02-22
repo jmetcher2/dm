@@ -17,6 +17,8 @@ public class GroupTest extends BaseChildObjectPersistenceTests<Group, Customer> 
 	protected void doSetupBeforeTransaction() {
 		model.getCustomers().create(getParentName());
 		super.doSetupBeforeTransaction();
+		Folder f = getParent().getFolders().create("testFolder");
+		getChildObject().getGroupFolders().create(f);
 	}
 
 	@Override
@@ -42,12 +44,10 @@ public class GroupTest extends BaseChildObjectPersistenceTests<Group, Customer> 
 	
 	@Test
 	public void testFolders() {
+		Folder f = getParent().folders("testFolder");
 		Group g = getChildObject();
-		Folder f = getParent().getFolders().create("testFolder");
 		
-		assertTrue(g.getGroupFolders().isEmpty());
-		g.getGroupFolders().create(f);
-		assertFalse(g.getGroupFolders().isEmpty());
+		assertFalse(getChildObject().getGroupFolders().isEmpty());
 		g.getGroupFolders().removeAssociate(f);
 		getParent().getGroups().remove(g);
 		assertTrue(g.getGroupFolders().isEmpty());

@@ -9,6 +9,7 @@ import javax.ws.rs.core.Response;
 import org.junit.Test;
 
 import com.objective.keystone.model.customer.Customer;
+import com.objective.keystone.model.group.Group;
 import com.objective.keystone.model.person.Person;
 
 import au.id.lagod.entities.PersonDTO;
@@ -21,6 +22,10 @@ public class PersonServiceTest extends BaseTest {
 		doTeardownAfterTransaction();
 		Customer c1 = model.getCustomers().create("test1");
 		Customer c2 = model.getCustomers().create("test2");
+		
+		Group g1 = c1.getGroups().create("testGroup1");
+		Group g2 = c1.getGroups().create("testGroup2");
+
 		Person p1 = model.getPersons().create("testPerson1");
 		Person p2 = model.getPersons().create("testPerson2");
 		
@@ -54,11 +59,11 @@ public class PersonServiceTest extends BaseTest {
 
 	@Override
 	protected void doTeardownAfterTransaction() {
-//		model.getCustomers().remove(model.customers("testCustomer"));
-//		model.getCustomers().remove(model.customers("test1"));
-//		model.getCustomers().remove(model.customers("test2"));
-//		model.getPersons().remove(model.persons("testPerson1"));
-//		model.getPersons().remove(model.persons("testPerson2"));
+		model.getCustomers().remove(model.customers("testCustomer"));
+		model.getCustomers().remove(model.customers("test1"));
+		model.getCustomers().remove(model.customers("test2"));
+		model.getPersons().remove(model.persons("testPerson1"));
+		model.getPersons().remove(model.persons("testPerson2"));
 	}
 
 

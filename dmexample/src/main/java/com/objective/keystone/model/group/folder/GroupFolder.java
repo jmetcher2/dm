@@ -2,10 +2,13 @@ package com.objective.keystone.model.group.folder;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.objective.dm.base.AssociationParents;
 import com.objective.dm.base.BaseAssociationDomainObject;
@@ -17,15 +20,19 @@ import com.objective.keystone.model.group.Group;
 public class GroupFolder extends BaseAssociationDomainObject<Group, Folder> {
 
 	@EmbeddedId
-	private GroupFolderId id = new GroupFolderId();
+	private GroupFolderId eid = new GroupFolderId();
+	
+	public GroupFolderId getEid() {
+		return eid;
+	}
 	
 	@MapsId("groupId")
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="group_id")
 	private Group group;
 	
 	@MapsId("folderId")
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="folder_id")
 	private Folder folder;
 	
