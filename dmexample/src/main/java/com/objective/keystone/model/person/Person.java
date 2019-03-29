@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -29,28 +30,9 @@ import com.objective.keystone.model.person.customer.group.CustomerPersonGroup;
 
 @Entity
 @Table(name="publisher_person")
-public class Person extends BaseDomainObject {
+public class Person extends MappedPerson {
 
-	@Id	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "person_id", updatable = false, nullable = false)	private Long id;
-	
-	@Enumerated(EnumType.STRING)
-    @Column(name="person_type", length = 13 )
-	@NotNull															private PersonType type;
-	
-	@Column(name="person_family_name", length = 35)
-	@NotBlank @Size(max=35)												private String familyName;
-	
-	@TextKey
-	@Column(name="person_username", length = 100)
-	@NotBlank @Size(max=100)											private String userName;
-	
-	@Column(name="person_etag")
-	@NotBlank															private String eTag;
-
-	@AttributeAccessor(collectionAccessor)
-	@OneToMany(cascade = CascadeType.ALL, 
-	        mappedBy = "person", orphanRemoval = true)					private Set<CustomerPerson> personCustomers = new PersonCustomerManager(this);
+	@Transient private PersonCustomerManager personCustomers = new PersonCustomerManager(this, personCustomerSet);
 	
 	protected Person() {}
 	
@@ -62,28 +44,8 @@ public class Person extends BaseDomainObject {
 		this.eTag = eTag;
 	}
 	
-	public Long getId() {
-		return id;
-	}
-
-	public PersonType getType() {
-		return type;
-	}
-
-	public String getFamilyName() {
-		return familyName;
-	}
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public String geteTag() {
-		return eTag;
-	}
-
 	public PersonCustomerManager getPersonCustomers() {
-		return (PersonCustomerManager) personCustomers;
+		return personCustomers;
 	}
 
 }

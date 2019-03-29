@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -32,31 +33,10 @@ import com.objective.keystone.model.person.customer.group.GroupCustomerPersonMan
 
 @Entity
 @Table(name="publisher_group")
-public class Group extends BaseDomainObject implements ChildDomainObject {
+public class Group extends MappedGroup implements ChildDomainObject {
 
-	@Id	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "group_id", updatable = false, nullable = false)	private Long id;
-	
-	@Enumerated(EnumType.STRING)
-    @Column(name="group_type", length = 10 )
-	@NotNull														private GroupType type;
-	
-	@TextKey
-	@Column(name="group_name", length = 255)
-	@NotBlank @Size(max=255)										private String name;
-	
-	@Column(name="group_etag")
-	@NotBlank														private String eTag;
-
-	@ManyToOne @JoinColumn(name="group_customer_id")				private Customer customer;
-	
-	@AttributeAccessor(collectionAccessor)
-	@OneToMany(mappedBy="group", cascade = CascadeType.ALL, orphanRemoval = true)
-																	private Set<GroupFolder> folders = new GroupFolderManager(this);
-	
-	@AttributeAccessor(collectionAccessor)
-	@OneToMany(mappedBy="group", cascade = CascadeType.ALL, orphanRemoval = true)
-    																private Set<CustomerPersonGroup> customerPersons = new GroupCustomerPersonManager(this);
+	@Transient private GroupFolderManager folders = new GroupFolderManager(this, folderSet);
+    @Transient private GroupCustomerPersonManager customerPersons = new GroupCustomerPersonManager(this, customerPersonSet);
 
 
 	protected Group() {}

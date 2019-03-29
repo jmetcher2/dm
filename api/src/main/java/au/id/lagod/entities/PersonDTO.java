@@ -14,18 +14,16 @@ public class PersonDTO extends BaseDTO {
 	public Long id;
 	public String userName;
 	public List<CustomerPersonDTO> customerPersons = new ArrayList<CustomerPersonDTO>();
-	private PersonService service;
 	
 	public PersonDTO() {}
 	
 	public PersonDTO (PersonService service, Person person) {
 		super();
-		this.service = service;
 		
 		this.userName = person.getUserName();
 		this.id = person.getId();
 		for (CustomerPerson cp: person.getPersonCustomers()) {
-			this.customerPersons.add(new CustomerPersonDTO(cp));
+			this.customerPersons.add(new CustomerPersonDTO(service, cp));
 		}
 		
 		_links.put("parent", service.getPersons());
@@ -34,21 +32,18 @@ public class PersonDTO extends BaseDTO {
 	
 	}
 	
-	public class CustomerPersonDTO extends BaseEmbedDTO {
+	public static class CustomerPersonDTO extends BaseEmbedDTO {
 
 		public String type;
-		public List<GroupDTO> groups = new ArrayList<GroupDTO>();
 		public Long customerId;
+		public String customerIdentifier;
 		
 		public CustomerPersonDTO() {}
 
-		public CustomerPersonDTO(CustomerPerson cp) {
+		public CustomerPersonDTO(PersonService service, CustomerPerson cp) {
 			this.type = cp.getType().toString();
 			this.customerId = cp.getCustomer().getId();
-			
-			for (CustomerPersonGroup cpg: cp.getCustomerPersonGroups()) {
-				groups.add(service.getGroupService().getGroupDTO(cpg.getGroup(), true));
-			}
+			this.customerIdentifier = cp.getCustomer().getIdentifier();
 			
 			_links.put("self", service.getCustomerPerson(cp));
 

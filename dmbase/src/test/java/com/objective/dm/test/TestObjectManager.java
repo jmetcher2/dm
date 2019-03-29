@@ -1,8 +1,16 @@
 package com.objective.dm.test;
 
+import java.util.Collection;
+import java.util.HashSet;
+
 import com.objective.dm.base.DomainObjectCollectionManager;
 
 public class TestObjectManager extends DomainObjectCollectionManager<TestObject> {
+
+	public TestObjectManager() {
+		super(new HashSet<TestObject>());
+		// TODO Auto-generated constructor stub
+	}
 
 	@Override
 	protected TestObject instantiate(String name) {

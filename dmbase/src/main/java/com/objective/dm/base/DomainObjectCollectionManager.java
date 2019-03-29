@@ -1,5 +1,7 @@
 package com.objective.dm.base;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
@@ -13,6 +15,14 @@ public abstract class DomainObjectCollectionManager<T extends BaseDomainObject> 
 		DomainObjectManager<T> {
 
 	protected abstract T instantiate(String name);
+	
+	public DomainObjectCollectionManager() {
+		super(new HashSet<T>());
+	}
+	
+	public DomainObjectCollectionManager(Collection<T> c) {
+		super(c);
+	}
 	
 	@Override
 	public T create(String name) {
@@ -33,7 +43,7 @@ public abstract class DomainObjectCollectionManager<T extends BaseDomainObject> 
 	public T getOrCreate(String name) {
 		T t = get(name);
 		if (t == null) {
-			t = instantiate(name);
+			t = create(name);
 		}
 		return t;
 	}

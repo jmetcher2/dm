@@ -1,0 +1,1 @@
+1. Give publisher_group_person_lnk an autoincrement PK and remove the explicit flushes 

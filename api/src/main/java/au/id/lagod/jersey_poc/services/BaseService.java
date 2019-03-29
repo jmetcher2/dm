@@ -59,4 +59,10 @@ public class BaseService {
 		return personService.get();
 	}
 	
+	@Context 
+	Provider<EventService> eventService;
+	public EventService getEventService() {
+		return eventService.get();
+	}
+	
 }

@@ -6,8 +6,6 @@ import com.objective.keystone.model.customer.Customer;
 import com.objective.keystone.model.folder.Folder;
 
 public class FolderTest extends BaseChildObjectPersistenceTests<Folder, Customer> {
-	
-	
 
 	@Override
 	protected void doSetupBeforeTransaction() {

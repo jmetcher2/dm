@@ -10,13 +10,28 @@ import com.objective.keystone.model.customer.Customer;
 import com.objective.keystone.model.folder.Folder;
 import com.objective.keystone.model.group.Group;
 import com.objective.keystone.model.person.Person;
+import com.objective.keystone.model.person.customer.CustomerPerson;
 
 public class Basic {
 	
-	private Model model;
+	private static final String GROUP2 = "testGroup2";
+	private static final String GROUP1 = "testGroup1";
+	private static final String FOLDER2 = "testFolder2";
+	private static final String FOLDER1 = "testFolder1";
+	private static final String PERSON2 = "testPerson2";
+	private static final String PERSON1 = "testPerson1";
+	protected static final String CUSTOMER2 = "test2";
+	protected static final String CUSTOMER1 = "test1";
+	
+	protected Model model;
 	private Customer c1;
 	private Customer c2;
 	private SessionFactory sf;
+	protected String prefix;
+
+	public Basic(String prefix) {
+		this.prefix = prefix;
+	}
 
 	@Transactional
 	public void setup(Model model, SessionFactory sf) {
@@ -28,15 +43,15 @@ public class Basic {
 	
 	@Transactional
 	public void teardown(Model model) {
-		model.getCustomers().remove(model.customers("test1"));
-		model.getCustomers().remove(model.customers("test2"));
-		model.getPersons().remove(model.persons("testPerson1"));
-		model.getPersons().remove(model.persons("testPerson2"));
+		model.getCustomers().remove(model.customers(prefix + CUSTOMER1));
+		model.getCustomers().remove(model.customers(prefix + CUSTOMER2));
+		model.getPersons().remove(model.persons(prefix + PERSON1));
+		model.getPersons().remove(model.persons(prefix + PERSON2));
 	}
 	
 	private void setupCustomers() {
-		c1 = model.getCustomers().create("test1");
-		c2 = model.getCustomers().create("test2");
+		c1 = model.getCustomers().create(prefix + CUSTOMER1);
+		c2 = model.getCustomers().create(prefix + CUSTOMER2);
 		setupCustomer(c2);
 		setupCustomer(c1);
 	}
@@ -47,8 +62,8 @@ public class Basic {
 	}
 
 	private void setupFolders(Customer c) {
-		Folder f1 = c.getFolders().create("testFolder1");
-		Folder f2 = c.getFolders().create("testFolder2");
+		Folder f1 = c.getFolders().create(prefix + FOLDER1);
+		Folder f2 = c.getFolders().create(prefix + FOLDER2);
 		setupFolder(f1);
 		setupFolder(f2);
 	}
@@ -65,25 +80,29 @@ public class Basic {
 		// to calculate ordering.  So this flush before creating a join entity chops off the potential for 
 		// uphill cascade.
 		sf.getCurrentSession().flush();
-		f.getGroups().create(f.getCustomer().groups("testGroup1"));
-		f.getGroups().create(f.getCustomer().groups("testGroup2"));
+		f.getGroups().create(f.getCustomer().groups(prefix + GROUP1));
+		f.getGroups().create(f.getCustomer().groups(prefix + GROUP2));
 	}
 
 	private void setupGroups(Customer c) {
-		Group g1 = c.getGroups().create("testGroup1");
-		Group g2 = c.getGroups().create("testGroup2");
+		Group g1 = c.getGroups().create(prefix + GROUP1);
+		Group g2 = c.getGroups().create(prefix + GROUP2);
 	}
 
 	private void setupPersons() {
-		Person p1 = model.getPersons().create("testPerson1");
-		Person p2 = model.getPersons().create("testPerson2");
+		Person p1 = model.getPersons().create(prefix + PERSON1);
+		Person p2 = model.getPersons().create(prefix + PERSON2);
 		setupPerson(p1);
 		setupPerson(p2);
 	}
 
 	private void setupPerson(Person p) {
-		p.getPersonCustomers().create(c1);
-		p.getPersonCustomers().create(c2);
+		CustomerPerson pc1 = p.getPersonCustomers().create(c1);
+		CustomerPerson pc2 = p.getPersonCustomers().create(c2);
+		pc1.getCustomerPersonGroups().create(c1.groups(prefix + GROUP1));
+		pc1.getCustomerPersonGroups().create(c1.groups(prefix + GROUP2));
+		pc2.getCustomerPersonGroups().create(c1.groups(prefix + GROUP1));
+		pc2.getCustomerPersonGroups().create(c1.groups(prefix + GROUP2));
 	}
 
 }

@@ -10,7 +10,7 @@ public class GroupDTO extends BaseDTO {
 	public String name;
 	public GroupFoldersDTO folders;
 	
-	public GroupDTO(GroupService service, Group group, boolean embed) {
+	public GroupDTO(GroupService service, Group group) {
 		super();
 		
 		this.type = group.getType().toString();
@@ -20,11 +20,9 @@ public class GroupDTO extends BaseDTO {
 		
 		this._links.put("self", service.getGroup(customerName, name));
 
-		if (!embed) {
-			this.id = group.getId();
-			this.folders = new GroupFoldersDTO(service, group.getGroupFolders());
-			this._links.put("parent", service.getGroups(customerName));
-		}
+		this.id = group.getId();
+		this.folders = new GroupFoldersDTO(service, group.getGroupFolders());
+		this._links.put("parent", service.getGroups(customerName));
 	}
 
 	public GroupDTO() {

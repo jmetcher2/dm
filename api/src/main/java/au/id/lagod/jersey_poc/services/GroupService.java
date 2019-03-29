@@ -21,11 +21,7 @@ public class GroupService extends BaseService {
 	@Path("/{groupName}")
 	public GroupDTO getGroup(@PathParam("customerIdentifier") String customerIdentifier,
 			@PathParam("groupName") String groupName) {
-		return getGroupDTO(model.customers(customerIdentifier).groups(groupName), false);
-	}
-
-	public GroupDTO getGroupDTO(Group group, boolean embed) {
-		return new GroupDTO(this, group, embed);
+		return new GroupDTO(this, model.customers(customerIdentifier).groups(groupName));
 	}
 
 }

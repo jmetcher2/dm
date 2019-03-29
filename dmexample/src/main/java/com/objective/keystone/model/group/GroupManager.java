@@ -1,5 +1,7 @@
 package com.objective.keystone.model.group;
 
+import java.util.Set;
+
 import com.objective.dm.base.DomainObjectCollectionManager;
 import com.objective.keystone.model.customer.Customer;
 
@@ -7,8 +9,8 @@ public class GroupManager extends DomainObjectCollectionManager<Group> {
 	
 	private Customer customer;
 	
-	public GroupManager(Customer customer) {
-		super();
+	public GroupManager(Customer customer, Set<Group> g) {
+		super(g);
 		this.customer = customer;
 	}
 

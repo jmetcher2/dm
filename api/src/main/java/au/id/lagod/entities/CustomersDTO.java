@@ -23,7 +23,7 @@ public class CustomersDTO extends BaseDTO {
 		_links.put("parent", service.getRootService().getRoot());
 	}
 	
-	public class CustomerDTO extends BaseEmbedDTO {
+	public static class CustomerDTO extends BaseEmbedDTO {
 		public Long id;
 		public String identifier;
 		

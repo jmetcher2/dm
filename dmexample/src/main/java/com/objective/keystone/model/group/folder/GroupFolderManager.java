@@ -1,5 +1,7 @@
 package com.objective.keystone.model.group.folder;
 
+import java.util.Collection;
+
 import com.objective.dm.base.AssociationCollectionManager;
 import com.objective.dm.base.BaseDomainObject;
 import com.objective.keystone.model.folder.Folder;
@@ -7,8 +9,8 @@ import com.objective.keystone.model.group.Group;
 
 public class GroupFolderManager extends AssociationCollectionManager<Group, GroupFolder, Folder> {
 
-	public GroupFolderManager(Group parent) {
-		super(parent);
+	public GroupFolderManager(Group parent, Collection<GroupFolder> c) {
+		super(parent, c);
 	}
 
 	@Override

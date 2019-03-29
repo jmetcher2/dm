@@ -1,5 +1,6 @@
 package com.objective.keystone.model.customer;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -12,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -20,6 +22,11 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import com.objective.dm.base.BaseDomainObject;
 import com.objective.dm.base.TextKey;
+import com.objective.keystone.model.event.Event;
+import com.objective.keystone.model.event.EventManager;
+import com.objective.keystone.model.folder.AbstractFolder;
+import com.objective.keystone.model.folder.ConsultFolder;
+import com.objective.keystone.model.folder.ConsultFolderManager;
 import com.objective.keystone.model.folder.Folder;
 import com.objective.keystone.model.folder.FolderManager;
 import com.objective.keystone.model.group.Group;
@@ -29,36 +36,13 @@ import com.objective.keystone.model.person.customer.CustomerPersonManager;
 
 @Entity
 @Table(name="publisher_customer")
-public class Customer extends BaseDomainObject {
+public class Customer extends MappedCustomer {
 
-	@Id	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "customer_id", updatable = false, nullable = false)	private Long id;
-	
-	@Enumerated(EnumType.STRING)
-    @Column(name="customer_type", length = 10 )
-	@NotNull															private CustomerType type;
-	
-	@Column(name="customer_name", length = 255)
-	@NotBlank @Size(max=255)											private String name;
-	
-	@TextKey
-	@Column(name="customer_identifier", length = 20)
-	@NotBlank @Size(max=20)												private String identifier;
-	
-	@Column(name="customer_uuid")
-	@NotBlank															private String uuid;
-
-	@AttributeAccessor(collectionAccessor)
-	@OneToMany(cascade = CascadeType.ALL, 
-	        mappedBy = "customer", orphanRemoval = true)				private Set<CustomerPerson> customerPersons = new CustomerPersonManager(this);
-
-	@AttributeAccessor(collectionAccessor)
-	@OneToMany(cascade = CascadeType.ALL, 
-	        mappedBy = "customer", orphanRemoval = true)				private Set<Group> groups = new GroupManager(this);
-
-	@AttributeAccessor(collectionAccessor)
-	@OneToMany(cascade = CascadeType.ALL, 
-	        mappedBy = "customer", orphanRemoval = true)				private Set<Folder> folders = new FolderManager(this);
+	@Transient		private FolderManager folders = new FolderManager(this, folderSet);
+	@Transient 		private ConsultFolderManager consultFolders = new ConsultFolderManager(this, consultFolderSet);
+	@Transient		private EventManager events = new EventManager(this, eventSet);
+	@Transient		private GroupManager groups = new GroupManager(this, groupSet);
+	@Transient		private CustomerPersonManager customerPersons = new CustomerPersonManager(this, customerPersonSet);
 
 
 	protected Customer() {}
@@ -69,6 +53,9 @@ public class Customer extends BaseDomainObject {
 		this.name = name;
 		this.identifier = identifier;
 		this.uuid = uuid;
+		
+		getConsultFolders().createRoot();
+		getFolders().createRoot();
 	}
 	
 	public Long getId() {
@@ -111,7 +98,21 @@ public class Customer extends BaseDomainObject {
 		return getFolders().get(name);
 	}
 		
+	public ConsultFolderManager getConsultFolders() {
+		return (ConsultFolderManager) consultFolders;
+	}
 	
+	public ConsultFolder consultFolders(String name) {
+		return getConsultFolders().get(name);
+	}
+		
+	public EventManager getEvents() {
+		return (EventManager) events;
+	}
+	
+	public Event events(String name) {
+		return getEvents().get(name);
+	}
 	
 
 }

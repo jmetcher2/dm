@@ -55,8 +55,8 @@ public abstract class AssociationCollectionManager<A extends BaseDomainObject,T 
 
 	protected A parent;
 	
-	public AssociationCollectionManager(A parent) {
-		super(new HashSet<T>());
+	public AssociationCollectionManager(A parent, Collection<T> c) {
+		super(c);
 		this.parent = parent;
 	}
 	

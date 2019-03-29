@@ -50,7 +50,7 @@ public class PersonService extends BaseService {
 	}
 	
 	@GET
-	@Path("{userName}/folders/{customerIdentifier}")
+	@Path("{userName}/customerpersons/{customerIdentifier}/folders")
 	public PersonFoldersDTO getFolders(@PathParam("userName") String userName,
 			@PathParam("customerIdentifier") String customerName) {
 		Customer c = model.customers(customerName);

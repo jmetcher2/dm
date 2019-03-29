@@ -20,6 +20,7 @@ public class CustomerDTO extends BaseDTO {
 		_links.put("self", service.getCustomer(identifier));
 		_links.put("folders", service.getFolderService().getFolders(identifier));
 		_links.put("groups", service.getGroupService().getGroups(identifier));
+		_links.put("events", service.getEventService().getEvents(identifier));
 		_links.put("parent", service.getCustomers());
 	}
 

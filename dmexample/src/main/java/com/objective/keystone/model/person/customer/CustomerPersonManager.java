@@ -1,5 +1,7 @@
 package com.objective.keystone.model.person.customer;
 
+import java.util.Set;
+
 import com.objective.dm.base.AssociationCollectionManager;
 import com.objective.dm.base.BaseDomainObject;
 import com.objective.keystone.model.customer.Customer;
@@ -7,8 +9,8 @@ import com.objective.keystone.model.person.Person;
 
 public class CustomerPersonManager extends AssociationCollectionManager<Customer, CustomerPerson, Person> {
 
-	public CustomerPersonManager(Customer parent) {
-		super(parent);
+	public CustomerPersonManager(Customer parent, Set<CustomerPerson> cp) {
+		super(parent, cp);
 	}
 
 	@Override

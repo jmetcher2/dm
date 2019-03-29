@@ -4,6 +4,7 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.client.ClientConfig;
@@ -31,6 +32,10 @@ public abstract class BaseTest extends BasePersistenceTests {
 		
 	}
 	
+	protected ClientWrapper getClient() {
+		return new ClientWrapper(rsClient, rootUrl);
+	}
+
 	protected Response rsGet(String url, String mediaType, String authHeader) {
 		WebTarget rsEndPoint = rsClient.target(url);
 		
@@ -43,5 +48,10 @@ public abstract class BaseTest extends BasePersistenceTests {
 		
 		return temp.get();
 	}
+
+	protected Response rsGet(String url) {
+		return rsGet(url, MediaType.APPLICATION_JSON, "");
+	}
+
 
 }

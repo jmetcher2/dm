@@ -5,6 +5,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 import com.objective.keystone.config.AppConfig;
 import com.objective.keystone.model.Model;
+import com.objective.keystone.model.customer.Customer;
 
 public class Runner {
 
@@ -14,10 +15,14 @@ public class Runner {
 		Model model = context.getBean(Model.class);
 		SessionFactory sf = context.getBean(SessionFactory.class);
 		
-		Basic fixture = new Basic();
+//		Basic fixture = new Basic("runner");
 		
-		fixture.teardown(model);
-		fixture.setup(model, sf);
+		Adhoc fixture = new Adhoc("runner");
+		
+		fixture.run(model);
+//		
+//		fixture.teardown(model);
+//		fixture.setup(model, sf);
 		
 		context.close();
 	}
