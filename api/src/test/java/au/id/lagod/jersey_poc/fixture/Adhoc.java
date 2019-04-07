@@ -15,10 +15,10 @@ public class Adhoc {
 	
 	@Transactional
 	public void run(Model model) {
-		Customer c = model.customers("test1");
-		System.out.println(c.getConsultFolders().getRoot());
-		System.out.println(c.getFolders().getAll());
-		model.getCustomers().remove(c);
+		Customer c = model.customers("parentObj");
+		System.out.println("a " + c.getConsultFolders().getAll());
+		System.out.println("b " + c.getFolders().getAll());
+		//model.getCustomers().remove(c);
 	}
 
 }

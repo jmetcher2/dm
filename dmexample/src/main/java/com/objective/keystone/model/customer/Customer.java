@@ -38,13 +38,6 @@ import com.objective.keystone.model.person.customer.CustomerPersonManager;
 @Table(name="publisher_customer")
 public class Customer extends MappedCustomer {
 
-	@Transient		private FolderManager folders = new FolderManager(this, folderSet);
-	@Transient 		private ConsultFolderManager consultFolders = new ConsultFolderManager(this, consultFolderSet);
-	@Transient		private EventManager events = new EventManager(this, eventSet);
-	@Transient		private GroupManager groups = new GroupManager(this, groupSet);
-	@Transient		private CustomerPersonManager customerPersons = new CustomerPersonManager(this, customerPersonSet);
-
-
 	protected Customer() {}
 	
 	protected Customer(CustomerType type, String name, String identifier, String uuid) {
@@ -79,11 +72,11 @@ public class Customer extends MappedCustomer {
 	}
 
 	public CustomerPersonManager getCustomerPersons() {
-		return (CustomerPersonManager) customerPersons;
+		return new CustomerPersonManager(this, customerPersonSet);
 	}
 	
 	public GroupManager getGroups() {
-		return (GroupManager) groups;
+		return new GroupManager(this, groupSet);
 	}
 	
 	public Group groups(String name) {
@@ -91,7 +84,7 @@ public class Customer extends MappedCustomer {
 	}
 	
 	public FolderManager getFolders() {
-		return (FolderManager) folders;
+		return new FolderManager(this, folderSet);
 	}
 	
 	public Folder folders(String name) {
@@ -99,7 +92,7 @@ public class Customer extends MappedCustomer {
 	}
 		
 	public ConsultFolderManager getConsultFolders() {
-		return (ConsultFolderManager) consultFolders;
+		return new ConsultFolderManager(this, consultFolderSet);
 	}
 	
 	public ConsultFolder consultFolders(String name) {
@@ -107,7 +100,7 @@ public class Customer extends MappedCustomer {
 	}
 		
 	public EventManager getEvents() {
-		return (EventManager) events;
+		return new EventManager(this, eventSet);
 	}
 	
 	public Event events(String name) {

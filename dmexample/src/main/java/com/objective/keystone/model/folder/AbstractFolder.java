@@ -26,7 +26,7 @@ import com.objective.keystone.persistence.FolderTypeConverter;
 @Table(name="publisher_folder")
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)  
 @DiscriminatorFormula("case when folder_type in ('consult', 'consult_root') then 'consult' else 'folder' end")
-public class AbstractFolder extends BaseDomainObject implements ChildDomainObject {
+public abstract class AbstractFolder extends BaseDomainObject implements ChildDomainObject {
 
 	@Id	
 	@GeneratedValue(strategy = GenerationType.TABLE, generator = "folder-generator")

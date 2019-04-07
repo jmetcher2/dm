@@ -61,10 +61,10 @@ public class MappedCustomer extends BaseDomainObject {
 	@OneToMany(cascade = CascadeType.ALL, 
 	        mappedBy = "customer", orphanRemoval = true)				protected Set<Group> groupSet = new HashSet<Group>();
 
-	@OneToMany(cascade = CascadeType.ALL, targetEntity=AbstractFolder.class,
+	@OneToMany(cascade = CascadeType.ALL, targetEntity=Folder.class,
 	        mappedBy = "customer", orphanRemoval = true)				protected Set<Folder> folderSet = new HashSet<Folder>();
 
-	@OneToMany(cascade = CascadeType.ALL, targetEntity=AbstractFolder.class,
+	@OneToMany(cascade = CascadeType.ALL, targetEntity=ConsultFolder.class,
 	        mappedBy = "customer", orphanRemoval = true)				protected Set<ConsultFolder> consultFolderSet = new HashSet<ConsultFolder>();
 
 	@OneToMany(cascade = CascadeType.ALL, 

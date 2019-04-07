@@ -21,7 +21,7 @@ import com.objective.keystone.model.group.folder.GroupFolder;
 import com.objective.keystone.persistence.FolderTypeConverter;
 
 @Entity
-@DiscriminatorValue("blah")
+@DiscriminatorValue("consult")
 public class ConsultFolder extends AbstractFolder {
 
 	public static final String CONSULT_ROOT_NAME = "Consultation home";
