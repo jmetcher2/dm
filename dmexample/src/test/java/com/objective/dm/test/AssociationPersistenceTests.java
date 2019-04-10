@@ -4,7 +4,6 @@ import com.objective.dm.base.AssociationCollectionManager;
 import com.objective.dm.base.BaseAssociationDomainObject;
 import com.objective.dm.base.BaseDomainObject;
 import com.objective.dm.base.DomainCollectionManager;
-import com.objective.dm.base.DomainObjectCollectionManager;
 
 /**
  * 

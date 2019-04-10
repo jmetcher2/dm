@@ -1,14 +1,10 @@
 package com.objective.keystone.model.person.customer;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
@@ -18,19 +14,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.annotations.AttributeAccessor;
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.objective.dm.base.AssociationParents;
 import com.objective.dm.base.BaseAssociationDomainObject;
 import com.objective.keystone.model.customer.Customer;
-import com.objective.keystone.model.folder.Folder;
 import com.objective.keystone.model.person.Person;
 import com.objective.keystone.model.person.customer.group.CustomerPersonGroup;
-import com.objective.keystone.model.person.customer.group.CustomerPersonGroupManager;
 
 @MappedSuperclass
 public abstract class MappedCustomerPerson extends BaseAssociationDomainObject<Customer, Person>  {

@@ -1,10 +1,9 @@
-package au.id.lagod.jersey_poc.fixture;
+package com.objective.keystone.fixture;
 
 import javax.transaction.Transactional;
 
 import com.objective.keystone.model.Model;
 import com.objective.keystone.model.customer.Customer;
-import com.objective.keystone.model.person.Person;
 
 public class Adhoc {
 

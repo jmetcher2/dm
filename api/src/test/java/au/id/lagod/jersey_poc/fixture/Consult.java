@@ -9,6 +9,7 @@ import com.objective.keystone.model.customer.Customer;
 import com.objective.keystone.model.event.Event;
 import com.objective.keystone.model.folder.ConsultFolder;
 import com.objective.keystone.model.folder.Folder;
+import com.objective.keystone.model.folder.AuthoringFolder;
 
 public class Consult extends Basic {
 
@@ -39,13 +40,13 @@ public class Consult extends Basic {
 
 
 	private void setupFolders(Customer c) {
-		ConsultFolder f1 = c.getConsultFolders().create(prefix + CONSULTFOLDER1);
-		ConsultFolder f2 = c.getConsultFolders().create(prefix + CONSULTFOLDER2);
+		Folder f1 = c.getFolders().createConsult(prefix + CONSULTFOLDER1);
+		Folder f2 = c.getFolders().createConsult(prefix + CONSULTFOLDER2);
 		setupFolder(f1);
 		setupFolder(f2);
 	}
 
-	private void setupFolder(ConsultFolder f) {
+	private void setupFolder(Folder f) {
 		//Event e1 = f.getCustomer().getEvents().create(prefix + EVENT1, f);
 		//Event e2 = f.getCustomer().getEvents().create(prefix + EVENT1, f);
 	}

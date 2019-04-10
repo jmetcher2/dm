@@ -16,5 +16,14 @@ public class CustomerManager extends DomainObjectCollectionManager<Customer> {
 		return Customer.class;
 	}
 	
+//	@Override
+//	public boolean remove(Object o) {
+//		return super.remove(o);
+//	}
+	
+	public void removeAssociates(Customer c) {
+		
+	}
+	
 
 }

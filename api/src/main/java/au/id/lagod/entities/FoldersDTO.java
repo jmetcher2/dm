@@ -3,6 +3,7 @@ package au.id.lagod.entities;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.objective.keystone.model.folder.AuthoringFolder;
 import com.objective.keystone.model.folder.Folder;
 import com.objective.keystone.model.folder.FolderManager;
 

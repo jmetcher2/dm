@@ -7,6 +7,7 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 
 import com.objective.keystone.model.Model;
 import com.objective.keystone.model.customer.Customer;
+import com.objective.keystone.model.folder.AuthoringFolder;
 import com.objective.keystone.model.folder.Folder;
 import com.objective.keystone.model.group.Group;
 import com.objective.keystone.model.person.Person;

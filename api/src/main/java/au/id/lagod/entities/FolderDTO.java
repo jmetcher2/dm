@@ -1,5 +1,6 @@
 package au.id.lagod.entities;
 
+import com.objective.keystone.model.folder.AuthoringFolder;
 import com.objective.keystone.model.folder.Folder;
 
 import au.id.lagod.jersey_poc.services.FolderService;

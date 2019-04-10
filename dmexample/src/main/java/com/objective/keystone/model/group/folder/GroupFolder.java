@@ -3,15 +3,14 @@ package com.objective.keystone.model.group.folder;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import com.objective.dm.base.AssociationParents;
 import com.objective.dm.base.BaseAssociationDomainObject;
+import com.objective.keystone.model.folder.AuthoringFolder;
 import com.objective.keystone.model.folder.Folder;
 import com.objective.keystone.model.group.Group;
 
@@ -45,7 +44,7 @@ public class GroupFolder extends BaseAssociationDomainObject<Group, Folder> {
 	
 	@Override
 	public AssociationParents<Group, ? extends BaseAssociationDomainObject<Group, Folder>, Folder> getAssociationParents() {
-		return new AssociationParents<Group, GroupFolder, Folder>(group.getGroupFolders(), folder.getGroups());
+		return new AssociationParents<Group, GroupFolder, Folder>(group.getGroupFolders(), ((AuthoringFolder) folder).getGroups());
 	}
 
 	@Override

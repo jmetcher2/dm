@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import com.objective.dm.base.AssociationCollectionManager;
 import com.objective.dm.base.BaseDomainObject;
+import com.objective.keystone.model.folder.AuthoringFolder;
 import com.objective.keystone.model.folder.Folder;
 import com.objective.keystone.model.group.Group;
 
@@ -25,7 +26,7 @@ public class GroupFolderManager extends AssociationCollectionManager<Group, Grou
 
 	@Override
 	protected GroupFolder newAssociationObject(BaseDomainObject associate) {
-		return new GroupFolder(parent, (Folder) associate);
+		return new GroupFolder(parent, (AuthoringFolder) associate);
 	}
 
 	@Override
@@ -37,5 +38,7 @@ public class GroupFolderManager extends AssociationCollectionManager<Group, Grou
 	protected Folder getAssociate(GroupFolder ao) {
 		return ao.getFolder();
 	}
+	
+	// TODO: validation should check that we're associating with an authoring folder
 
 }

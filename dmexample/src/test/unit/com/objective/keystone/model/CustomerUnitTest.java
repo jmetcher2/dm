@@ -13,7 +13,7 @@ public class CustomerUnitTest extends BaseUnitTest {
 	@Test
 	public void testCreateCustomer() {
 		Customer c = model.getCustomers().create("test1");
-		assertEquals("Consultation home", c.getConsultFolders().getRoot().getName());
+		assertEquals("Consultation home", c.getFolders().getConsultRoot().getName());
 		assertEquals("Root", c.getFolders().getRoot().getName());
 	}
 

@@ -5,7 +5,7 @@ import java.util.Set;
 
 import com.objective.keystone.model.event.Event;
 import com.objective.keystone.model.event.EventManager;
-import com.objective.keystone.model.folder.Folder;
+import com.objective.keystone.model.folder.AuthoringFolder;
 import com.objective.keystone.model.folder.FolderManager;
 
 import au.id.lagod.jersey_poc.services.EventService;

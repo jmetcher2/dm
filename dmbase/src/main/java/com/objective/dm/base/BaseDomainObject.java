@@ -15,6 +15,7 @@ import com.objective.dm.validators.Restricted;
 
 public abstract class BaseDomainObject {
 
+	// TODO: do we need this field?  If yes, need to make sure it's always set
 	private DomainObjectCollectionManager<? extends BaseDomainObject> parentManager;
 
 	public BaseDomainObject() {

@@ -74,9 +74,6 @@ public class AppConfig {
     	return htm;
     }
     
-
-
-	
     public Properties getHibernateProperties() {
 		Properties properties;
 		

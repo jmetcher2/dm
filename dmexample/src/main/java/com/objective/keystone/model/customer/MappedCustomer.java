@@ -5,7 +5,6 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
@@ -13,27 +12,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.hibernate.annotations.AttributeAccessor;
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.objective.dm.base.BaseDomainObject;
 import com.objective.dm.base.TextKey;
 import com.objective.keystone.model.event.Event;
-import com.objective.keystone.model.event.EventManager;
-import com.objective.keystone.model.folder.AbstractFolder;
-import com.objective.keystone.model.folder.ConsultFolder;
-import com.objective.keystone.model.folder.ConsultFolderManager;
 import com.objective.keystone.model.folder.Folder;
-import com.objective.keystone.model.folder.FolderManager;
 import com.objective.keystone.model.group.Group;
-import com.objective.keystone.model.group.GroupManager;
 import com.objective.keystone.model.person.customer.CustomerPerson;
-import com.objective.keystone.model.person.customer.CustomerPersonManager;
 
 @MappedSuperclass
 public class MappedCustomer extends BaseDomainObject {
@@ -63,9 +52,6 @@ public class MappedCustomer extends BaseDomainObject {
 
 	@OneToMany(cascade = CascadeType.ALL, targetEntity=Folder.class,
 	        mappedBy = "customer", orphanRemoval = true)				protected Set<Folder> folderSet = new HashSet<Folder>();
-
-	@OneToMany(cascade = CascadeType.ALL, targetEntity=ConsultFolder.class,
-	        mappedBy = "customer", orphanRemoval = true)				protected Set<ConsultFolder> consultFolderSet = new HashSet<ConsultFolder>();
 
 	@OneToMany(cascade = CascadeType.ALL, 
 	        mappedBy = "customer", orphanRemoval = true)				protected Set<Event> eventSet = new HashSet<Event>();
