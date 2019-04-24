@@ -11,10 +11,18 @@ import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.ClientProperties;
 import org.junit.After;
 import org.junit.Before;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
 
-import com.objective.dm.test.BasePersistenceTests;
+import com.objective.keystone.model.Model;
 
+import au.id.lagod.dm.test.BasePersistenceTests;
+
+@ContextConfiguration(classes = {com.objective.keystone.config.AppConfig.class})
 public abstract class BaseTest extends BasePersistenceTests {
+	@Autowired
+	Model model;
+	
 	protected static String defaultRootUrl = "http://localhost:8080/api/resources";
 	protected static String rootUrl = System.getProperty("apiRootUrl") == null ? defaultRootUrl : System.getProperty("apiRootUrl");
 	

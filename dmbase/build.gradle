@@ -11,6 +11,19 @@ dependencies {
 	
 }
 
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'au.id.lagod'
+            artifactId = 'dmbase'
+            version = '0.1'
+
+            from components.java
+        }
+    }
+}
+
+
 apply plugin: 'aspectj'
 
 apply plugin: 'eclipse'

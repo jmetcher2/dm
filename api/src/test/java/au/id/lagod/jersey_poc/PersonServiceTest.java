@@ -12,18 +12,15 @@ import javax.ws.rs.core.Response;
 
 import org.junit.Test;
 
-import com.objective.keystone.model.customer.Customer;
-import com.objective.keystone.model.group.Group;
-import com.objective.keystone.model.person.Person;
+import com.objective.keystone.fixture.Basic;
 
-import au.id.lagod.entities.APIRoot;
 import au.id.lagod.entities.CustomerPersonDTO;
 import au.id.lagod.entities.CustomerPersonsDTO;
 import au.id.lagod.entities.PersonDTO;
 import au.id.lagod.entities.PersonFoldersDTO;
 import au.id.lagod.entities.PersonsDTO;
 import au.id.lagod.entities.PersonFoldersDTO.FolderDTO;
-import au.id.lagod.jersey_poc.fixture.Basic;
+
 
 public class PersonServiceTest extends BaseTest {
 	

@@ -28,7 +28,7 @@ repositories {
 def jersey_version = '2.27'
 
 dependencies {
-	compile project (':dmexample')
+	compile project (':ksmodel')
 
 	compile "org.glassfish.jersey.containers:jersey-container-servlet:${jersey_version}"
 	compile "org.glassfish.jersey.inject:jersey-hk2:${jersey_version}"
@@ -40,7 +40,7 @@ dependencies {
  	compile "com.sun.xml.bind:jaxb-impl:2.2.11"
  	compile "javax.activation:activation:1.1.1"
       
-    testCompile project(path: ':dmexample', configuration: 'testArtifacts')
+    testCompile project(path: ':ksmodel', configuration: 'testArtifacts')
    
    // compile 'org.eclipse.persistence:org.eclipse.persistence.moxy:2.5.2'
    // compile 'org.glassfish.jersey.media:jersey-media-moxy:${jersey_version}'

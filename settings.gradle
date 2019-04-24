@@ -1,1 +1,1 @@
-include 'dmbase','dmexample', 'api'
+include 'dmbase','dmpersistence', 'ksmodel', 'api'

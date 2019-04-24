@@ -2,12 +2,14 @@ subprojects {
 
 	buildscript {
 	    repositories {
-		mavenCentral()
+			mavenLocal()
+			mavenCentral()
 	    }
 
 	    dependencies {
         	classpath "net.uberfoo.gradle:gradle-aspectj:2.2"
 	    }
+
 	}
 
 	ext {
@@ -17,18 +19,19 @@ subprojects {
 	}
 
 	apply plugin: 'java'
+	apply plugin: 'java-library-distribution'
+	apply plugin: 'maven-publish'
 
 	sourceCompatibility = JavaVersion.VERSION_1_9
 	targetCompatibility = JavaVersion.VERSION_1_9
 
 	repositories {
+		mavenLocal()
 	    mavenCentral()
 	    maven {
 	    	url  'http://repository.jboss.org/nexus/content/groups/public'
 	    }
 	}
-
-	apply plugin: 'java-library-distribution'
 
 	distributions {
 	    main{
@@ -51,65 +54,6 @@ subprojects {
 	    testArtifacts testJar
 	}
 
-	def deployTargets = ["../javadeploy"]
-	def zipFile = file("${buildDir}/distributions/${project.name}.zip")
-	def jarFile = file("${buildDir}/libs/${project.name}.jar")
-
-	task deploy (dependsOn: distZip) {
-		inputs.file zipFile
-		deployTargets.each { outputDir ->
-			outputs.dir outputDir
-			
-		}
-	
-		doLast {
-			deployTargets.each { outputDir ->
-				copy {
-					from zipTree(zipFile)
-					into outputDir
-				}
-			}
-		}
-	}
-
-	task deployJar(dependsOn: build) {
-		inputs.file jarFile
-		deployTargets.each { outputDir ->
-			outputs.dir "${outputDir}/${project.name}"
-			
-		}
-	
-		doLast {
-			deployTargets.each { outputDir ->
-				copy {
-					from jarFile
-					into "${outputDir}/${project.name}"
-				}
-			}
-		}
-	}
-
-	
-	
-	def restDeployTargets = ["../restdeploy"]
-	def warFile = file("${buildDir}/libs/${project.name}.war")
-	
-	task deployWar (dependsOn: distZip) {
-		inputs.file warFile
-		restDeployTargets.each { outputDir ->
-			outputs.dir  "${outputDir}/${project.name}"
-			
-		}
-	
-		doLast {
-			restDeployTargets.each { outputDir ->
-				copy {
-					from zipTree(warFile)
-					into "${outputDir}/${project.name}"
-				}
-			}
-		}
-	}
 }
 
 

@@ -1,0 +1,56 @@
+dependencies {
+	compile project (':dmbase')
+	compile project (':dmpersistence')
+}
+
+sourceSets {
+    unitTest {
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+    }
+}
+
+configurations {
+    unitTestImplementation.extendsFrom implementation
+    unitTestRuntimeOnly.extendsFrom runtimeOnly
+}
+
+dependencies {
+    unitTestImplementation 'junit:junit:4.12'
+}
+
+task unitTest(type: Test) {
+    description = 'Runs unit tests.'
+    group = 'verification'
+
+    testClassesDirs = sourceSets.unitTest.output.classesDirs
+    classpath = sourceSets.unitTest.runtimeClasspath
+    shouldRunAfter test
+}
+
+check.dependsOn unitTest
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'com.objective'
+            artifactId = 'ksemodel'
+            version = '1.1'
+
+            from components.java
+        }
+    }
+}
+
+
+apply plugin: 'aspectj'
+apply plugin: 'eclipse'
+
+eclipse {
+
+	project {
+		natures = ['org.eclipse.ajdt.ui.ajnature','org.eclipse.jdt.core.javanature']
+		
+		buildCommand 'org.eclipse.ajdt.core.ajbuilder'
+	}
+}
