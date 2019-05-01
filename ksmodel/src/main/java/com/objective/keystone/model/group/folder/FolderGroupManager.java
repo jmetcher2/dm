@@ -2,10 +2,11 @@ package com.objective.keystone.model.group.folder;
 
 import java.util.Collection;
 
-import au.id.lagod.dm.base.AssociationCollectionManager;
-import au.id.lagod.dm.base.BaseDomainObject;
 import com.objective.keystone.model.folder.Folder;
 import com.objective.keystone.model.group.Group;
+
+import au.id.lagod.dm.base.AssociationCollectionManager;
+import au.id.lagod.dm.base.BaseDomainObject;
 
 public class FolderGroupManager extends AssociationCollectionManager<Folder, GroupFolder, Group> {
 

@@ -5,7 +5,6 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 import com.objective.keystone.config.AppConfig;
 import com.objective.keystone.model.Model;
-import com.objective.keystone.model.customer.Customer;
 
 public class Runner {
 

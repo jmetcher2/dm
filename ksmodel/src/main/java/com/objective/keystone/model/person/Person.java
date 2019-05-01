@@ -2,7 +2,6 @@ package com.objective.keystone.model.person;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import com.objective.keystone.model.person.customer.PersonCustomerManager;
 

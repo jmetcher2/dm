@@ -2,8 +2,9 @@ package com.objective.keystone.model.group;
 
 import java.util.Set;
 
-import au.id.lagod.dm.base.DomainObjectCollectionManager;
 import com.objective.keystone.model.customer.Customer;
+
+import au.id.lagod.dm.base.DomainObjectCollectionManager;
 
 public class GroupManager extends DomainObjectCollectionManager<Group> {
 	

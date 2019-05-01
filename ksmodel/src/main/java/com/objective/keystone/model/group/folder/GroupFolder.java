@@ -8,11 +8,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
 
-import au.id.lagod.dm.base.AssociationParents;
-import au.id.lagod.dm.base.BaseAssociationDomainObject;
 import com.objective.keystone.model.folder.AuthoringFolder;
 import com.objective.keystone.model.folder.Folder;
 import com.objective.keystone.model.group.Group;
+
+import au.id.lagod.dm.base.AssociationParents;
+import au.id.lagod.dm.base.BaseAssociationDomainObject;
 
 @Entity
 @Table(name="publisher_folder_group_lnk")

@@ -18,12 +18,14 @@ import org.hibernate.annotations.GenerationTime;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
-import au.id.lagod.dm.base.BaseDomainObject;
-import au.id.lagod.dm.base.ChildDomainObject;
-import au.id.lagod.dm.base.TextKey;
+import com.objective.keystone.model.LiveStatus;
 import com.objective.keystone.model.customer.Customer;
 import com.objective.keystone.model.folder.ConsultFolder;
 import com.sun.istack.NotNull;
+
+import au.id.lagod.dm.base.BaseDomainObject;
+import au.id.lagod.dm.base.ChildDomainObject;
+import au.id.lagod.dm.base.TextKey;
 
 @MappedSuperclass
 public class MappedEvent extends BaseDomainObject implements ChildDomainObject {
@@ -62,11 +64,9 @@ public class MappedEvent extends BaseDomainObject implements ChildDomainObject {
 	@Column(name="event_created_on")				protected LocalDateTime createdOn; 
 	@Column(name="event_map_id")					protected Long mapId; 
 	@Column(name="event_end_event")					protected LocalDateTime endEvent; 
-	@Column(name="event_xml")						protected String xml; 
-	@Size(max=10)
-	@Column(name="event_invite_status")				protected String inviteStatus; 
-	@Size(max=10)
-	@Column(name="event_live_status")				protected String liveStatus; 
+	@Column(name="event_xml")						protected String xml;
+	@Column(name="event_invite_status")				protected InviteStatus inviteStatus;
+	@Column(name="event_live_status")				protected LiveStatus liveStatus;
 	@Column(name="event_metadata")					protected String metadata; 
 	@Column(name="event_modified_by")				protected Long modifiedBy; 
 	@Column(name="event_modified_on")				protected LocalDateTime modifiedOn; 
@@ -140,11 +140,62 @@ public class MappedEvent extends BaseDomainObject implements ChildDomainObject {
 		return id;
 	}
 
-	public String getShortName() {
-		return shortName;
-	}
+	public String getShortName() { return shortName; }
+	public EventType getType() { return type;}
+
+	public ConsultFolder getFolder() {   return folder; }
+	public String getStatus() {   return status; }
+	public LocalDateTime getArchiveRepresentations() {   return archiveRepresentations; }
+	public Long getCopyId() {   return copyId; }
+	public Long getCreatedBy() {   return createdBy; }
+	public LocalDateTime getCreatedOn() {   return createdOn; }
+	public Long getMapId() {   return mapId; }
+	public LocalDateTime getEndEvent() {   return endEvent; }
+	public String getXml() {   return xml; }
+	public InviteStatus getInviteStatus() {   return inviteStatus; }
+	public LiveStatus getLiveStatus() {   return liveStatus; }
+	public String getMetadata() {   return metadata; }
+	public Long getModifiedBy() {   return modifiedBy; }
+	public LocalDateTime getModifiedOn() {   return modifiedOn; }
+	public String getName() {   return name; }
+	public Long getQuestionnaireId() {   return questionnaireId; }
+	public String getPrivacyStatus() {   return privacyStatus; }
+	public LocalDateTime getStartEvent() {   return startEvent; }
+	public LocalDateTime getStartReading() {   return startReading; }
+	public Boolean getEnableNotifications() {   return enableNotifications; }
+	public LocalDateTime getNotificationSentOn() {   return notificationSentOn; }
+	public LocalDateTime getSendReminderOn() {   return sendReminderOn; }
+	public String getDisplayPrefix() {   return displayPrefix; }
+	public LocalDateTime getFinishedOn() {   return finishedOn; }
+	public Long getLockedBy() {   return lockedBy; }
+	public Long getQuestionnaireVersionId() {   return questionnaireVersionId; }
+	public LocalDateTime getStartedOn() {   return startedOn; }
+	public String getVersionNumber() {   return versionNumber; }
+	public String getWorkflowXml() {   return workflowXml; }
+	public Long getRepresentationWorkflowId() {   return representationWorkflowId; }
+	public Boolean getEnableEmails() {   return enableEmails; }
+	public Integer getImportance() {   return importance; }
+	public String getStandaloneStatus() {   return standaloneStatus; }
+	public Boolean getTemplate() {   return template; }
+	public String getCreationLanguage() {   return creationLanguage; }
+	public Long getOwner() {   return owner; }
+	public Long getOwnerConsultGroup() {   return ownerConsultGroup; }
+	public Long getOwnerConsultPerson() {   return ownerConsultPerson; }
+	public Long getOwnerGroup() {   return ownerGroup; }
+	public String getSubmissionStatus() {   return submissionStatus; }
+	public Integer getTarget() {   return target; }
+	public Integer getResponseThreshold() {   return responseThreshold; }
+	public String getNotificationStage() {   return notificationStage; }
+	public Boolean getIsShredded() {   return isShredded; }
+	public Boolean getShreddingComplete() {   return shreddingComplete; }
+	public Long getDocumentId() {   return documentId; }
+	public String getNotificationProgress() {   return notificationProgress; }
+	public String geteTag() {   return eTag; }
+	public Long getEventBrandingId() {   return eventBrandingId; }
+	public Long getWidgetImageContentId() {   return widgetImageContentId; }
+	public String getWidgetImageName() {   return widgetImageName; }
+	public String getLayoutPresetName() {   return layoutPresetName; }
+	public String getWidgetActionButtonPrompt() {   return widgetActionButtonPrompt; }
+
 	
-	public EventType getType() {
-		return type;
-	}
 }

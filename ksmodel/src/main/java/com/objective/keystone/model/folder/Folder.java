@@ -6,13 +6,14 @@ import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.hibernate.annotations.DiscriminatorFormula;
 
-import au.id.lagod.dm.base.ChildDomainObject;
+import com.objective.keystone.model.LiveStatus;
 import com.objective.keystone.model.customer.Customer;
 import com.objective.keystone.model.group.folder.FolderGroupManager;
+
+import au.id.lagod.dm.base.ChildDomainObject;
 
 @Entity
 @Table(name="publisher_folder")
@@ -29,6 +30,7 @@ public abstract class Folder extends MappedFolder implements ChildDomainObject {
 		this.shortName = name;
 		this.eTag = UUID.randomUUID().toString();
 		this.customer = customer;
+		this.liveStatus = LiveStatus.PUBLIC;
 	}
 	
 
@@ -39,5 +41,5 @@ public abstract class Folder extends MappedFolder implements ChildDomainObject {
 	public FolderGroupManager getGroups() {
 		return new FolderGroupManager(this, groupSet);
 	}
-
+	
 }

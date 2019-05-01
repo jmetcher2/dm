@@ -1,14 +1,11 @@
 package au.id.lagod.dm.base;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 import javax.validation.constraints.AssertFalse;
-
-import au.id.lagod.dm.validators.Refused;
 
 /*
  * Adds methods for collection managers that are managing an association

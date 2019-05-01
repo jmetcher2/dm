@@ -12,11 +12,9 @@ import java.util.Set;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
-import javax.validation.constraints.AssertTrue;
 
 import org.apache.commons.beanutils.PropertyUtils;
 
-import au.id.lagod.dm.base.DomainObjectCollectionManager.AddDomainObject;
 import au.id.lagod.dm.validators.Restricted;
 
 public abstract class DomainCollectionManager<T extends BaseDomainObject> implements Set<T>, Finder<T> {

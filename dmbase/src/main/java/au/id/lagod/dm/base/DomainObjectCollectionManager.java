@@ -8,7 +8,6 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
 import javax.validation.constraints.AssertTrue;
 
-import au.id.lagod.dm.base.DomainCollectionManager.AddDomainObject;
 import au.id.lagod.dm.validators.Restricted;
 
 public abstract class DomainObjectCollectionManager<T extends BaseDomainObject> extends DomainCollectionManager<T> implements 

@@ -4,7 +4,6 @@ import java.beans.PropertyVetoException;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AdviceMode;
 import org.springframework.context.annotation.Bean;
@@ -53,10 +52,13 @@ public abstract class AppConfig {
         lsfb.setPackagesToScan(
         		getPackagesToScan()
         );
+        configureSessionFactoryBean(lsfb);
+
         return lsfb;
     }
 	
 	protected abstract String [] getPackagesToScan();
+	protected abstract void configureSessionFactoryBean(org.springframework.orm.hibernate5.LocalSessionFactoryBean lsfb);
 
 
 

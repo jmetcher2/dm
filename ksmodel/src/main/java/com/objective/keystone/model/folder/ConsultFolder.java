@@ -30,7 +30,7 @@ public class ConsultFolder extends Folder {
 
 	@Override
 	public Boolean isConsultFolder() {
-		return false;
+		return true;
 	}
 
 }

@@ -1,11 +1,6 @@
 package au.id.lagod.nonmodel;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
-
-import au.id.lagod.dm.test.TestObject;
-import au.id.lagod.dm.test.TestObjectManager;
 
 /**
  * This class demonstrates the compile error that results from calling a method

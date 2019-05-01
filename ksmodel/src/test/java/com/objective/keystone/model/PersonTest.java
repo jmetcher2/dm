@@ -10,7 +10,6 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
-import au.id.lagod.dm.test.TextKeyCollectionPersistenceTests;
 import com.objective.keystone.model.customer.Customer;
 import com.objective.keystone.model.folder.Folder;
 import com.objective.keystone.model.group.Group;
@@ -18,6 +17,8 @@ import com.objective.keystone.model.person.Person;
 import com.objective.keystone.model.person.PersonManager;
 import com.objective.keystone.model.person.customer.CustomerPerson;
 import com.objective.keystone.model.person.customer.group.CustomerPersonGroup;
+
+import au.id.lagod.dm.test.TextKeyCollectionPersistenceTests;
 
 @ContextConfiguration(classes = {com.objective.keystone.config.AppConfig.class})
 public class PersonTest extends TextKeyCollectionPersistenceTests<Person> {

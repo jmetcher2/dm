@@ -19,10 +19,12 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.validator.constraints.NotBlank;
 
-import au.id.lagod.dm.base.BaseDomainObject;
-import au.id.lagod.dm.base.TextKey;
+import com.objective.keystone.model.LiveStatus;
 import com.objective.keystone.model.customer.Customer;
 import com.objective.keystone.model.group.folder.GroupFolder;
+
+import au.id.lagod.dm.base.BaseDomainObject;
+import au.id.lagod.dm.base.TextKey;
 
 @MappedSuperclass
 public class MappedFolder extends BaseDomainObject{
@@ -37,9 +39,9 @@ public class MappedFolder extends BaseDomainObject{
 			}
 		)
 	@Column(name = "folder_id", updatable = false, nullable = false)	protected Long id;
-	
-	//@Convert(converter=FolderTypeConverter.class)
-    @Column(name="folder_type", length = 12, insertable=false, updatable=false )
+
+	@Column(name="folder_live_status")								protected LiveStatus liveStatus;
+    @Column(name="folder_type", length = 12 )
 	@NotNull														protected String type;
 	
 	@TextKey
@@ -60,33 +62,14 @@ public class MappedFolder extends BaseDomainObject{
 
 	protected MappedFolder() {}
 	
-	public Long getId() {
-		return id;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public String getName() {
-		return name;
-	}
-	
-	public String getShortName() {
-		return shortName;
-	}
-
-	public String getETag() {
-		return eTag;
-	}
-	
-	public Customer getCustomer() {
-		return customer;
-	}
-	
-	public Customer getParent() {
-		return getCustomer();
-	}
+	public Long getId() { return id; }
+	public String getType() { return type; }
+	public String getName() { return name; }
+	public String getShortName() { return shortName; }
+	public String getETag() { return eTag; }
+	public Customer getCustomer() { return customer; }
+	public Customer getParent() { return getCustomer();	}
+	public LiveStatus getLiveStatus() { return liveStatus; }
 	
 	@Override
 	public int hashCode() {

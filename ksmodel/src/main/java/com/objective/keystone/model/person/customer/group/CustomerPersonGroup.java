@@ -7,10 +7,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
 
-import au.id.lagod.dm.base.AssociationParents;
-import au.id.lagod.dm.base.BaseAssociationDomainObject;
 import com.objective.keystone.model.group.Group;
 import com.objective.keystone.model.person.customer.CustomerPerson;
+
+import au.id.lagod.dm.base.AssociationParents;
+import au.id.lagod.dm.base.BaseAssociationDomainObject;
 
 @Entity
 @Table(name="publisher_group_person_lnk")

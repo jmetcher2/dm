@@ -2,8 +2,9 @@ package com.objective.keystone.model.folder;
 
 import java.util.Set;
 
-import au.id.lagod.dm.base.DomainObjectCollectionManager;
 import com.objective.keystone.model.customer.Customer;
+
+import au.id.lagod.dm.base.DomainObjectCollectionManager;
 
 public class ConsultFolderManager extends DomainObjectCollectionManager<ConsultFolder> {
 	

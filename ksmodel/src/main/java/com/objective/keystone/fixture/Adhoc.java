@@ -16,8 +16,8 @@ public class Adhoc {
 	
 	@Transactional
 	public void run(Model model) {
-		String[] customerNames = new String[] {"PSTtest2"};
-		String[] personNames = new String[] { "PSTtestPerson1", "PSTtestPerson2" };
+		String[] customerNames = new String[] {"parentObj"};
+		String[] personNames = new String[] {  };
 		
 		for (String name: customerNames) {
 			Customer c = model.customers(name);

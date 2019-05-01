@@ -3,10 +3,11 @@ package com.objective.keystone.model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
-import au.id.lagod.dm.base.DomainObjectCollectionManager;
-import au.id.lagod.dm.test.BaseChildObjectPersistenceTests;
 import com.objective.keystone.model.customer.Customer;
 import com.objective.keystone.model.event.Event;
+
+import au.id.lagod.dm.base.DomainObjectCollectionManager;
+import au.id.lagod.dm.test.BaseChildObjectPersistenceTests;
 
 @ContextConfiguration(classes = {com.objective.keystone.config.AppConfig.class})
 public class EventTest extends BaseChildObjectPersistenceTests<Event, Customer> {

@@ -1,13 +1,6 @@
 package au.id.lagod.dm.base;
 
 import java.lang.reflect.Field;
-import java.util.Set;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 
 import org.apache.commons.beanutils.PropertyUtils;
 

@@ -1,6 +1,5 @@
 package au.id.lagod.dm.test;
 
-import java.util.Collection;
 import java.util.HashSet;
 
 import au.id.lagod.dm.base.DomainObjectCollectionManager;

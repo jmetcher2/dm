@@ -2,10 +2,11 @@ package com.objective.keystone.model.person.customer.group;
 
 import java.util.Collection;
 
-import au.id.lagod.dm.base.AssociationCollectionManager;
-import au.id.lagod.dm.base.BaseDomainObject;
 import com.objective.keystone.model.group.Group;
 import com.objective.keystone.model.person.customer.CustomerPerson;
+
+import au.id.lagod.dm.base.AssociationCollectionManager;
+import au.id.lagod.dm.base.BaseDomainObject;
 
 public class GroupCustomerPersonManager extends AssociationCollectionManager<Group, CustomerPersonGroup, CustomerPerson> {
 

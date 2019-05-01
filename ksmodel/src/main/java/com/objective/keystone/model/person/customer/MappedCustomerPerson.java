@@ -18,10 +18,11 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import au.id.lagod.dm.base.BaseAssociationDomainObject;
 import com.objective.keystone.model.customer.Customer;
 import com.objective.keystone.model.person.Person;
 import com.objective.keystone.model.person.customer.group.CustomerPersonGroup;
+
+import au.id.lagod.dm.base.BaseAssociationDomainObject;
 
 @MappedSuperclass
 public abstract class MappedCustomerPerson extends BaseAssociationDomainObject<Customer, Person>  {

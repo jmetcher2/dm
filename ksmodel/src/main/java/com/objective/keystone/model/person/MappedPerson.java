@@ -17,9 +17,10 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import com.objective.keystone.model.person.customer.CustomerPerson;
+
 import au.id.lagod.dm.base.BaseDomainObject;
 import au.id.lagod.dm.base.TextKey;
-import com.objective.keystone.model.person.customer.CustomerPerson;
 
 @MappedSuperclass
 public class MappedPerson extends BaseDomainObject {

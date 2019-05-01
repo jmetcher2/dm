@@ -2,11 +2,12 @@ package com.objective.keystone.config;
 
 import org.hibernate.SessionFactory;
 
-import au.id.lagod.dm.config.Bootstrapper;
-import au.id.lagod.dm.persistence.TableSet;
 import com.objective.keystone.model.Model;
 import com.objective.keystone.model.customer.Customer;
 import com.objective.keystone.model.person.Person;
+
+import au.id.lagod.dm.config.Bootstrapper;
+import au.id.lagod.dm.persistence.TableSet;
 
 public class DBBootstrapper extends Bootstrapper {
 

@@ -15,14 +15,18 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.NotBlank;
 
-import au.id.lagod.dm.base.BaseDomainObject;
-import au.id.lagod.dm.base.TextKey;
+import com.objective.keystone.model.domain.Domain;
 import com.objective.keystone.model.event.Event;
 import com.objective.keystone.model.folder.Folder;
 import com.objective.keystone.model.group.Group;
 import com.objective.keystone.model.person.customer.CustomerPerson;
+
+import au.id.lagod.dm.XmlMap;
+import au.id.lagod.dm.base.BaseDomainObject;
+import au.id.lagod.dm.base.TextKey;
 
 @MappedSuperclass
 public class MappedCustomer extends BaseDomainObject {
@@ -43,6 +47,15 @@ public class MappedCustomer extends BaseDomainObject {
 	
 	@Column(name="customer_uuid")
 	@NotBlank															protected String uuid;
+	
+	@Column(name="customer_metadata")
+	@Type(type="com.objective.keystone.persistence.MetadataMapBasicType")
+																		protected XmlMap metadata = new XmlMap();
+
+	@Size(max=2)
+	@Column(name="customer_language")									protected String language;
+	@Size(max=2)
+	@Column(name="customer_country")									protected String country;
 
 	@OneToMany(cascade = CascadeType.ALL, 
 	        mappedBy = "customer", orphanRemoval = true)				protected Set<CustomerPerson> customerPersonSet = new HashSet<CustomerPerson>();
@@ -55,6 +68,9 @@ public class MappedCustomer extends BaseDomainObject {
 
 	@OneToMany(cascade = CascadeType.ALL, 
 	        mappedBy = "customer", orphanRemoval = true)				protected Set<Event> eventSet = new HashSet<Event>();
+
+	@OneToMany(cascade = CascadeType.ALL, 
+	        mappedBy = "customer", orphanRemoval = true)				protected Set<Domain> domainSet = new HashSet<Domain>();
 
 	protected MappedCustomer() {}
 	
@@ -78,5 +94,17 @@ public class MappedCustomer extends BaseDomainObject {
 		return uuid;
 	}
 
+	public String getLanguage() {
+		return language;
+	}
 
+	public String getCountry() {
+		return country;
+	}
+	
+	public XmlMap getMetadata() {
+		return (XmlMap) metadata.get("metadata");
+	}
+
+	
 }

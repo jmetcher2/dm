@@ -3,11 +3,9 @@ package com.objective.keystone.fixture;
 import javax.transaction.Transactional;
 
 import org.hibernate.SessionFactory;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 
 import com.objective.keystone.model.Model;
 import com.objective.keystone.model.customer.Customer;
-import com.objective.keystone.model.folder.AuthoringFolder;
 import com.objective.keystone.model.folder.Folder;
 import com.objective.keystone.model.group.Group;
 import com.objective.keystone.model.person.Person;
@@ -15,14 +13,14 @@ import com.objective.keystone.model.person.customer.CustomerPerson;
 
 public class Basic {
 	
-	private static final String GROUP2 = "testGroup2";
-	private static final String GROUP1 = "testGroup1";
-	private static final String FOLDER2 = "testFolder2";
-	private static final String FOLDER1 = "testFolder1";
-	private static final String PERSON2 = "testPerson2";
-	private static final String PERSON1 = "testPerson1";
-	protected static final String CUSTOMER2 = "test2";
-	protected static final String CUSTOMER1 = "test1";
+	public static final String GROUP2 = "testGroup2";
+	public static final String GROUP1 = "testGroup1";
+	public static final String FOLDER2 = "testFolder2";
+	public static final String FOLDER1 = "testFolder1";
+	public static final String PERSON2 = "testPerson2";
+	public static final String PERSON1 = "testPerson1";
+	public static final String CUSTOMER2 = "test2";
+	public static final String CUSTOMER1 = "test1";
 	
 	protected Model model;
 	private Customer c1;
@@ -58,6 +56,8 @@ public class Basic {
 	}
 
 	private void setupCustomer(Customer c) {
+		c.getDomains().create(c.getIdentifier() + ".objective.com");
+		c.getMetadata().put("v5Enabled", true);
 		setupGroups(c);
 		setupFolders(c);
 	}

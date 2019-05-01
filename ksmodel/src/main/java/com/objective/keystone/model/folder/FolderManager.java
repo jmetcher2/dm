@@ -2,8 +2,9 @@ package com.objective.keystone.model.folder;
 
 import java.util.Set;
 
-import au.id.lagod.dm.base.DomainObjectCollectionManager;
 import com.objective.keystone.model.customer.Customer;
+
+import au.id.lagod.dm.base.DomainObjectCollectionManager;
 
 public class FolderManager extends DomainObjectCollectionManager<Folder> {
 	
@@ -15,25 +16,26 @@ public class FolderManager extends DomainObjectCollectionManager<Folder> {
 	}
 
 	public Folder createRoot() {
-		return create(AuthoringFolder.ROOT_NAME, true, true);
+		return create(AuthoringFolder.ROOT_NAME, true);
 	}
 
 	public Folder createConsultRoot() {
-		return create(ConsultFolder.CONSULT_ROOT_NAME, true, true);
+		return createConsult(ConsultFolder.CONSULT_ROOT_NAME, true);
 	}
 	
-	public Folder createConsult(String name) {
-		return create(name, true, false);
+	public ConsultFolder createConsult(String name) {
+		return createConsult(name, false);
 	}
 	
-	private Folder create(String name, Boolean consult, Boolean root) {
-		Folder f;
-		if (consult) {
-			f = new ConsultFolder(customer, name, name, root);
-		}
-		else {
-			f = new AuthoringFolder(customer, name, name, root); 
-		}
+	private AuthoringFolder create(String name, Boolean root) {
+		AuthoringFolder f = new AuthoringFolder(customer, name, name, root); 
+		f.setParentManager(this);
+		add(f);
+		return f;
+	}
+	
+	private ConsultFolder createConsult(String name, Boolean root) {
+		ConsultFolder f = new ConsultFolder(customer, name, name, root); 
 		f.setParentManager(this);
 		add(f);
 		return f;
@@ -41,7 +43,7 @@ public class FolderManager extends DomainObjectCollectionManager<Folder> {
 	
 	@Override
 	public Folder create(String name) {
-		return create(name, false, false);
+		return create(name, false);
 	}
 	
 

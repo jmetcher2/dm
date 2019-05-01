@@ -19,12 +19,13 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import au.id.lagod.dm.base.BaseDomainObject;
-import au.id.lagod.dm.base.ChildDomainObject;
-import au.id.lagod.dm.base.TextKey;
 import com.objective.keystone.model.customer.Customer;
 import com.objective.keystone.model.group.folder.GroupFolder;
 import com.objective.keystone.model.person.customer.group.CustomerPersonGroup;
+
+import au.id.lagod.dm.base.BaseDomainObject;
+import au.id.lagod.dm.base.ChildDomainObject;
+import au.id.lagod.dm.base.TextKey;
 
 @MappedSuperclass
 public class MappedGroup extends BaseDomainObject implements ChildDomainObject {

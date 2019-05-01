@@ -4,12 +4,12 @@ import java.util.UUID;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
-import au.id.lagod.dm.base.ChildDomainObject;
 import com.objective.keystone.model.customer.Customer;
 import com.objective.keystone.model.group.folder.GroupFolderManager;
 import com.objective.keystone.model.person.customer.group.GroupCustomerPersonManager;
+
+import au.id.lagod.dm.base.ChildDomainObject;
 
 @Entity
 @Table(name="publisher_group")

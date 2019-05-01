@@ -6,14 +6,14 @@ import java.util.UUID;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
-import au.id.lagod.dm.base.AssociationParents;
 import com.objective.keystone.model.customer.Customer;
 import com.objective.keystone.model.folder.Folder;
 import com.objective.keystone.model.person.Person;
 import com.objective.keystone.model.person.customer.group.CustomerPersonGroup;
 import com.objective.keystone.model.person.customer.group.CustomerPersonGroupManager;
+
+import au.id.lagod.dm.base.AssociationParents;
 
 @Entity
 @Table(name="publisher_customer_person_lnk")

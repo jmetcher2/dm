@@ -2,7 +2,6 @@ package au.id.lagod.dm.base;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -15,8 +14,6 @@ import javax.validation.ConstraintViolationException;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-
-import org.apache.commons.beanutils.PropertyUtils;
 
 public class Utility {
 
