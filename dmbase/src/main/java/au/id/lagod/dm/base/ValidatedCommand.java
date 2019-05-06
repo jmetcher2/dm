@@ -25,15 +25,15 @@ public abstract class ValidatedCommand<T> {
 		}
 		else {
 			System.out.println(Utility.printMessages(constraintViolations));
-			throw new ConstraintViolationException(getMessage(),constraintViolations);
+			throw new ConstraintViolationException(getMessage(constraintViolations),constraintViolations);
 		}
 		
 	}
 	
 	abstract public T doCommand();
 	
-	public String getMessage() {
-		return "";
+	public String getMessage(Set<ConstraintViolation<ValidatedCommand<T>>> constraintViolations) {
+		return Utility.printMessages(constraintViolations);
 	}
 	
 }

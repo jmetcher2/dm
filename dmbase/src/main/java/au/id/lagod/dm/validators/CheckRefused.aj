@@ -24,5 +24,4 @@ public aspect CheckRefused {
 	
 	declare error : refusedConstructor() : "Refused bequest: call to unimplemented constructor";
 
-	
 }

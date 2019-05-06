@@ -23,7 +23,7 @@ public aspect CheckRestricted {
 	
 	pointcut restrictedMethod() : call(@Restricted * * (..))  && !within(au.id.lagod.dm..*);
 	
-	pointcut restrictedConstructor() : call(@Restricted au.id.lagod.dm..*.new(..)) && !within(au.id.lagod.dm..*);
+	pointcut restrictedConstructor() : call(@Restricted com.objective.dm..*.new(..)) && !within(au.id.lagod.dm..*);
 
 	declare error : restrictedMethod() : "Modularity rule breach: call to restricted method";
 	

@@ -1,10 +1,11 @@
 package au.id.lagod.dm.base;
 
 import java.util.Collection;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 import javax.validation.constraints.AssertFalse;
-import javax.validation.constraints.NotNull;
 
 /*
  * Adds methods for collection managers that are managing an association
@@ -45,12 +46,24 @@ import javax.validation.constraints.NotNull;
  *  	get("role.name", aString)
  * 
  */
-public abstract class AssociationCollectionManager<A extends BaseDomainObject,T extends BaseDomainObject,B extends BaseDomainObject> extends
-		DomainObjectCollectionManager<T> 
+public abstract class AssociationCollectionManager<A extends BaseDomainObject,T extends BaseAssociationDomainObject,B extends BaseDomainObject> extends
+		DomainCollectionManager<T> 
 		implements AssociationManager<T, B> {
+
+	protected A parent;
+	
+	public AssociationCollectionManager(A parent, Collection<T> c) {
+		super(c);
+		this.parent = parent;
+	}
+	
 
 	public AssociationCollectionManager(Collection<T> c) {
 		super(c);
+	}
+	
+	public A getParent() {
+		return parent;
 	}
 
 	/* ******************************************************************************
@@ -59,50 +72,14 @@ public abstract class AssociationCollectionManager<A extends BaseDomainObject,T 
 	 * 
 	 ****************************************************************************** */
 
-	// Get the foreign end of the association (aka "the associate" out of the association object)
-	// E.g. userRole.getRole()
-	protected abstract B getAssociate(T ao);
-
-	/** 
-	 * Get the field name of the text key of the associate
-	 * 
-	 * E.g. if Role's textkey was the field Role.name, this would be "name"
-	 * 
-	 * @return field name, or null if the object has no text key
-	 */
-	protected String getAssociateKeyFieldName() {
-		return BaseDomainObject.getTextKeyField(getManagedObjectClass());
-	};
-
-	/**
-	 * Get the collection that manages all of the associate objects (not just the ones participating in this association)
-	 * 
-	 * This is required for the default implementation of create(String) to work.  However, many domain objects won't have a 
-	 * single master collection.  For example, each User might have a collection of UserRoles, but there is no single collection
-	 * containing all UserRoles for all Users.  In that case, this method should return null.  You may still be able to provide an 
-	 * alternative implementation of create(String).
-	 *  
-	 * @return A collection manager, or null
-	 */
-	protected abstract DomainObjectCollectionManager<B> getAssociateMasterCollection();
-
 	/**
 	 * Get the field name of the associate within the association object
 	 * 
 	 * E.g. if UserRole has fields user and role, this would return the string "role"
 	 */
-	protected abstract String getAssociateName();
-
-	/**
-	 * Get the reverse association collection
-	 * 
-	 * E.g. if we are looking at a UserRole that is in the collection of UserRoles for a User, this method will give us
-	 * the collection of UserRoles for a given Role that also contains that same UserRole.
-	 * 
-	 * @param associate
-	 * @return an association collection manager
-	 */
-	protected abstract AssociationCollectionManager<B,T,A> getReverseCollection(T associationObject);
+	public abstract String getAssociateName();
+	
+	protected abstract Class<B> getAssociateClass();
 
 	/**
 	 * Return a new association object.  We assume the implementing class has a reference to the "A" end of the association
@@ -112,8 +89,8 @@ public abstract class AssociationCollectionManager<A extends BaseDomainObject,T 
 	 * @param associate
 	 * @return a new association object
 	 */
-	protected abstract T newAssociationObject(B associate);
-
+	protected abstract T newAssociationObject(BaseDomainObject associate);
+	
 	/* ******************************************************************************
 	 * 
 	 * TEMPLATE METHODS (template method pattern)
@@ -126,75 +103,60 @@ public abstract class AssociationCollectionManager<A extends BaseDomainObject,T 
 	 * Where the association object has mandatory extra metadata, you should implement 
 	 * a create() method with more arguments to allow the caller to specify the extra data.
 	 */
+	 // See the comment on getAssociationParents();
+	@SuppressWarnings("unchecked")
 	public T create(B associate) {
 		T ao = newAssociationObject(associate);
 		if (ao == null) {
 			throw new java.lang.Error("Failed to create an association object from a given associate.  You may need to use a create() method with more arguments.");
 		}
-		add(ao);
-		getReverseCollection(ao).add(ao);
+		
+		AssociationParents<A, T, B> ap = ao.getAssociationParents();
+		ap.add(ao);
 		return ao;
 	}
 
 	/**
-	 * Get an association object by specifying the foreign end of the the assocation
+	 * Get an association object by specifying the foreign end of the the association
 	 */
-	public T get(B associate) {
+	public T getAssociationWith(B associate) {
 		return findOne(getAssociateName(), associate);
 	}
 
 	/**
-	 * Remove an association object by specifying the foreign end of the the assocation
+	 * Remove an association object by specifying the foreign end of the the association
 	 */
 	public boolean removeAssociate(B associate) {
-		return remove(get(associate));
+		return remove(getAssociationWith(associate));
 	}
 	
 	/**
 	 * Return true if this collection contains an association with the given object
 	 */
 	public boolean hasAssociate(B associate) {
-		return get(associate) != null;
-	}
-
-	/**
-	 * Create an association object by specifying the name of the object at the foreign end of the association
-	 * 
-	 * There are two preconditions for this to work:
-	 * 1. The foreign object must have a text key
-	 * 2. There must be a single collection in which we can look up that text key (i.e. getAssociateMasterCollection() must not
-	 *    return null.
-	 *    
-	 * If these preconditions are false, subclasses may override this method to make it clear that it's not supported. 
-	 */
-	public T create(String name) {
-		return new CreateByString(name).execute();
-	}
-
-	/**
-	 * Get an association object by specifying the name of the object at the foreign end of the association.
-	 * The foreign object must have a text key.  If it doesn't, subclasses may override this method to make it clear that it's not supported.
-	 */
-	public T get(String textID) {
-		if (getAssociateKeyFieldName() == null) {
-			throw new java.lang.Error("Can't get association by name as associate has no text key field");
-		}
-		return findOne(getAssociateName() + "." + getAssociateKeyFieldName(), textID);
+		return getAssociationWith(associate) != null;
 	}
 
 	/**
 	 * Remove the association object from both ends of the association
 	 */
+	@SuppressWarnings("unchecked") // See the comment on getAssociationParents();
 	public boolean remove(Object o) {
 		if (super.remove(o)) {
 			T ao = getManagedObjectClass().cast(o);
-			getReverseCollection(ao).remove(ao);
+			ao.getAssociationParents().remove(ao);
 			return true;
 		}
 		else {
 			return false;
 		}
 	}
+	
+	public Set<B> getAssociates() {
+		return collection.stream().map(e -> getAssociate(e)).collect(Collectors.toSet());
+	}
+	
+	protected abstract B getAssociate(T ao);
 	
 	/** 
 	 * Add an 
@@ -209,34 +171,15 @@ public abstract class AssociationCollectionManager<A extends BaseDomainObject,T 
 		@Valid 		private T ao;
 		@AssertFalse private boolean associateAlreadyLinked;
 
-		public AddAssociation(T ees) {
-			this.ao = ees;
+		public AddAssociation(T ao) {
+			this.ao = ao;
 			
-			this.associateAlreadyLinked = get(getAssociate(ees)) != null;
+			this.associateAlreadyLinked = contains(ao);
 		}
 		
 		@Override
 		public Boolean doCommand() {
 			return addnocheck(ao);
-		}
-		
-	}
-	
-	protected class CreateByString extends ValidatedCommand<T> {
-		
-		@NotNull 		private DomainObjectCollectionManager<B> amc;
-		@NotNull		private B associate;
-
-		public CreateByString(String name) {
-			this.amc = getAssociateMasterCollection();
-			if (amc != null) {
-				associate = getAssociateMasterCollection().get(name);
-			}
-		}
-		
-		@Override
-		public T doCommand() {
-			return create(associate);
 		}
 		
 	}

@@ -16,6 +16,8 @@ public class TestObject extends BaseDomainObject {
 		this.nestedObject = nestedObject;
 	}
 
+	public Long getId() { return null; };
+	
 	public Integer getIntField() {
 		return intField;
 	}
