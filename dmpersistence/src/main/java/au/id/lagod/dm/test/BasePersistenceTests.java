@@ -26,74 +26,16 @@ public abstract class BasePersistenceTests<ObjectType extends BaseDomainObject> 
 	}
 
 	abstract protected void doSetupBeforeTransaction();
-
 	abstract protected void doTeardownAfterTransaction();
 
 	@BeforeTransaction
 	public void setupBeforeTransaction() {
-		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-		def.setName("SomeTxName");
-		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-	
-		TransactionStatus status = txManager.getTransaction(def);
-		
-		//Session session = sf.openSession();
-		
-		try {
-			doSetupBeforeTransaction();
-		
-			txManager.commit(status);
-			
-		}
-		catch (javax.validation.ConstraintViolationException e) {
-			Utility.printMessages(e);
-			
-			txManager.rollback(status);
-			
-			throw new Error (e);
-		}
-		catch (java.lang.Error e) {
-			txManager.rollback(status);
-			
-			throw new Error(e);
-		}
-		
-		//session.close();
+		DoInTransaction.doAction(txManager, () -> doSetupBeforeTransaction());
 	}
 
 	@AfterTransaction
 	public void teardownAfterTransaction() {
-		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-		def.setName("SomeTxName");
-		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-	
-		TransactionStatus status = txManager.getTransaction(def);
-		
-		//Session session = sf.openSession();
-		
-		
-		try {
-			doTeardownAfterTransaction();
-			
-			txManager.commit(status);
-		
-		}
-		catch (javax.validation.ConstraintViolationException e) {
-			Utility.printMessages(e);
-			
-			if (!status.isCompleted()) {
-				txManager.rollback(status);
-			}
-			
-			throw (e);
-		}
-		catch (java.lang.Error e) {
-			txManager.rollback(status);
-			
-			throw new Error(e);
-		}
-			
-		//session.close();
+		DoInTransaction.doAction(txManager, () -> doTeardownAfterTransaction());
 	}
 
 }
