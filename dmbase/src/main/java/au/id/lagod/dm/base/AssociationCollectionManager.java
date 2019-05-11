@@ -7,54 +7,57 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 import javax.validation.constraints.AssertFalse;
 
+import au.id.lagod.dm.collections.Association;
+
 /*
- * Adds methods for collection managers that are managing an association
- * between two domain objects.
- * If we are managing an association between A & B on behalf of A,
- * we can add an item to the association simply by specifying the value for B, plus any
- * association properties.
- * Similarly for getting and removing items.
- * Thus we end up with a few more options for create(), get() and remove().
+ * Adds methods for collection managers that are managing a many to many association
+ * between two domain objects via an intermediate "join" object.
  * 
- * T is the type of the association object itself.
- * 
- * Example:
- * If we are modelling an many-to-many association between users and roles, we would have objects:
+ * If we are managing an association between A & B on behalf of A:
+ *   A is the parent
+ *   T is the association object (or join object)
+ *   B is the associate (or foreign end of the association)
+ *   
+ * Association managers come in pairs, one managing each side of the two one-to-many
+ * relationships that makeup the many to many, and the association object knows about both managers
+ * (it has the two many-to-one relationships after all), so we can automatically maintain both sides.
+ *  
+ * For example, if we are modelling an many-to-many association between users and roles, we would have objects:
  * 
  * User - UserRole - Role
  * 
- * User.userRoles would be a collection of type:
- * 
- * 		User_UserRoles extends DomainObjectCollectionManager<UserRole> implements AssociationManager<UserRole, Role>
- * 
- * and Role.userRoles would be:
- * 
- * 		Role_UserRoles extends DomainObjectCollectionManager<UserRole> implements AssociationManager<UserRole, User>
- * 
- * We can then add a role to a user by saying:
- * 
- * 		user.getUserRoles().create(role)
- * or
- * 		role.getUserRoles().create(user)
- * 
- * get(String) and create(String) are then defined relative to the foreign (B) end of the association. So,
- * user.getUserRoles().create(aString) means "add a role to this user where the role name is 'aString'.
- * 
- * This is different to the usual collection manager semantics, where aString would name the collection entry itself.
- * Here, aString names the object that the collection entry links to.  So, the implementation of User_UserRoles.get(String) would be:
- * 
- *  	get("role.name", aString)
- * 
+ * To manage this association, we would have one manager whose parent is User, with a collection of UserRole objects 
+ * representing all the roles associated with that user.
+ * We might call that user.getUserRoles(), and we can add a role to a user by saying user.getUserRoles().create(role).
+ * So far this is not much different to our normal parent/child relationship.
+ * We'd also have a symmetrical manager whose parent is Role, with a collection of UserRole objects representing all
+ * the users associated with that role.
+ * What makes this different is that calling user.getRoles().create(role) will automatically also call role.getUsers().create(user),
+ * thus managing the other end of the many-to-many.  Similarly remove a userrole from either end will automatically maintain
+ * both collections.
+ * The final difference is that you can retrieve a UserRole from a user's point of view by specifying the Role, and from a role's point 
+ * of view by specifying the User.  In contrast, with normal parent/child relationship you retrieve the child by specifying
+ * the child.
+ * In practice, this means:
+ *   We have an extra create method, create(Role) or create(User)
+ *   Ditto for remove.
+ *   Ditto for get
+ *   The normal create(String) actually refers to the name of the foreign object, not the name of the child object.  So
+ *   user.getUserRoles().create("admin") means "create a UserRole which associates this user with the role called admin". 
+ * 		 
+ *   
  */
-public abstract class AssociationCollectionManager<A extends BaseDomainObject,T extends BaseAssociationDomainObject,B extends BaseDomainObject> extends
+public class AssociationCollectionManager<A extends BaseDomainObject,T extends BaseAssociationDomainObject,B extends BaseDomainObject> extends
 		DomainCollectionManager<T> 
 		implements AssociationManager<T, B> {
 
 	protected A parent;
+	private Association<A,T,B> spec;
 	
-	public AssociationCollectionManager(A parent, Collection<T> c) {
+	public AssociationCollectionManager(A parent, Collection<T> c, Association<A,T,B> association) {
 		super(c);
 		this.parent = parent;
+		this.spec = association;
 	}
 	
 
@@ -65,6 +68,13 @@ public abstract class AssociationCollectionManager<A extends BaseDomainObject,T 
 	public A getParent() {
 		return parent;
 	}
+	
+	@Override
+	public Class<T> getManagedObjectClass() {
+		return spec.getAssociationClazz();
+	}
+
+
 
 	/* ******************************************************************************
 	 * 
@@ -77,9 +87,13 @@ public abstract class AssociationCollectionManager<A extends BaseDomainObject,T 
 	 * 
 	 * E.g. if UserRole has fields user and role, this would return the string "role"
 	 */
-	public abstract String getAssociateName();
+	public String getAssociateName() {
+		return spec.getAssociateFieldName();
+	};
 	
-	protected abstract Class<B> getAssociateClass();
+	protected Class<B> getAssociateClass() {
+		return spec.getAssociateClazz();
+	};
 
 	/**
 	 * Return a new association object.  We assume the implementing class has a reference to the "A" end of the association
@@ -89,7 +103,9 @@ public abstract class AssociationCollectionManager<A extends BaseDomainObject,T 
 	 * @param associate
 	 * @return a new association object
 	 */
-	protected abstract T newAssociationObject(BaseDomainObject associate);
+	protected T newAssociationObject(B associate) {
+		return spec.getCreateAssociationObject().apply(parent).apply(associate);
+	}
 	
 	/* ******************************************************************************
 	 * 
@@ -156,7 +172,9 @@ public abstract class AssociationCollectionManager<A extends BaseDomainObject,T 
 		return collection.stream().map(e -> getAssociate(e)).collect(Collectors.toSet());
 	}
 	
-	protected abstract B getAssociate(T ao);
+	protected  B getAssociate(T ao) {
+		return (B) spec.getGetAssociate().apply(ao);
+	};
 	
 	/** 
 	 * Add an 
