@@ -51,6 +51,8 @@ public class XmlMapBasicTypeDescriptor extends AbstractTypeDescriptor<XmlMap> {
     @SuppressWarnings("unchecked")
 	public String toString(XmlMap value, String rootElementName, String namespace) {
     	try {
+    		if (value == null) 
+    			return null;
 			return new MapToXmlConverter().convert(rootElementName, namespace, (Map<String, Object>) value.get(rootElementName));
 		} catch (XMLStreamException e) {
 			throw new Error(e);

@@ -11,9 +11,6 @@ import javax.xml.stream.XMLStreamWriter;
 public class MapToXmlConverter {
 	
 	public String convert( String name, String namespace, Map<String, Object> map) throws XMLStreamException {
-		if (map == null) 
-			return null;
-		
 		StringWriter writer = new StringWriter();
 		XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
 		XMLStreamWriter xmlWriter = outputFactory.createXMLStreamWriter(writer);
@@ -43,12 +40,14 @@ public class MapToXmlConverter {
 		else {
 			xmlWriter.writeStartElement(name);
 		}
-		if (map.containsKey("id")) {
-			xmlWriter.writeAttribute("id", map.get("id").toString());
-		}
-		for (Map.Entry<String, Object> e2: map.entrySet()) {
-			if (!e2.getKey().equals("id")) {
-				convertObject(e2.getKey(), e2.getValue(), xmlWriter);
+		if (map != null) {
+			if (map.containsKey("id")) {
+				xmlWriter.writeAttribute("id", map.get("id").toString());
+			}
+			for (Map.Entry<String, Object> e2: map.entrySet()) {
+				if (!e2.getKey().equals("id")) {
+					convertObject(e2.getKey(), e2.getValue(), xmlWriter);
+				}
 			}
 		}
 		xmlWriter.writeEndElement();

@@ -60,7 +60,6 @@ public class AssociationCollectionManager<A extends BaseDomainObject,T extends B
 		this.spec = association;
 	}
 	
-
 	public AssociationCollectionManager(Collection<T> c) {
 		super(c);
 	}
@@ -192,7 +191,7 @@ public class AssociationCollectionManager<A extends BaseDomainObject,T extends B
 		public AddAssociation(T ao) {
 			this.ao = ao;
 			
-			this.associateAlreadyLinked = contains(ao);
+			this.associateAlreadyLinked = contains(ao) || hasAssociate(getAssociate(ao));
 		}
 		
 		@Override
