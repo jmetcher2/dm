@@ -99,7 +99,17 @@ public abstract class AppConfig {
 			throw new Error(e);
 		}
 		
+		// system properties
+		if (System.getProperty("db.user") != null)
+			properties.put("db.user", System.getProperty("db.user"));
+		if (System.getProperty("db.password") != null)
+			properties.put("db.password", System.getProperty("db.password"));
+		if (System.getProperty("dburl") != null)
+			properties.put("dburl", System.getProperty("dburl"));
+		
 		// hardcoded properties
+		properties.putIfAbsent("driver","net.sourceforge.jtds.jdbc.Driver");
+
         
         return properties;
     }

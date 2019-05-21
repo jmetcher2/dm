@@ -67,7 +67,8 @@ public class Utility {
 		 
 		InputStream inputStream = Utility.class.getResourceAsStream(fileName);
 		
-		prop.load(inputStream);
+		if (inputStream != null)
+			prop.load(inputStream);
 		
 		return prop;
 	}    
