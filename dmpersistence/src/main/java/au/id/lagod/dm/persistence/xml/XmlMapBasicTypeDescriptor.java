@@ -61,11 +61,7 @@ public class XmlMapBasicTypeDescriptor extends AbstractTypeDescriptor<XmlMap> {
 
     @Override
     public XmlMap fromString(String string) {
-    	try {
-			return new XmlToMapConverter(whitelistAllowedHtmlElementsList).convertNodesFromXmlString(string);
-		} catch (XMLStreamException e) {
-			throw new Error(e);
-		}
+		return new XmlToMapConverter(whitelistAllowedHtmlElementsList).convertNodesFromXmlString(string);
     }
 
     

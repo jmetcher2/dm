@@ -25,64 +25,69 @@ public class XmlToMapConverter {
 		this.htmlElementWhiteList = htmlElementWhiteList;
 	}
 	
-	public XmlMap convertNodesFromXmlString(String xml) throws XMLStreamException  {
+	public XmlMap convertNodesFromXmlString(String xml)  {
 	    InputStream is = new ByteArrayInputStream(xml.getBytes());  // implies UTF-8
 	    return convertNodesFromXmlStream(is);
 	}
 
-	public  XmlMap convertNodesFromXmlStream(InputStream is) throws XMLStreamException {
-		XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-		XMLEventReader xmlReader = inputFactory.createXMLEventReader(is);
-		
-		ConverterState state = new ConverterState();
-		
-		while (xmlReader.hasNext()) {
-			XMLEvent xmlEvent = xmlReader.nextEvent();
+	public  XmlMap convertNodesFromXmlStream(InputStream is) {
+		try {
+			XMLInputFactory inputFactory = XMLInputFactory.newInstance();
+			XMLEventReader xmlReader = inputFactory.createXMLEventReader(is);
 			
-			if (xmlEvent.isStartElement()) {
-				state.nestLevel++;
+			ConverterState state = new ConverterState();
+			
+			while (xmlReader.hasNext()) {
+				XMLEvent xmlEvent = xmlReader.nextEvent();
 				
-				if (state.nestLevel <= ConverterState.maxLevel) {
-					StartElement elem = xmlEvent.asStartElement();
-					state.startElement(elem);
-					state.checkStartHtml(elem);
+				if (xmlEvent.isStartElement()) {
+					state.nestLevel++;
 					
-					if (state.inHtml()) {
-						state.writeHtml(xmlEvent);
+					if (state.nestLevel <= ConverterState.maxLevel) {
+						StartElement elem = xmlEvent.asStartElement();
+						state.startElement(elem);
+						state.checkStartHtml(elem);
+						
+						if (state.inHtml()) {
+							state.writeHtml(xmlEvent);
+						}
+					}
+					
+				}
+				
+				else if (xmlEvent.isEndElement()) {
+					
+					if (state.nestLevel <= ConverterState.maxLevel) {
+						if (state.inHtml()) {
+							state.writeHtml(xmlEvent);
+							state.checkCloseHtml(xmlEvent.asEndElement());
+						}
+						else {
+							state.closeStructLevel(xmlEvent.asEndElement());
+						}
+					}
+					
+					state.nestLevel--;
+				}
+				
+				else if (xmlEvent.isCharacters()) {
+					if (state.nestLevel <= ConverterState.maxLevel) {
+						if (state.inHtml()) {
+							state.writeHtml(xmlEvent);
+						}
+						else {
+							state.addCharacters(xmlEvent);
+						}
 					}
 				}
 				
 			}
 			
-			else if (xmlEvent.isEndElement()) {
-				
-				if (state.nestLevel <= ConverterState.maxLevel) {
-					if (state.inHtml()) {
-						state.writeHtml(xmlEvent);
-						state.checkCloseHtml(xmlEvent.asEndElement());
-					}
-					else {
-						state.closeStructLevel(xmlEvent.asEndElement());
-					}
-				}
-				
-				state.nestLevel--;
-			}
-			
-			else if (xmlEvent.isCharacters()) {
-				if (state.nestLevel <= ConverterState.maxLevel) {
-					if (state.inHtml()) {
-						state.writeHtml(xmlEvent);
-					}
-					else {
-						state.addCharacters(xmlEvent);
-					}
-				}
-			}
-			
+			return state.getResult();
 		}
-		
-		return state.getResult();
+		catch (XMLStreamException e) {
+			throw new Error(e);
+		}
 	}
 	
 	private class ConverterState {
