@@ -32,7 +32,7 @@ public class DoInTransaction {
 				
 				throw new Error (e);
 			}
-			catch (java.lang.Error e) {
+			catch (java.lang.Throwable e) {
 				txManager.rollback(status);
 				
 				throw new Error(e);
