@@ -4,16 +4,17 @@ subprojects {
 	    repositories {
 			mavenLocal()
 			mavenCentral()
-	    }
 
-	    dependencies {
-        	classpath "net.uberfoo.gradle:gradle-aspectj:2.2"
+		    maven {
+		      url "https://plugins.gradle.org/m2/"
+		    }
+
 	    }
 
 	}
 
 	ext {
-		aspectjVersion = '1.9.1'
+		aspectjVersion = '1.9.4'
 		springVersion = '5.0.8.RELEASE'
 		
 	}
@@ -24,6 +25,7 @@ subprojects {
 
 	sourceCompatibility = JavaVersion.VERSION_1_9
 	targetCompatibility = JavaVersion.VERSION_1_9
+
 
 	repositories {
 		mavenLocal()
@@ -40,7 +42,7 @@ subprojects {
 	}
 
 	task wrapper(type: Wrapper) {
-	    gradleVersion = '4.9'
+	    gradleVersion = '5.4.1'
 	}
 
 	configurations {

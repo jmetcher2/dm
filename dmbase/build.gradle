@@ -1,3 +1,9 @@
+plugins {
+    id "io.freefair.aspectj.compile-time-weaving" version "3.7.5"
+}
+
+aspectjVersion = '1.9.4'
+
 dependencies {
 	compile 'junit:junit:4.12';
 
@@ -23,8 +29,8 @@ publishing {
     }
 }
 
-
-apply plugin: 'aspectj'
+//apply plugin: "aspectj.AspectjGradlePlugin"
+print project.sourceCompatibility
 
 apply plugin: 'eclipse'
 eclipse {

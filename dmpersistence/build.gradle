@@ -1,3 +1,9 @@
+plugins {
+    id "io.freefair.aspectj.compile-time-weaving" version "3.7.5"
+}
+
+aspectjVersion = '1.9.4'
+
 ext {
 	hibernateVersion = '5.3.5.Final'
 }
@@ -39,7 +45,6 @@ publishing {
 }
 
 
-apply plugin: 'aspectj'
 apply plugin: 'eclipse'
 
 eclipse {
