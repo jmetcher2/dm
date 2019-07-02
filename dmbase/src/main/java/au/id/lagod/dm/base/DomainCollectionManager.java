@@ -41,6 +41,9 @@ public abstract class DomainCollectionManager<T extends BaseDomainObject> implem
 		this.collection = c;
 		finder = new CollectionFinder<T>(collection);
 	}
+	public void setFinder(BaseFinder<T> f) {
+		this.finder = f;
+	}
 
 	public Collection<T> getCollection() {
 		return collection;

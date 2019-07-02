@@ -3,6 +3,7 @@ package au.id.lagod.dm.test;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.util.UUID;
 import java.util.function.LongSupplier;
@@ -24,6 +25,7 @@ public class DoInTransaction {
 			action.run();
 		
 			txManager.commit(status);
+
 			
 		}
 		catch (javax.validation.ConstraintViolationException e) {
@@ -34,7 +36,8 @@ public class DoInTransaction {
 			throw new Error (e);
 		}
 		catch (java.lang.Throwable e) {
-			txManager.rollback(status);
+			if (!status.isCompleted())
+				txManager.rollback(status);
 			
 			throw new Error(e);
 		}
@@ -50,10 +53,11 @@ public class DoInTransaction {
 		
 		try {
 			Long value = action.getAsLong();
-		
+
 			txManager.commit(status);
 			
 			return value;
+
 			
 		}
 		catch (javax.validation.ConstraintViolationException e) {
@@ -64,11 +68,13 @@ public class DoInTransaction {
 			throw new Error (e);
 		}
 		catch (java.lang.Throwable e) {
-			txManager.rollback(status);
+			if (!status.isCompleted())
+				txManager.rollback(status);
 			
 			throw new Error(e);
 		}
 		
 	}
+
 
 }
