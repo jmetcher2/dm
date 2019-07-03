@@ -1,5 +1,6 @@
 plugins {
     id "io.freefair.aspectj.compile-time-weaving" version "3.7.5"
+	id "org.datlowe.maven-publish-auth" version "2.0.2"
 }
 
 aspectjVersion = '1.9.4'
@@ -25,6 +26,12 @@ publishing {
             version = '0.1'
 
             from components.java
+        }
+    }
+    repositories {
+        maven {
+        	name = "libs-release-local"
+            url = "http://lonbamboo2:8081/artifactory/libs-release-local"
         }
     }
 }
