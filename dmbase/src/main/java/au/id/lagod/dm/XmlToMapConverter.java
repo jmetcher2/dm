@@ -25,6 +25,10 @@ public class XmlToMapConverter {
 		this.htmlElementWhiteList = htmlElementWhiteList;
 	}
 	
+	public XmlToMapConverter() {
+		this(new ArrayList<String>());
+	}
+
 	public XmlMap convertNodesFromXmlString(String xml)  {
 	    InputStream is = new ByteArrayInputStream(xml.getBytes());  // implies UTF-8
 	    return convertNodesFromXmlStream(is);
