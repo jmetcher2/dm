@@ -1,5 +1,6 @@
 package au.id.lagod.dm.base;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +26,5 @@ public interface Finder<T> {
 	public abstract T findOne(String[] paramNames, Object[] values);
 
 	public abstract T findOne(Map<String, Object> params);
-
 
 }

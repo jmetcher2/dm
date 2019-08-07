@@ -1,4 +1,4 @@
-package au.id.lagod.dm;
+package au.id.lagod.dm.xml;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;

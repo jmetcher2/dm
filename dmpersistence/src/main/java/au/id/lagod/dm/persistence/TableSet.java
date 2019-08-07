@@ -63,7 +63,7 @@ public class TableSet<T extends BaseDomainObject>  extends AbstractSet<T> implem
 		if (arg0 == null) 
 			return false;
 		
-		if (!arg0.getClass().equals(clazz)) {
+		if (!clazz.isInstance(arg0)) {
 			return false;
 		}
 		
@@ -101,7 +101,7 @@ public class TableSet<T extends BaseDomainObject>  extends AbstractSet<T> implem
 			return false;
 		}
 		
-		if (!(Hibernate.getClass(arg0).equals(clazz))) {
+		if (!(clazz.isAssignableFrom(Hibernate.getClass(arg0)))) {
 			return false;
 		}
 

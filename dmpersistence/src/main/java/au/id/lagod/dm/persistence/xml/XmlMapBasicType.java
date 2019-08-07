@@ -5,7 +5,7 @@ import org.hibernate.type.AbstractSingleColumnStandardBasicType;
 import org.hibernate.type.DiscriminatorType;
 import org.hibernate.type.descriptor.sql.VarcharTypeDescriptor;
 
-import au.id.lagod.dm.XmlMap;
+import au.id.lagod.dm.xml.XmlMap;
 
 public class XmlMapBasicType 
     extends AbstractSingleColumnStandardBasicType<XmlMap> 

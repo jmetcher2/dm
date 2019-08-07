@@ -23,13 +23,17 @@ public class AssociationParents<A extends BaseDomainObject, T extends BaseAssoci
 	}
 
 	public void add(T ao) {
-		parent1.add(ao);
-		parent2.add(ao);
+		if (parent1 != null)
+			parent1.add(ao);
+		if (parent2 != null)
+			parent2.add(ao);
 	}
 
 	public void remove(T ao) {
-		parent1.remove(ao);
-		parent2.remove(ao);
+		if (parent1 != null)
+			parent1.remove(ao);
+		if (parent2 != null)
+			parent2.remove(ao);
 	}
 
 	

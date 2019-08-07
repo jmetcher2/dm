@@ -13,14 +13,19 @@ import au.id.lagod.dm.validators.Restricted;
 public abstract class DomainObjectCollectionManager<T extends BaseDomainObject> extends DomainCollectionManager<T> implements 
 		DomainObjectManager<T> {
 
+	private String textKeyFieldName;
+	private boolean hasTextKey;
+
 	protected abstract T instantiate(String name);
 	
 	public DomainObjectCollectionManager() {
-		super(new HashSet<T>());
+		this(new HashSet<T>());
 	}
 	
 	public DomainObjectCollectionManager(Collection<T> c) {
 		super(c);
+		textKeyFieldName = BaseDomainObject.getTextKeyField(getManagedObjectClass());
+		hasTextKey = textKeyFieldName != null;
 	}
 	
 	@Override
@@ -32,7 +37,10 @@ public abstract class DomainObjectCollectionManager<T extends BaseDomainObject> 
 	}
 	
 	public T get(String textID) {
-		return findOne(BaseDomainObject.getTextKeyField(getManagedObjectClass()), textID);
+		if (!hasTextKey) {
+			throw new Error("Attempt to call get(String) on a class with no text key: " + getManagedObjectClass() );
+		}
+		return findOne(textKeyFieldName, textID);
 	};
 	
 	public boolean exists(String textID) {
@@ -61,7 +69,7 @@ public abstract class DomainObjectCollectionManager<T extends BaseDomainObject> 
 		public AddDomainObject(T domainObject) {
 			this.domainObject = domainObject;
 			
-			if (domainObject.hasTextKey()) {
+			if (hasTextKey) {
 				this.nameIsUnique = get(domainObject.getTextKey()) == null;
 			}
 		}
