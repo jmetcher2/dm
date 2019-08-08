@@ -4,8 +4,14 @@ import java.lang.reflect.Field;
 
 import org.apache.commons.beanutils.PropertyUtils;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import au.id.lagod.dm.validators.Restricted;
 
+@JsonIdentityInfo(
+		  generator = ObjectIdGenerators.PropertyGenerator.class, 
+		  property = "id")
 public abstract class BaseDomainObject {
 
 	// TODO: do we need this field?  If yes, need to make sure it's always set
