@@ -25,7 +25,7 @@ publishing {
         maven(MavenPublication) {
             groupId = 'au.id.lagod'
             artifactId = 'dmbase'
-            version = '0.1'
+            version = project.version
 
             from components.java
         }
@@ -37,9 +37,6 @@ publishing {
         }
     }
 }
-
-//apply plugin: "aspectj.AspectjGradlePlugin"
-print project.sourceCompatibility
 
 apply plugin: 'eclipse'
 eclipse {

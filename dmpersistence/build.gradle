@@ -38,7 +38,7 @@ publishing {
         maven(MavenPublication) {
             groupId = 'au.id.lagod'
             artifactId = 'dmpersistence'
-            version = '0.1'
+            version = project.version
 
             from components.java
         }
