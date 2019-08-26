@@ -1,0 +1,40 @@
+// This is all the aspectJ stuff
+plugins {
+    id "io.freefair.aspectj.compile-time-weaving" version "3.7.5"
+}
+
+def aspectjVersion = '1.9.4'  // The aspectj plugin will pick this up
+
+repositories {
+  // This is where we'll find the aspectj plugin, above
+  // If you're not using aspectj but you are using other 3rd parth plugins,
+  // move this block down to the main repositories section below
+    maven {
+      url "https://plugins.gradle.org/m2/"
+    }
+ }
+ // end aspectj stuff
+
+
+
+def dmVersion = '0.2'
+
+apply plugin: 'java'
+apply plugin: 'java-library-distribution'  // We're assuming we'll want to distribute our model
+
+sourceCompatibility = JavaVersion.VERSION_1_9
+targetCompatibility = JavaVersion.VERSION_1_9
+
+
+repositories {
+	mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+	compile "au.id.lagod:dmpersistence:${dmVersion}"
+	testCompile 'junit:junit:4.12';
+}
+
+// Eclipse stuff
+apply plugin: 'eclipse'

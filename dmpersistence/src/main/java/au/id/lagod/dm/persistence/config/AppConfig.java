@@ -57,8 +57,12 @@ public abstract class AppConfig {
         return lsfb;
     }
 	
-	protected abstract String [] getPackagesToScan();
-	protected abstract void configureSessionFactoryBean(org.springframework.orm.hibernate5.LocalSessionFactoryBean lsfb);
+	protected String [] getPackagesToScan() {
+		return new String[0];
+	};
+	protected void configureSessionFactoryBean(org.springframework.orm.hibernate5.LocalSessionFactoryBean lsfb) {
+	  // Do nothing
+	}
 
 
 
