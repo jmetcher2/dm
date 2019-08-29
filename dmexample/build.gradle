@@ -33,8 +33,17 @@ repositories {
 
 dependencies {
 	compile "au.id.lagod:dmpersistence:${dmVersion}"
-	testCompile 'junit:junit:4.12';
+
+	testCompile 'junit:junit:4.12'
+  compile 'org.apache.derby:derby:10.15.1.3'
+  compile 'org.apache.derby:derbyshared:10.15.1.3'
 }
 
+test {
+  systemProperty "db.user", ""
+  systemProperty "db.password", ""
+  systemProperty "dburl", "jdbc:derby:memory:myDb;create=true"
+  systemProperty "driver", "org.apache.derby.jdbc.EmbeddedDriver"
+}
 // Eclipse stuff
 apply plugin: 'eclipse'

@@ -150,6 +150,7 @@ public abstract class CollectionPersistenceTests<ObjectType extends BaseDomainOb
 
 	protected void doTeardownAfterTransaction() {
 		getChildObjectManager().remove(getChildObject());
+		getChildObjectManager().remove(getChildObjectInTest());
 	}
 	
 	protected boolean checkRecordExists(Long id) {

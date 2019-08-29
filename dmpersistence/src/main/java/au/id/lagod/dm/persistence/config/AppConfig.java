@@ -33,7 +33,7 @@ public abstract class AppConfig {
 			ds.setTestConnectionOnCheckout(true);
 			ds.setUser(prop.getProperty("db.user"));
 			ds.setPassword(prop.getProperty("db.password"));
-			ds.setTestConnectionOnCheckout(true);
+			ds.setTestConnectionOnCheckout(false);
 		} catch (PropertyVetoException e) {
 			throw new Error(e);
 		}
@@ -110,6 +110,8 @@ public abstract class AppConfig {
 			properties.put("db.password", System.getProperty("db.password"));
 		if (System.getProperty("dburl") != null)
 			properties.put("dburl", System.getProperty("dburl"));
+		if (System.getProperty("driver") != null) 
+			properties.put("driver",  System.getProperty("driver"));
 		
 		// hardcoded properties
 		properties.putIfAbsent("driver","net.sourceforge.jtds.jdbc.Driver");
