@@ -7,10 +7,12 @@
  */
 
 plugins {
+    id "io.freefair.aspectj.compile-time-weaving" version "3.7.5" 
     id 'war'  
     id 'org.gretty' version '2.2.0'
     id 'eclipse-wtp'
 }
+
 
 gretty {
   integrationTestTask = 'test'
@@ -25,23 +27,25 @@ repositories {
     jcenter()
 }
 
-def jersey_version = '2.27'
+def jersey_version = '2.28'
+ext {
+  ksModelVersion = '1.1.1'
+}
+
 
 dependencies {
-	compile project (':ksmodel')
+  	compile "com.objective:ksemodel:${ksModelVersion}"
 
 	compile "org.glassfish.jersey.containers:jersey-container-servlet:${jersey_version}"
 	compile "org.glassfish.jersey.inject:jersey-hk2:${jersey_version}"
  	compile "org.glassfish.jersey.media:jersey-media-json-jackson:${jersey_version}"
 	compile "org.glassfish.jersey.ext:jersey-spring4:${jersey_version}"
    
-    compile "javax.xml.bind:jaxb-api:2.2.11"
+  	compile "javax.xml.bind:jaxb-api:2.2.11"
  	compile "com.sun.xml.bind:jaxb-core:2.2.11"
  	compile "com.sun.xml.bind:jaxb-impl:2.2.11"
  	compile "javax.activation:activation:1.1.1"
       
-    testCompile project(path: ':ksmodel', configuration: 'testArtifacts')
-   
    // compile 'org.eclipse.persistence:org.eclipse.persistence.moxy:2.5.2'
    // compile 'org.glassfish.jersey.media:jersey-media-moxy:${jersey_version}'
    compile "org.glassfish.jersey.ext:jersey-declarative-linking:${jersey_version}"
@@ -50,15 +54,13 @@ dependencies {
    	compile "javax.transaction:javax.transaction-api:1.2"
    
    providedCompile 'javax.servlet:servlet-api:2.5'
-   // runtime 'javax.servlet:jstl:1.1.2'
+  // runtime 'javax.servlet:jstl:1.1.2'
    runtime 'org.slf4j:slf4j-log4j12:1.7.9'
 
 }
 
-apply plugin: 'aspectj'
-
 dependencies {
-	aspectpath "org.springframework:spring-aspects:${springVersion}"
+	aspects "org.springframework:spring-aspects:${springVersion}"
 }
 
 apply plugin: 'eclipse'
