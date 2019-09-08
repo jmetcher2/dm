@@ -7,8 +7,6 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 import javax.validation.constraints.AssertFalse;
 
-import au.id.lagod.dm.collections.Association;
-
 /*
  * Adds methods for collection managers that are managing a many to many association
  * between two domain objects via an intermediate "join" object.
@@ -22,7 +20,7 @@ import au.id.lagod.dm.collections.Association;
  * relationships that makeup the many to many, and the association object knows about both managers
  * (it has the two many-to-one relationships after all), so we can automatically maintain both sides.
  *  
- * For example, if we are modelling an many-to-many association between users and roles, we would have objects:
+ * For example, if we are modelling a many-to-many association between users and roles, we would have objects:
  * 
  * User - UserRole - Role
  * 
@@ -47,17 +45,24 @@ import au.id.lagod.dm.collections.Association;
  * 		 
  *   
  */
-public class AssociationCollectionManager<A extends BaseDomainObject,T extends BaseAssociationDomainObject,B extends BaseDomainObject> extends
+public abstract class AssociationCollectionManager<A extends BaseDomainObject,T extends BaseAssociationDomainObject,B extends BaseDomainObject> extends
 		DomainCollectionManager<T> 
 		implements AssociationManager<T, B> {
 
 	protected A parent;
-	private Association<A,T,B> spec;
+	private String associateFieldName;
+	private Class<B> associateClazz;
+	private Class<T> associationClazz;
 	
-	public AssociationCollectionManager(A parent, Collection<T> c, Association<A,T,B> association) {
+	public AssociationCollectionManager(A parent, Collection<T> c, 
+			String associateFieldName,
+			Class<B> associateClazz,
+			Class<T> associationClazz) {
 		super(c);
 		this.parent = parent;
-		this.spec = association;
+		this.associateFieldName = associateFieldName;
+		this.associateClazz = associateClazz;
+		this.associationClazz = associationClazz;
 	}
 	
 	public AssociationCollectionManager(Collection<T> c) {
@@ -70,7 +75,7 @@ public class AssociationCollectionManager<A extends BaseDomainObject,T extends B
 	
 	@Override
 	public Class<T> getManagedObjectClass() {
-		return spec.getAssociationClazz();
+		return associationClazz;
 	}
 
 
@@ -87,11 +92,11 @@ public class AssociationCollectionManager<A extends BaseDomainObject,T extends B
 	 * E.g. if UserRole has fields user and role, this would return the string "role"
 	 */
 	public String getAssociateName() {
-		return spec.getAssociateFieldName();
+		return associateFieldName;
 	};
 	
 	protected Class<B> getAssociateClass() {
-		return spec.getAssociateClazz();
+		return associateClazz;
 	};
 
 	/**
@@ -102,9 +107,11 @@ public class AssociationCollectionManager<A extends BaseDomainObject,T extends B
 	 * @param associate
 	 * @return a new association object
 	 */
-	protected T newAssociationObject(B associate) {
-		return spec.getCreateAssociationObject().apply(parent).apply(associate);
-	}
+	protected abstract T newAssociationObject(B associate);
+	
+	protected abstract void removeAssociationObject(T ao);
+	
+	protected  abstract B getAssociate(T ao);
 	
 	/* ******************************************************************************
 	 * 
@@ -126,8 +133,6 @@ public class AssociationCollectionManager<A extends BaseDomainObject,T extends B
 			throw new java.lang.Error("Failed to create an association object from a given associate.  You may need to use a create() method with more arguments.");
 		}
 		
-		AssociationParents<A, T, B> ap = ao.getAssociationParents();
-		ap.add(ao);
 		return ao;
 	}
 
@@ -159,7 +164,7 @@ public class AssociationCollectionManager<A extends BaseDomainObject,T extends B
 	public boolean remove(Object o) {
 		if (super.remove(o)) {
 			T ao = getManagedObjectClass().cast(o);
-			ao.getAssociationParents().remove(ao);
+			removeAssociationObject(ao);
 			return true;
 		}
 		else {
@@ -170,10 +175,6 @@ public class AssociationCollectionManager<A extends BaseDomainObject,T extends B
 	public Set<B> getAssociates() {
 		return collection.stream().map(e -> getAssociate(e)).collect(Collectors.toSet());
 	}
-	
-	protected  B getAssociate(T ao) {
-		return (B) spec.getGetAssociate().apply(ao);
-	};
 	
 	/** 
 	 * Add an 

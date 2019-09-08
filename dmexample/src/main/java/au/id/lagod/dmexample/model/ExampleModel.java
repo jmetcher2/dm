@@ -1,6 +1,7 @@
 package au.id.lagod.dmexample.model;
 
 import au.id.lagod.dm.config.Bootstrapper;
+import au.id.lagod.dmexample.model.customer.Customer;
 import au.id.lagod.dmexample.model.customer.CustomerManager;
 
 public class ExampleModel extends au.id.lagod.dm.collections.Model {
@@ -18,6 +19,10 @@ public class ExampleModel extends au.id.lagod.dm.collections.Model {
 
 	public CustomerManager getCustomers() {
 		return customers;
+	}
+	
+	public Customer customers(String name) {
+		return getCustomers().get(name);
 	}
 
 }
