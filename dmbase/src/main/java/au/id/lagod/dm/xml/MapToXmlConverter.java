@@ -31,7 +31,7 @@ public class MapToXmlConverter {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void convertObject(String name, Object o, XMLStreamWriter xmlWriter) throws XMLStreamException {
-			if (converters.containsKey(o.getClass())) {
+			if (o != null && converters.containsKey(o.getClass())) {
 				converters.get(o.getClass()).convert(name, o, xmlWriter);
 			}
 			else if (o instanceof Map) {
