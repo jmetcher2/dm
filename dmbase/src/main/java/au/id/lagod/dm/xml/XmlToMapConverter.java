@@ -30,6 +30,9 @@ public class XmlToMapConverter {
 	}
 
 	public XmlMap convertNodesFromXmlString(String xml)  {
+		if (xml == null) {
+			return new XmlMap();
+		}
 	    InputStream is = new ByteArrayInputStream(xml.getBytes());  // implies UTF-8
 	    return convertNodesFromXmlStream(is);
 	}

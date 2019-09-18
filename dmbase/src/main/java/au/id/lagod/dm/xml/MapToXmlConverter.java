@@ -2,6 +2,7 @@ package au.id.lagod.dm.xml;
 
 import java.io.StringWriter;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.xml.stream.XMLOutputFactory;
@@ -10,6 +11,15 @@ import javax.xml.stream.XMLStreamWriter;
 
 public class MapToXmlConverter {
 	
+	private Map<Class, XmlObjectConverter> converters = new HashMap<Class, XmlObjectConverter>();
+
+	public MapToXmlConverter(Map<Class, XmlObjectConverter> converters) {
+		this.converters = converters;
+	}
+
+	public MapToXmlConverter() {
+	}
+
 	public String convert( String name, String namespace, Map<String, Object> map) throws XMLStreamException {
 		StringWriter writer = new StringWriter();
 		XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
@@ -21,7 +31,10 @@ public class MapToXmlConverter {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void convertObject(String name, Object o, XMLStreamWriter xmlWriter) throws XMLStreamException {
-			if (o instanceof Map) {
+			if (converters.containsKey(o.getClass())) {
+				converters.get(o.getClass()).convert(name, o, xmlWriter);
+			}
+			else if (o instanceof Map) {
 				convertMap(name, "", (Map<String, Object>) o, xmlWriter);
 			}
 			else if (o instanceof Collection) {

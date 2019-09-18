@@ -13,7 +13,6 @@ dependencies {
 	compile 'org.glassfish.web:javax.el:2.2.4';
 	
 	compile 'commons-beanutils:commons-beanutils:1.9.2'
-	compile 'joda-time:joda-time:2.9.2'
 	
 	compile 'com.fasterxml.jackson.core:jackson-databind:2.6.3'
 	

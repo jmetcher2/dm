@@ -18,6 +18,7 @@ public class LazyXmlMap {
 	boolean mapStale = true;
 	private String rootElementName;
 	private String namespace;
+	private Map<Class, XmlObjectConverter> converters = new HashMap<Class, XmlObjectConverter>();
 	
 	public LazyXmlMap() {}
 	
@@ -37,18 +38,27 @@ public class LazyXmlMap {
 		xmlStale = true;
 	}
 	
+	public void registerConverter(Class clazz, XmlObjectConverter converter) {
+		this.converters.put(clazz, converter);
+	}
+	
 	@SuppressWarnings("unchecked")
 	public Map<String, Object> getMap() {
 		if (mapStale) {
 			map = new XmlToMapConverter().convertNodesFromXmlString(xml);
 			mapStale = false;
 		}
-		return new HashMap<String, Object>((Map<String, Object>) map.get(rootElementName));
+		
+		Map<String, Object> contents = (Map<String, Object>) map.get(rootElementName);
+		if (map.get(rootElementName) == null)
+			return new HashMap<String, Object>();
+
+		return new HashMap<String, Object>(contents);
 	}
 	
 	public String getXml() throws XMLStreamException {
 		if (xmlStale) {
-			xml = new MapToXmlConverter().convert(rootElementName, namespace, map);
+			xml = new MapToXmlConverter(converters).convert(rootElementName, namespace, map);
 			xmlStale = false;
 		}
 		return xml;
