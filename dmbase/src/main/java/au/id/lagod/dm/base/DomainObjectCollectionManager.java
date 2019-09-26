@@ -64,14 +64,15 @@ public abstract class DomainObjectCollectionManager<T extends BaseDomainObject> 
 	protected class AddDomainObject extends ValidatedCommand<Boolean> {
 		
 		@Valid 		private T domainObject;
-		@AssertTrue private boolean nameIsUnique = true;
+		@AssertTrue private boolean validatedForAdd = true;
 
 		public AddDomainObject(T domainObject) {
 			this.domainObject = domainObject;
-			
-			if (hasTextKey) {
-				this.nameIsUnique = get(domainObject.getTextKey()) == null;
-			}
+			this.validatedForAdd = validateForAdd(domainObject);
+		}
+		
+		protected boolean validateForAdd(T domainObject) {
+			return !hasTextKey || get(domainObject.getTextKey()) == null;
 		}
 		
 		@Override
