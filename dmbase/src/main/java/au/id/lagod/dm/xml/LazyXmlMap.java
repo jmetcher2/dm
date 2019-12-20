@@ -58,14 +58,14 @@ public class LazyXmlMap {
 	
 	public String getXml() throws XMLStreamException {
 		if (xmlStale) {
-			xml = new MapToXmlConverter(converters).convert(rootElementName, namespace, map);
+			xml = new MapToXmlConverter(converters).convert(rootElementName, namespace, getMap());
 			xmlStale = false;
 		}
 		return xml;
 	}
 	
 	public void setMap(Map<String, Object> newMap) {
-		this.map = newMap;
+		this.map.put(rootElementName, newMap);
 		xmlStale = true;
 		mapStale = false;
 	}

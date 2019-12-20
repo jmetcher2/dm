@@ -1,5 +1,5 @@
 subprojects {
-	version = '0.5'
+	version = '0.6'
 
 	buildscript {
 	    repositories {
@@ -16,7 +16,7 @@ subprojects {
 
 	ext {
 		aspectjVersion = '1.9.4'
-		springVersion = '5.0.8.RELEASE'
+		springVersion = '5.2.1.RELEASE'
 		
 	}
 

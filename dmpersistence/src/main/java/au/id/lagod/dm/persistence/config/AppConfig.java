@@ -9,6 +9,7 @@ import org.springframework.context.annotation.AdviceMode;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.aspectj.EnableSpringConfigured;
+import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -20,6 +21,9 @@ import au.id.lagod.dm.base.Utility;
 @EnableTransactionManagement(mode=AdviceMode.ASPECTJ)
 @EnableSpringConfigured
 public abstract class AppConfig {
+	
+	@Autowired
+	Environment environment;
 	
 	@Bean
 	public com.mchange.v2.c3p0.ComboPooledDataSource getDataSource() {
@@ -102,6 +106,17 @@ public abstract class AppConfig {
 		} catch (IOException e) {
 			throw new Error(e);
 		}
+		
+		// spring context properties
+		// TODO: this is a breach of layering
+		if (environment.containsProperty("ksemodel.db.user"))
+			properties.put("db.user",  environment.getProperty("ksemodel.db.user"));
+		if (environment.containsProperty("ksemodel.db.password"))
+			properties.put("db.password",  environment.getProperty("ksemodel.db.password"));
+		if (environment.containsProperty("ksemodel.dburl"))
+			properties.put("dburl",  environment.getProperty("ksemodel.dburl"));
+		if (environment.containsProperty("ksemodel.driver"))
+			properties.put("driver",  environment.getProperty("ksemodel.driver"));
 		
 		// system properties
 		if (System.getProperty("db.user") != null)
