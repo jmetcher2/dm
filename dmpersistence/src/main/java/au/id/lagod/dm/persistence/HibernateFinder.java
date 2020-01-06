@@ -109,7 +109,8 @@ public class HibernateFinder<T> extends BaseFinder<T> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public T findByID(Integer id) {
+	@Override
+	public T findById(Long id) {
 		return (T) sf.getCurrentSession().get(clazz, id);
 	}
 		

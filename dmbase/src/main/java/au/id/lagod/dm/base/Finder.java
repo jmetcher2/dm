@@ -26,5 +26,7 @@ public interface Finder<T> {
 	public abstract T findOne(String[] paramNames, Object[] values);
 
 	public abstract T findOne(Map<String, Object> params);
+	
+	public abstract T findById(Long id);
 
 }

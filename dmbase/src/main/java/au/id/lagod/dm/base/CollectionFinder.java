@@ -59,5 +59,10 @@ public class CollectionFinder<T> extends BaseFinder<T> {
 		return predicates;
 	}
 
+	@Override
+	public T findById(Long id) {
+		return super.findbyId(id);
+	}
+
 	
 }

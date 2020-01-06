@@ -115,6 +115,11 @@ public abstract class DomainCollectionManager<T extends BaseDomainObject> implem
 	public List<T> findAll() {
 		return newFinder().findAll();
 	}
+	
+	@Override
+	public T findById(Long id) {
+		return newFinder().findById(id);
+	}
 
 	/*
 	 * DELEGATE TO COLLECTION

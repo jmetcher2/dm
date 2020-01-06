@@ -64,7 +64,8 @@ public abstract class DomainObjectCollectionManager<T extends BaseDomainObject> 
 	protected class AddDomainObject extends ValidatedCommand<Boolean> {
 		
 		@Valid 		private T domainObject;
-		@AssertTrue private boolean validatedForAdd = true;
+		@AssertTrue(message="The text key must be unique") 
+					private boolean validatedForAdd = true;
 
 		public AddDomainObject(T domainObject) {
 			this.domainObject = domainObject;

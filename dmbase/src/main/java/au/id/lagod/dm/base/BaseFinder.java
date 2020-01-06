@@ -77,5 +77,9 @@ public abstract class BaseFinder<T> implements Finder<T>  {
 		else
 			return results.get(0);
 	}
+	
+	public T findbyId(Long id) {
+		return findOne("id", id);
+	}
 
 }
