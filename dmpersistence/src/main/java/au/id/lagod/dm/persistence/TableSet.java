@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import org.hibernate.Hibernate;
 import org.hibernate.SessionFactory;
@@ -19,10 +20,16 @@ public class TableSet<T extends BaseDomainObject>  extends AbstractSet<T> implem
 
 	private SessionFactory sf;
 	private Class<T> clazz;
+	private TableSetFilter<T> filter;
 	
 	public TableSet(SessionFactory sf, Class<T> clazz) {
+		this(sf,  clazz, null);
+	}
+
+	public TableSet(SessionFactory sf, Class<T> clazz, TableSetFilter<T> filter) {
 		this.sf = sf;
 		this.clazz = clazz;
+		this.filter = filter;
 	}
 
 	@Override
@@ -89,9 +96,17 @@ public class TableSet<T extends BaseDomainObject>  extends AbstractSet<T> implem
 	}
 	
 	protected Iterator<T> queryListIterator() {
-		CriteriaQuery<T> query = sf.getCurrentSession().getCriteriaBuilder().createQuery(clazz);
-		query.select(query.from(clazz));
+		CriteriaBuilder cb = sf.getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<T> query = cb.createQuery(clazz);
+		Root<T> r = query.from(clazz);
+		
+		query.select(r);
+		if (filter != null) {
+			query = filter.filter(query, r, cb);
+		}
+		
 		Query<T> q = sf.getCurrentSession().createQuery(query);
+		
 		return q.getResultList().iterator();
 	}
 
