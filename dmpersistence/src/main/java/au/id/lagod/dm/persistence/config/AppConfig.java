@@ -2,6 +2,8 @@ package au.id.lagod.dm.persistence.config;
 
 import java.beans.PropertyVetoException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,21 +50,26 @@ public abstract class AppConfig {
 
 	@Bean
 	@Autowired
-    public org.springframework.orm.hibernate5.LocalSessionFactoryBean getSessionFactory()
+    public org.springframework.orm.hibernate5.LocalSessionFactoryBean getSessionFactory(List<ModelConfig> modelConfigs)
     {
 		org.springframework.orm.hibernate5.LocalSessionFactoryBean lsfb = new org.springframework.orm.hibernate5.LocalSessionFactoryBean();
         lsfb.setDataSource(getDataSource());
         lsfb.setHibernateProperties(getHibernateProperties());  
+        
+        List<String> packages = getPackagesToScan();
+        for (ModelConfig mc: modelConfigs) {
+        	packages.addAll(mc.getPackagesToScan());
+        	mc.configureSessionFactoryBean(lsfb);
+        }
         lsfb.setPackagesToScan(
-        		getPackagesToScan()
+        		packages.toArray(new String[] {})
         );
-        configureSessionFactoryBean(lsfb);
 
         return lsfb;
     }
 	
-	protected String [] getPackagesToScan() {
-		return new String[0];
+	protected List<String> getPackagesToScan() {
+		return new ArrayList<String>();
 	};
 	protected void configureSessionFactoryBean(org.springframework.orm.hibernate5.LocalSessionFactoryBean lsfb) {
 	  // Do nothing
@@ -72,11 +79,11 @@ public abstract class AppConfig {
 
     @Bean(name="transactionManager")
     @Autowired
-    public PlatformTransactionManager getTransactionManager() {
+    public PlatformTransactionManager getTransactionManager(org.springframework.orm.hibernate5.LocalSessionFactoryBean sf) {
     	//JpaTransactionManager jtm = new JpaTransactionManager();
     	//jtm.setEntityManagerFactory(sf);
     	HibernateTransactionManager htm = new HibernateTransactionManager();
-    	htm.setSessionFactory(getSessionFactory().getObject());
+    	htm.setSessionFactory(sf.getObject());
     	JtaAnnotationTransactionAspect.aspectOf().setTransactionManager(htm);
     	return htm;
     }
