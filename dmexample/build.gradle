@@ -17,7 +17,7 @@ repositories {
 
 
 
-def dmVersion = '0.2'
+def dmVersion = '0.9'
 
 apply plugin: 'java'
 apply plugin: 'java-library-distribution'  // We're assuming we'll want to distribute our model

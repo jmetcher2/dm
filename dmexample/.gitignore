@@ -1,2 +1,4 @@
 /derby.log
 /bin/*
+/build/
+/bin/
