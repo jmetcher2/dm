@@ -32,18 +32,18 @@ subprojects {
 		mavenLocal()
 	    mavenCentral()
 	    maven {
-	    	url  'http://repository.jboss.org/nexus/content/groups/public'
+	    	url  'https://repository.jboss.org/nexus/content/groups/public'
 	    }
 	}
 
 	distributions {
 	    main{
-		baseName = project.name
+		distributionBaseName = project.name
 	    }
 	}
 
 	task wrapper(type: Wrapper) {
-	    gradleVersion = '5.4.1'
+	    gradleVersion = '6.5.1'
 	}
 
 	configurations {

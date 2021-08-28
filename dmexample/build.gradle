@@ -1,13 +1,13 @@
 // This is all the aspectJ stuff
 plugins {
-    id "io.freefair.aspectj.compile-time-weaving" version "3.7.5"
+    id "io.freefair.aspectj" version "6.1.0"
 }
 
 def aspectjVersion = '1.9.4'  // The aspectj plugin will pick this up
 
 repositories {
   // This is where we'll find the aspectj plugin, above
-  // If you're not using aspectj but you are using other 3rd parth plugins,
+  // If you're not using aspectj but you are using other 3rd party plugins,
   // move this block down to the main repositories section below
     maven {
       url "https://plugins.gradle.org/m2/"
@@ -32,11 +32,11 @@ repositories {
 }
 
 dependencies {
-	compile "au.id.lagod:dmpersistence:${dmVersion}"
+	implementation "au.id.lagod:dmpersistence:${dmVersion}"
 
-	testCompile 'junit:junit:4.12'
-  compile 'org.apache.derby:derby:10.15.1.3'
-  compile 'org.apache.derby:derbyshared:10.15.1.3'
+	testImplementation 'junit:junit:4.12'
+  implementation 'org.apache.derby:derby:10.15.1.3'
+  implementation 'org.apache.derby:derbyshared:10.15.1.3'
 }
 
 test {

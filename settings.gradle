@@ -1,1 +1,1 @@
-include 'dmbase','dmpersistence', 'api'
+include 'dmbase','dmpersistence', 'dmexample'

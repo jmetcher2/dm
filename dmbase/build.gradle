@@ -1,40 +1,24 @@
 plugins {
-    id "io.freefair.aspectj.compile-time-weaving" version "3.7.5"
-	id "org.datlowe.maven-publish-auth" version "2.0.2"
+    id "io.freefair.aspectj" version "6.1.0"
+	id "maven-publish"
 }
 
 aspectjVersion = '1.9.4'
 
 dependencies {
-	compile 'junit:junit:4.12';
+	implementation "org.aspectj:aspectjtools:$aspectjVersion"
 
-	compile 'org.hibernate:hibernate-validator:5.2.4.Final';
-	compile 'javax.el:javax.el-api:2.2.4';
-	compile 'org.glassfish.web:javax.el:2.2.4';
-	
-	compile 'commons-beanutils:commons-beanutils:1.9.2'
-	
-	compile 'com.fasterxml.jackson.core:jackson-databind:2.8.10'
-	
-	
-}
+	testImplementation 'junit:junit:4.12';
 
-publishing {
-    publications {
-        maven(MavenPublication) {
-            groupId = 'au.id.lagod'
-            artifactId = 'dmbase'
-            version = project.version
-
-            from components.java
-        }
-    }
-    repositories {
-        maven {
-        	name = "libs-release-local"
-            url = "http://lonbamboo2:8081/artifactory/libs-release-local"
-        }
-    }
+	api 'org.hibernate:hibernate-validator:5.2.4.Final';
+	api 'javax.el:javax.el-api:2.2.4';
+	api 'org.glassfish.web:javax.el:2.2.4';
+	
+	api 'commons-beanutils:commons-beanutils:1.9.2'
+	
+	api 'com.fasterxml.jackson.core:jackson-databind:2.8.10'
+	
+	
 }
 
 apply plugin: 'eclipse'
