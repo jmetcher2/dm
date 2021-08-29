@@ -41,9 +41,12 @@ public class Utility {
 		return ret;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static String printMessages(javax.validation.ConstraintViolationException e) {
 		Set<ConstraintViolation<BaseDomainObject>> cvs = new HashSet<ConstraintViolation<BaseDomainObject>>(0);
-		cvs.addAll((Collection<? extends ConstraintViolation<BaseDomainObject>>) e.getConstraintViolations());
+		for (ConstraintViolation<?> cv: e.getConstraintViolations()) {
+			cvs.add((ConstraintViolation<BaseDomainObject>) cv);
+		}
 		return e.getMessage().concat(" " + printMessages(cvs));
 	}
 

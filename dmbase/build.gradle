@@ -1,6 +1,5 @@
 plugins {
     id "io.freefair.aspectj" version "6.1.0"
-	id "maven-publish"
 }
 
 aspectjVersion = '1.9.4'
@@ -19,6 +18,18 @@ dependencies {
 	api 'com.fasterxml.jackson.core:jackson-databind:2.8.10'
 	
 	
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'au.id.lagod'
+            artifactId = 'dmbase'
+            version = project.version
+
+            from components.java
+        }
+    }
 }
 
 apply plugin: 'eclipse'

@@ -1,6 +1,5 @@
 plugins {
     id "io.freefair.aspectj" version "6.1.0"
-	id "maven-publish"
 }
 
 aspectjVersion = '1.9.4'
@@ -26,8 +25,8 @@ dependencies {
  	
  	api "javax.transaction:javax.transaction-api:1.2"
 	
-	testImplementation "org.springframework:spring-test:${springVersion}"
-	testImplementation 'junit:junit:4.+';
+	implementation "org.springframework:spring-test:${springVersion}"
+	implementation 'junit:junit:4.12';
 	
 	implementation 'net.sourceforge.jtds:jtds:1.2.7';
 	
