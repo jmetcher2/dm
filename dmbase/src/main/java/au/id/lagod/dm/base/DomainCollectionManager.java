@@ -252,6 +252,16 @@ public abstract class DomainCollectionManager<T extends BaseDomainObject> implem
 						((DomainObjectCollectionManager<S>) value).flatten(nextLevelNames, values);
 					}
 				}
+				else if (value instanceof BaseDomainObject) {
+					List<String> nextLevelNames = new ArrayList<String>(names);
+					nextLevelNames.remove(0);
+					if (nextLevelNames.size() == 0) {
+						values.add((S) value);
+					}
+					else {
+						((S) value).flatten(nextLevelNames, values);
+					}
+				}
 				else {
 					// TODO: Here we'd want to continue down the name list until we reach another DomainObjectCollectionManager
 					throw new java.lang.Error ("Not handling this case yet");

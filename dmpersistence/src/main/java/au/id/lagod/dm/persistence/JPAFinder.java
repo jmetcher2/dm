@@ -1,5 +1,6 @@
 package au.id.lagod.dm.persistence;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +9,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.From;
 import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.hibernate.Criteria;
@@ -41,12 +43,15 @@ public class JPAFinder<T> extends BaseFinder<T> {
 		CriteriaQuery<T> cr = cb.createQuery(clazz);
 		Root<T> root = cr.from(clazz);
 		CriteriaQuery<T> cq = cr.select(root);
+		
+		Map<String,Object> allParams = new HashMap<>();
 		if (globalCriteria != null) {
-			mapToCriteria(cq, cb, root, globalCriteria);
+			allParams.putAll(globalCriteria);
 		}
 
-		if (params != null) {
-			mapToCriteria(cq, cb, root, params);  // non-generic hibernate function
+		if (allParams != null) {
+			List<Predicate> predicates = mapToCriteria(cq, cb, root, params);  
+			cq.where(predicates.toArray(new Predicate[] {}));
 		}
 		return sf.getCurrentSession().createQuery(cq).getResultList();
 	}
@@ -55,7 +60,8 @@ public class JPAFinder<T> extends BaseFinder<T> {
 	 * Builds criteria for a query by interpreting the map as field name/value pairs
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public CriteriaQuery<T> mapToCriteria(CriteriaQuery<T> cq, CriteriaBuilder cb, From from, Map<String,Object> params) {
+	public List<Predicate> mapToCriteria(CriteriaQuery<T> cq, CriteriaBuilder cb, From from, Map<String,Object> params) {
+		List<Predicate> predicates = new ArrayList<>();
 		for (String key: params.keySet()) {
 
 				/*
@@ -65,7 +71,7 @@ public class JPAFinder<T> extends BaseFinder<T> {
 				 */
 				if (params.get(key) instanceof Map) {
 					Join j = from.join(key);
-					mapToCriteria(cq, cb, j, (Map<String, Object>) params.get(key));  // association criteria
+					predicates.addAll(mapToCriteria(cq, cb, j, (Map<String, Object>) params.get(key)));  // association criteria
 				}
 				
 				/*
@@ -83,16 +89,16 @@ public class JPAFinder<T> extends BaseFinder<T> {
 						join = join.join(temp[i]);
 					}
 					
-					cq = cq.where(cb.equal(join.get(value), params.get(key)));
+					predicates.add(cb.equal(join.get(value), params.get(key)));
 				}
 				
 				else if (params.get(key) == null)
-					cq = cq.where(cb.isNull(from.get(key)));
+					predicates.add(cb.isNull(from.get(key)));
 				else
-					cq = cq.where(cb.equal(from.get(key), params.get(key)));
+					predicates.add(cb.equal(from.get(key), params.get(key)));
 		}
 		
-		return cq;
+		return predicates;
 	}
 	
 	// TODO: these two methods ignore any global criteria set.  This means that 
