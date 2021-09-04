@@ -17,6 +17,8 @@ dependencies {
 	
 	api 'com.fasterxml.jackson.core:jackson-databind:2.8.10'
 	
+	testImplementation 'javax.xml.bind:jaxb-api:2.3.0'
+	
 	
 }
 

@@ -1,12 +1,13 @@
 package au.id.lagod.dm.test;
 
 import au.id.lagod.dm.base.BaseDomainObject;
+import au.id.lagod.dm.base.TextKey;
 import au.id.lagod.dm.validators.Restricted;
 
 public class TestObject extends BaseDomainObject {
 	
 	Integer intField;
-	String stringField;
+	@TextKey String stringField;
 	TestObject nestedObject;
 	
 	@Restricted

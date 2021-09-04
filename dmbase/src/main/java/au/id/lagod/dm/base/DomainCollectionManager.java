@@ -165,9 +165,22 @@ public abstract class DomainCollectionManager<T extends BaseDomainObject> implem
 		return collection.remove(o);
 	}
 
+	@SuppressWarnings("unchecked")
 	public boolean removeAll(Collection<?> c) {
-		for (Object o: c) {
-			remove(o);
+		if (c.equals(collection) || c.equals(this)) {
+			Iterator<?> iterator = c.iterator();
+			while (iterator.hasNext()) {
+				Object o = iterator.next();
+				if (contains(o)) {
+					((T) o).removeAssociates();
+				}
+				iterator.remove();
+			}
+		}
+		else {
+			for (Object o: c) {
+				remove(o);
+			}
 		}
 		return true;
 	}
