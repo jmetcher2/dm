@@ -114,17 +114,6 @@ public abstract class AppConfig {
 			throw new Error(e);
 		}
 		
-		// spring context properties
-		// TODO: this is a breach of layering
-		if (environment.containsProperty("ksemodel.db.user"))
-			properties.put("db.user",  environment.getProperty("ksemodel.db.user"));
-		if (environment.containsProperty("ksemodel.db.password"))
-			properties.put("db.password",  environment.getProperty("ksemodel.db.password"));
-		if (environment.containsProperty("ksemodel.dburl"))
-			properties.put("dburl",  environment.getProperty("ksemodel.dburl"));
-		if (environment.containsProperty("ksemodel.driver"))
-			properties.put("driver",  environment.getProperty("ksemodel.driver"));
-		
 		// system properties
 		if (System.getProperty("db.user") != null)
 			properties.put("db.user", System.getProperty("db.user"));
@@ -135,10 +124,6 @@ public abstract class AppConfig {
 		if (System.getProperty("driver") != null) 
 			properties.put("driver",  System.getProperty("driver"));
 		
-		// hardcoded properties
-		properties.putIfAbsent("driver","net.sourceforge.jtds.jdbc.Driver");
-
-        
         return properties;
     }
     
