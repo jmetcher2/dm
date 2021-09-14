@@ -14,12 +14,19 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
 
 import org.apache.commons.beanutils.PropertyUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 
+import au.id.lagod.dm.collections.FinderFactory;
 import au.id.lagod.dm.validators.Restricted;
 
+@Configurable
 public abstract class DomainCollectionManager<T extends BaseDomainObject> implements Set<T>, Finder<T> {
 
-	protected BaseFinder<T> finder;
+	@Autowired
+	FinderFactory finderFactory;
+	
+	protected Finder<T> finder;
 	@Valid
 	protected Collection<T> collection = new HashSet<T>(0);
 
@@ -29,7 +36,7 @@ public abstract class DomainCollectionManager<T extends BaseDomainObject> implem
 
 	public DomainCollectionManager(Collection<T> c) {
 		collection = c;
-		finder = new CollectionFinder<T>(collection);
+//		finder = finderFactory.getFinder(this);
 	}
 
 
@@ -39,10 +46,7 @@ public abstract class DomainCollectionManager<T extends BaseDomainObject> implem
 	 */
 	public void setCollection(Collection<T> c) {
 		this.collection = c;
-		finder = new CollectionFinder<T>(collection);
-	}
-	public void setFinder(BaseFinder<T> f) {
-		this.finder = f;
+		finder = finderFactory.getFinder(this);
 	}
 
 	public Collection<T> getCollection() {
@@ -50,9 +54,6 @@ public abstract class DomainCollectionManager<T extends BaseDomainObject> implem
 	}
 
 	public Finder<T> newFinder() {
-		if (finder == null) {
-			finder = new CollectionFinder<T>(collection);
-		}
 		return finder;
 	}
 

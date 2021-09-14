@@ -24,4 +24,7 @@ public class FolderManager extends DomainObjectCollectionManager<Folder> {
 		return Folder.class;
 	}
 
+	public Customer getCustomer() {
+		return customer;
+	}
 }

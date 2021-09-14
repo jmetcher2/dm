@@ -4,11 +4,18 @@ plugins {
 
 aspectjVersion = '1.9.4'
 
+sourceSets.main.aspectj.srcDirs = sourceSets.main.java.srcDirs
+
 dependencies {
+	aspect "org.springframework:spring-aspects:${springVersion}"
+	implementation "org.aspectj:aspectjrt:${aspectjVersion}"
+
 	implementation "org.aspectj:aspectjtools:$aspectjVersion"
 
 	testImplementation 'junit:junit:4.12';
 
+	api "org.springframework:spring-context:${springVersion}"
+	api "org.springframework:spring-aspects:${springVersion}"
 	api 'org.hibernate:hibernate-validator:5.2.4.Final';
 	api 'javax.el:javax.el-api:2.2.4';
 	api 'org.glassfish.web:javax.el:2.2.4';

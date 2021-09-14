@@ -1,0 +1,91 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>au.id.lagod</groupId>
+	<artifactId>dm</artifactId>
+	<version>0.9</version>
+	<packaging>pom</packaging>
+
+	<properties>
+		<aspectjVersion>1.9.8.M1</aspectjVersion>
+		<springVersion>5.2.1.RELEASE</springVersion>
+		<java.version>1.9</java.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>${aspectjVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>${aspectjVersion}</version>
+		</dependency>
+	</dependencies>
+	<dependencyManagement>
+	</dependencyManagement>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.8.1</version>
+					<configuration>
+						<release>9</release>
+						<source>${java.version}</source>
+						<target>${java.version}</target>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>dev.aspectj</groupId>
+					<artifactId>aspectj-maven-plugin</artifactId>
+					<version>1.13</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>compile</goal>       <!-- use this goal to weave all your main classes -->
+								<goal>test-compile</goal>  <!-- use this goal to weave all your test classes -->
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>dev.aspectj</groupId>
+										<artifactId>aspectj-maven-plugin</artifactId>
+										<versionRange>[1.0,)</versionRange>
+										<goals>
+											<goal>test-compile</goal>
+											<goal>compile</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<execute />
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+
+	<modules>
+		<module>dmbase</module>
+		<module>dmpersistence</module>
+	</modules>
+</project>

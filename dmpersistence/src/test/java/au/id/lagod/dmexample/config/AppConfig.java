@@ -11,6 +11,8 @@ import org.springframework.context.annotation.aspectj.EnableSpringConfigured;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import au.id.lagod.dm.collections.FinderFactory;
+import au.id.lagod.dmexample.model.ExampleFinderFactory;
 import au.id.lagod.dmexample.model.ExampleModel;
 
 @Configuration
@@ -21,6 +23,11 @@ public class AppConfig extends au.id.lagod.dm.persistence.config.AppConfig {
 	@Override
 	protected List<String> getPackagesToScan() {
 		return Arrays.asList(new String[] { "au.id.lagod.dmexample.model.**.*" });
+	}
+	
+	@Bean(name="finderFactory")
+	public FinderFactory getFinderFactory(SessionFactory sf) {
+		return new ExampleFinderFactory(sf);
 	}
 	
     @Bean(name="model")

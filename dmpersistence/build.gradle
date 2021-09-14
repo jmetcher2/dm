@@ -4,18 +4,30 @@ plugins {
 
 aspectjVersion = '1.9.4'
 
+compileAspectj {
+    ajcOptions {
+        outxml = true
+        outxmlfile = "bar.xml"
+    }
+}
 ext {
 	hibernateVersion = '5.3.5.Final'
 }
 
+sourceSets.main.aspectj.srcDirs = sourceSets.main.java.srcDirs
+
 dependencies {
 	api project (':dmbase')
 	
-	implementation "org.springframework:spring-context:${springVersion}"
+	aspect "org.springframework:spring-aspects:${springVersion}"
+	implementation "org.springframework:spring-aspects:${springVersion}"
+	implementation "org.aspectj:aspectjrt:$aspectjVersion"
+	
+	implementation "org.aspectj:aspectjtools:$aspectjVersion"
+
 	implementation "org.springframework:spring-orm:${springVersion}"
 	implementation "org.hibernate:hibernate-core:${hibernateVersion}"
 	implementation "org.hibernate:hibernate-c3p0:${hibernateVersion}"
-	implementation "org.springframework:spring-aspects:${springVersion}"
 	
 	implementation "javax.annotation:javax.annotation-api:1.3.1"
     implementation "javax.xml.bind:jaxb-api:2.2.11"
@@ -35,6 +47,10 @@ dependencies {
 	testImplementation 'junit:junit:4.12';
 	
 	
+}
+
+println( compileJava.actions)
+compileJava {
 }
 
 test {
