@@ -1,6 +1,5 @@
 package au.id.lagod.dmexample.model;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.hibernate.SessionFactory;

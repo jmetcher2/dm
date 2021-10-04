@@ -23,7 +23,6 @@ import au.id.lagod.dm.base.TextKey;
 import au.id.lagod.dmexample.model.customer.Customer;
 import au.id.lagod.dmexample.model.group.folder.FolderGroupManager;
 import au.id.lagod.dmexample.model.group.folder.GroupFolder;
-import au.id.lagod.dmexample.model.group.folder.GroupFolderManager;
 
 @Entity
 @Table(name="folders")

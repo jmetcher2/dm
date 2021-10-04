@@ -17,12 +17,24 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 
+import au.id.lagod.dm.collections.DefaultFinderFactory;
 import au.id.lagod.dm.collections.FinderFactory;
 import au.id.lagod.dm.validators.Restricted;
 
 @Configurable
 public abstract class DomainCollectionManager<T extends BaseDomainObject> implements Set<T>, Finder<T> {
 
+	/** 
+	 * Spring configuration into a transient class requires compile with aspectj and the spring aspects.
+	 * The alternative is to stash the finder factory in a static variable of a well-known class.  
+	 * The aspect configuration itself is static, so these options  amount to about 
+	 * the same thing: multiple spring contexts can overwrite each other's static global state.
+	 * To avoid this:
+	 *  - don't use multiple overlapping contexts
+	 *  - you can if necessary "evict" aspect state by calling aspectOf() delete method
+	 *  I've found the second only to be necessary in test code when using the Spring test framework, which
+	 *  has a habit of opening and caching multiple contexts.
+	 */
 	@Autowired
 	FinderFactory finderFactory;
 	
@@ -36,7 +48,7 @@ public abstract class DomainCollectionManager<T extends BaseDomainObject> implem
 
 	public DomainCollectionManager(Collection<T> c) {
 		collection = c;
-//		finder = finderFactory.getFinder(this);
+		this.finderFactory = new DefaultFinderFactory();
 	}
 
 
@@ -46,7 +58,6 @@ public abstract class DomainCollectionManager<T extends BaseDomainObject> implem
 	 */
 	public void setCollection(Collection<T> c) {
 		this.collection = c;
-		finder = finderFactory.getFinder(this);
 	}
 
 	public Collection<T> getCollection() {
@@ -54,6 +65,9 @@ public abstract class DomainCollectionManager<T extends BaseDomainObject> implem
 	}
 
 	public Finder<T> newFinder() {
+		if (finder == null) {
+			finder = finderFactory.getFinder(this);
+		}
 		return finder;
 	}
 

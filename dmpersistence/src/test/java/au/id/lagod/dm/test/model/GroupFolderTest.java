@@ -2,11 +2,9 @@ package au.id.lagod.dm.test.model;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-
 
 import au.id.lagod.dm.base.DomainObjectCollectionManager;
 import au.id.lagod.dm.test.AssociationPersistenceTests;

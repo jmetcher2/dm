@@ -8,7 +8,6 @@ import au.id.lagod.dm.test.BaseChildObjectPersistenceTests;
 import au.id.lagod.dmexample.model.ExampleModel;
 import au.id.lagod.dmexample.model.customer.Customer;
 import au.id.lagod.dmexample.model.customer.folder.Folder;
-import au.id.lagod.dmexample.model.group.Group;
 
 @ContextConfiguration(classes = {au.id.lagod.dmexample.config.AppConfig.class})
 public class FolderTest extends BaseChildObjectPersistenceTests<Folder, Customer> {

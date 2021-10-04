@@ -10,7 +10,8 @@
 	<properties>
 		<aspectjVersion>1.9.8.M1</aspectjVersion>
 		<springVersion>5.2.1.RELEASE</springVersion>
-		<java.version>1.9</java.version>
+		<hibernateVersion>5.3.5.Final</hibernateVersion>
+		<java.version>9</java.version>
 	</properties>
 
 	<dependencies>
@@ -23,6 +24,11 @@
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
 			<version>${aspectjVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${springVersion}</version>
 		</dependency>
 	</dependencies>
 	<dependencyManagement>
