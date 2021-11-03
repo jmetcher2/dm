@@ -34,6 +34,11 @@ public class Group extends BaseDomainObject implements ChildDomainObject {
 	@Column(name="description", length = 255)
 	@NotBlank @Size(max=255)											protected String description;
 	
+	// This is an example of a field that's not mandatory,
+	// but if it is non-null it has to be unique in the collection
+	@Column(name="code", length=255)
+	@Size(max=255)														protected String code;
+	
 	@TextKey
 	@Column(name="label", length = 20)
 	@NotBlank @Size(max=20)												protected String label;
@@ -61,6 +66,17 @@ public class Group extends BaseDomainObject implements ChildDomainObject {
 	
 	public String getDescription() { return description; }
 	public String getLabel() { return label; }
+	public String getCode() { return code; }
+	
+	/**
+	 * Protected method; only GroupManager should call this.
+	 * @see GroupManager#setCode(Group, String)
+	 * @param code
+	 */
+	protected String setCode(String code) {
+		this.code = code;
+		return code;
+	}
 
 	@Override
 	public BaseDomainObject getParent() {

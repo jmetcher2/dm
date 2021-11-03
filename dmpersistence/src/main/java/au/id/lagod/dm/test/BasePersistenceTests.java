@@ -2,9 +2,12 @@ package au.id.lagod.dm.test;
 
 import javax.annotation.Resource;
 
+import org.aspectj.lang.Aspects;
 import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.aspectj.AnnotationBeanConfigurerAspect;
 import org.springframework.test.context.transaction.AfterTransaction;
 import org.springframework.test.context.transaction.BeforeTransaction;
+import org.springframework.transaction.aspectj.AnnotationTransactionAspect;
 
 import au.id.lagod.dm.base.BaseDomainObject;
 
@@ -32,6 +35,13 @@ public abstract class BasePersistenceTests<ObjectType extends BaseDomainObject> 
 	@AfterTransaction
 	public void teardownAfterTransaction() {
 		DoInTransaction.doAction(txManager, () -> doTeardownAfterTransaction());
+		
+		// Spring test framework has a habit of caching and switching contexts without warning,
+		// meaning static configuration (like aspects) can get out of sync
+		// Destroying aspect state after each test ensures that it will be recreated from 
+		// the current context
+		Aspects.aspectOf(AnnotationBeanConfigurerAspect.class).destroy();
+		Aspects.aspectOf(AnnotationTransactionAspect.class).destroy();
 	}
 
 }
