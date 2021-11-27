@@ -11,6 +11,9 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
+import au.id.lagod.dm.base.finders.CollectionFinder;
+import au.id.lagod.dm.base.finders.FinderOperator;
+import au.id.lagod.dm.base.finders.FinderSpec;
 import au.id.lagod.dm.test.TestObject;
 
 public class CollectionFinderTest {
@@ -165,5 +168,33 @@ public class CollectionFinderTest {
 		TestObject to = finder.findOne("intField", 201);
 		assertEquals(to.getStringField(), "bb1"); // Should find the first one
 	}
+	
+	@Test
+	public void testFindContains() {
+		List<FinderSpec> specs = new ArrayList<>();
+		specs.add(new FinderSpec("stringField", FinderOperator.CONTAINS, "bb"));
+		List<TestObject> found = finder.find(specs);
+		assertEquals(found.size(), 2);
+	}
+
+
+	@Test
+	public void testFindContainsAtEnd() {
+		List<FinderSpec> specs = new ArrayList<>();
+		specs.add(new FinderSpec("stringField", FinderOperator.CONTAINS, "b1"));
+		List<TestObject> found = finder.find(specs);
+		assertEquals(found.size(), 1);
+	}
+
+
+	@Test
+	public void testFindContainsNotFound() {
+		List<FinderSpec> specs = new ArrayList<>();
+		specs.add(new FinderSpec("stringField", FinderOperator.CONTAINS, "AB"));
+		List<TestObject> found = finder.find(specs);
+		assertEquals(found.size(), 0);
+	}
+
+
 
 }

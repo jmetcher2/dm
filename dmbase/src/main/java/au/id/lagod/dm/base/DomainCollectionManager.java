@@ -17,6 +17,8 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 
+import au.id.lagod.dm.base.finders.Finder;
+import au.id.lagod.dm.base.finders.FinderSpec;
 import au.id.lagod.dm.collections.DefaultFinderFactory;
 import au.id.lagod.dm.collections.FinderFactory;
 import au.id.lagod.dm.validators.Restricted;
@@ -103,6 +105,10 @@ public abstract class DomainCollectionManager<T extends BaseDomainObject> implem
 
 
 	public List<T> find(Map<String, Object> params) {
+		return newFinder().find(params);
+	}
+
+	public List<T> find(List<FinderSpec> params) {
 		return newFinder().find(params);
 	}
 

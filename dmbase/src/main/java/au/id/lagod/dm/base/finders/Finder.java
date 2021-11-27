@@ -1,4 +1,4 @@
-package au.id.lagod.dm.base;
+package au.id.lagod.dm.base.finders;
 
 import java.util.List;
 import java.util.Map;
@@ -13,6 +13,8 @@ public interface Finder<T> {
 	 * @return
 	 */
 	public abstract List<T> find(Map<String, Object> params);
+
+	public abstract List<T> find(List<FinderSpec> params);
 
 	public abstract List<T> findAll();
 

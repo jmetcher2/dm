@@ -6,7 +6,7 @@ import org.hibernate.SessionFactory;
 
 import au.id.lagod.dm.base.BaseDomainObject;
 import au.id.lagod.dm.base.DomainCollectionManager;
-import au.id.lagod.dm.base.Finder;
+import au.id.lagod.dm.base.finders.Finder;
 import au.id.lagod.dm.collections.DefaultFinderFactory;
 import au.id.lagod.dm.persistence.JPAFinder;
 import au.id.lagod.dmexample.model.customer.Customer;

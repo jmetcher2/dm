@@ -1,8 +1,12 @@
-package au.id.lagod.dm.base;
+package au.id.lagod.dm.base.finders;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+
+import au.id.lagod.dm.base.Utility;
 
 /**
  * 
@@ -22,8 +26,24 @@ public abstract class BaseFinder<T> implements Finder<T>  {
 	/* (non-Javadoc)
 	 * @see com.medeserv.Finder#find(java.util.Map)
 	 */
-	public abstract List<T> find(Map<String, Object> params);
+	public abstract List<T> find(List<FinderSpec> params);
 
+	/* (non-Javadoc)
+	 * @see com.medeserv.Finder#find(java.util.Map)
+	 */
+	public List<T> find(Map<String, Object> params) {
+		List<FinderSpec> specs = mapToSpecList(params);
+		return find(specs);
+	}
+
+	public List<FinderSpec> mapToSpecList(Map<String, Object> params) {
+		List<FinderSpec> specs = new ArrayList<FinderSpec>();
+		for (Entry<String, Object> entry: params.entrySet()) {
+			specs.add(new FinderSpec(entry.getKey(), FinderOperator.EQUALS, entry.getValue()));
+		}
+		return specs;
+	};
+	
 	/* (non-Javadoc)
 	 * @see com.medeserv.Finder#findAll()
 	 */

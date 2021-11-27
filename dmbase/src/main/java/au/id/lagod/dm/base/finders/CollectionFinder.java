@@ -1,7 +1,7 @@
 /**
  * 
  */
-package au.id.lagod.dm.base;
+package au.id.lagod.dm.base.finders;
 
 import static org.apache.commons.collections.CollectionUtils.filter;
 import static org.apache.commons.collections.PredicateUtils.allPredicate;
@@ -29,39 +29,42 @@ public class CollectionFinder<T> extends BaseFinder<T> {
 	}
 
 	@Override
-	public List<T> find(Map<String, Object> params) {
+	public List<T> findAll() {
+		return new ArrayList<T>(collection);
+	}
+	
+	@Override
+	public T findById(Long id) {
+		return super.findbyId(id);
+	}
+
+	@Override
+	public List<T> find(List<FinderSpec> params) {
 		List<T> temp = new ArrayList<T>(this.collection);
 		
-		List<Predicate> predicates = mapToPredicates(params);
+		List<Predicate> predicates = speclistToPredicates(params);
 		
 		filter(temp, allPredicate(predicates));
 		
 		return temp;
 		
 	}
-	
-	@Override
-	public List<T> findAll() {
-		return new ArrayList<T>(collection);
-	}
-	
-	private List<Predicate> mapToPredicates(Map<String,Object> params) {
 
-		// Create a predicate collection from the property name/value pairs in params
+	private List<Predicate> speclistToPredicates(List<FinderSpec> params) {
+		// Create a predicate collection from the finderspec list
 		List<Predicate> predicates = new ArrayList<Predicate>();
 		if (params != null) {
-			Set<Map.Entry<String,Object>> entrySet = params.entrySet();
-			for (Map.Entry<String,Object> entry: entrySet) {
-				predicates.add(new BeanPropertyValueEqualsPredicate((String) entry.getKey(),entry.getValue(), true)); 
+			for (FinderSpec entry: params) {
+				if (FinderOperator.EQUALS.equals(entry.getOp())) {
+					predicates.add(new BeanPropertyValueEqualsPredicate(entry.getFieldName(),entry.getValue(), true));
+				}
+				else if (FinderOperator.CONTAINS.equals(entry.getOp())) {
+					predicates.add(new BeanPropertyValueContainsPredicate(entry.getFieldName(),entry.getValue()));
+				}
 			}
 		}
 		
 		return predicates;
-	}
-
-	@Override
-	public T findById(Long id) {
-		return super.findbyId(id);
 	}
 
 	

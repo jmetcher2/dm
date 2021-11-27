@@ -2,6 +2,8 @@ package au.id.lagod.dm.base;
 
 import java.util.List;
 
+import au.id.lagod.dm.base.finders.Finder;
+
 /**
  * 
  * @author jmetcher
