@@ -39,10 +39,10 @@ public class CollectionFinder<T> extends BaseFinder<T> {
 	}
 
 	@Override
-	public List<T> find(List<FinderSpec> params) {
+	public List<T> find(FinderSpec params) {
 		List<T> temp = new ArrayList<T>(this.collection);
 		
-		List<Predicate> predicates = speclistToPredicates(params);
+		List<Predicate> predicates = speclistToPredicates(params.getCriteria());
 		
 		filter(temp, allPredicate(predicates));
 		
@@ -50,11 +50,11 @@ public class CollectionFinder<T> extends BaseFinder<T> {
 		
 	}
 
-	private List<Predicate> speclistToPredicates(List<FinderSpec> params) {
+	private List<Predicate> speclistToPredicates(List<FinderCriterion> params) {
 		// Create a predicate collection from the finderspec list
 		List<Predicate> predicates = new ArrayList<Predicate>();
 		if (params != null) {
-			for (FinderSpec entry: params) {
+			for (FinderCriterion entry: params) {
 				if (FinderOperator.EQUALS.equals(entry.getOp())) {
 					predicates.add(new BeanPropertyValueEqualsPredicate(entry.getFieldName(),entry.getValue(), true));
 				}

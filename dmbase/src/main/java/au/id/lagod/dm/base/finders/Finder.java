@@ -14,7 +14,7 @@ public interface Finder<T> {
 	 */
 	public abstract List<T> find(Map<String, Object> params);
 
-	public abstract List<T> find(List<FinderSpec> params);
+	public abstract List<T> find(FinderSpec spec);
 
 	public abstract List<T> findAll();
 

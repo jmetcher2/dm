@@ -35,6 +35,9 @@ public class Folder extends BaseDomainObject implements ChildDomainObject {
 	@Column(name="name", length = 20)
 	@NotBlank @Size(max=20)												protected String name;
 	
+	@Column(name="description", length = 255)
+	@NotBlank @Size(max=255)											protected String description;
+	
 	@ManyToOne
 	@JoinColumn(name="customer_id")										protected Customer customer;
 
@@ -46,6 +49,7 @@ public class Folder extends BaseDomainObject implements ChildDomainObject {
 	protected Folder(Customer customer, String code) {
 		this.customer = customer;
 		this.name = code;
+		this.description = code;
 	}
 	
 	@Override
@@ -54,6 +58,11 @@ public class Folder extends BaseDomainObject implements ChildDomainObject {
 	}
 	
 	public String getName() { return name; }
+	public String getDescription() { return description; }
+	
+	public void setDescription(String newDesc) {
+		this.description = newDesc;
+	}
 
 	@Override
 	public BaseDomainObject getParent() {

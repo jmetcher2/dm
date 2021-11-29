@@ -77,6 +77,10 @@ public class Group extends BaseDomainObject implements ChildDomainObject {
 		this.code = code;
 		return code;
 	}
+	
+	public void setDescription(String newDescription) {
+		this.description = newDescription;
+	}
 
 	@Override
 	public BaseDomainObject getParent() {

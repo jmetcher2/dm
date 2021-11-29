@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 
 import au.id.lagod.dm.base.finders.Finder;
+import au.id.lagod.dm.base.finders.FinderCriterion;
 import au.id.lagod.dm.base.finders.FinderSpec;
 import au.id.lagod.dm.collections.DefaultFinderFactory;
 import au.id.lagod.dm.collections.FinderFactory;
@@ -108,7 +109,7 @@ public abstract class DomainCollectionManager<T extends BaseDomainObject> implem
 		return newFinder().find(params);
 	}
 
-	public List<T> find(List<FinderSpec> params) {
+	public List<T> find(FinderSpec params) {
 		return newFinder().find(params);
 	}
 

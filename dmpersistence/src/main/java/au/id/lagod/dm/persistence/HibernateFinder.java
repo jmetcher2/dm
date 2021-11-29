@@ -8,7 +8,9 @@ import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 
-import au.id.lagod.dm.base.BaseFinder;
+import au.id.lagod.dm.base.finders.BaseFinder;
+import au.id.lagod.dm.base.finders.FinderCriterion;
+import au.id.lagod.dm.base.finders.FinderSpec;
 
 
 public class HibernateFinder<T> extends BaseFinder<T> {
@@ -33,20 +35,20 @@ public class HibernateFinder<T> extends BaseFinder<T> {
 		Criteria criteria = sf.getCurrentSession().createCriteria(clazz);
 		//criteria.setCacheable(true);
 		if (globalCriteria != null) {
-			criteria = mapToCriteria(criteria, globalCriteria);
+			criteria = mapToCriteria(criteria, FinderSpec.mapToSpecList(globalCriteria));
 		}
 		return criteria;
 	}
 	
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<T> find(Map<String,Object> params) {
+	public List<T> find(FinderSpec params) {
 		Criteria criteria = newCriteria();
 		if (params == null) {
 			return criteria.list();
 		}
 		else {
-			return mapToCriteria(criteria, params).list();  // non-generic hibernate function
+			return mapToCriteria(criteria, params.getCriteria()).list();  // non-generic hibernate function
 		}
 	}
 
@@ -54,18 +56,20 @@ public class HibernateFinder<T> extends BaseFinder<T> {
 	 * Builds criteria for a query by interpreting the map as field name/value pairs
 	 */
 	@SuppressWarnings("unchecked")
-	public Criteria mapToCriteria(Criteria criteria, Map<String,Object> params) {
+	public Criteria mapToCriteria(Criteria criteria, List<FinderCriterion> params) {
 		Map<String,Criteria> nestedCriteriaMap = new HashMap<String,Criteria>();
 
-		for (String key: params.keySet()) {
+		for (FinderCriterion fc: params) {
+			String key = fc.getFieldName();
+			Object value = fc.getValue();
 
 				/*
 				 * Parameters where the parameter value is a map are interpreted as applying to a composed
 				 * object.  The key gives the field name of the composed object, and the map is then 
 				 * interpreted as field names/values within that object
 				 */
-				if (params.get(key) instanceof Map) {
-					mapToCriteria(criteria.createCriteria(key), (Map<String, Object>) params.get(key));  // association criteria
+				if (value instanceof Map) {
+					mapToCriteria(criteria.createCriteria(key), FinderSpec.mapToSpecList((Map<String, Object>) value));  // association criteria
 				}
 				
 				/*
@@ -77,7 +81,7 @@ public class HibernateFinder<T> extends BaseFinder<T> {
 					String [] temp = key.split("\\.", 2);
 					
 					Map<String,Object> nestedParams = new HashMap<String, Object>();
-					nestedParams.put(temp[1], params.get(key));
+					nestedParams.put(temp[1], value);
 					
 					// Remember if we've already created a subcriteria for this association, and if so use the same one
 					// Hibernate doesn't like two subcriteria on the same association.
@@ -86,13 +90,13 @@ public class HibernateFinder<T> extends BaseFinder<T> {
 					}
 					Criteria nestedCriteria = nestedCriteriaMap.get(temp[0]);
 					
-					mapToCriteria(nestedCriteria,nestedParams);
+					mapToCriteria(nestedCriteria,FinderSpec.mapToSpecList(nestedParams));
 				}
 				
-				else if (params.get(key) == null)
+				else if (value == null)
 					criteria.add(Restrictions.isNull(key));
 				else
-					criteria.add(Restrictions.eq(key,params.get(key)));
+					criteria.add(Restrictions.eq(key,value));
 		}
 		
 		return criteria;

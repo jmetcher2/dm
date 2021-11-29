@@ -14,6 +14,7 @@ import org.junit.Test;
 import au.id.lagod.dm.base.finders.CollectionFinder;
 import au.id.lagod.dm.base.finders.FinderOperator;
 import au.id.lagod.dm.base.finders.FinderSpec;
+import au.id.lagod.dm.base.finders.FinderCriterion;
 import au.id.lagod.dm.test.TestObject;
 
 public class CollectionFinderTest {
@@ -171,8 +172,8 @@ public class CollectionFinderTest {
 	
 	@Test
 	public void testFindContains() {
-		List<FinderSpec> specs = new ArrayList<>();
-		specs.add(new FinderSpec("stringField", FinderOperator.CONTAINS, "bb"));
+		FinderSpec specs = new FinderSpec()
+				.addCriterion("stringField", FinderOperator.CONTAINS, "bb");
 		List<TestObject> found = finder.find(specs);
 		assertEquals(found.size(), 2);
 	}
@@ -180,8 +181,8 @@ public class CollectionFinderTest {
 
 	@Test
 	public void testFindContainsAtEnd() {
-		List<FinderSpec> specs = new ArrayList<>();
-		specs.add(new FinderSpec("stringField", FinderOperator.CONTAINS, "b1"));
+		FinderSpec specs = new FinderSpec()
+				.addCriterion("stringField", FinderOperator.CONTAINS, "b1");
 		List<TestObject> found = finder.find(specs);
 		assertEquals(found.size(), 1);
 	}
@@ -189,8 +190,8 @@ public class CollectionFinderTest {
 
 	@Test
 	public void testFindContainsNotFound() {
-		List<FinderSpec> specs = new ArrayList<>();
-		specs.add(new FinderSpec("stringField", FinderOperator.CONTAINS, "AB"));
+		FinderSpec specs = new FinderSpec()
+				.addCriterion("stringField", FinderOperator.CONTAINS, "AB");
 		List<TestObject> found = finder.find(specs);
 		assertEquals(found.size(), 0);
 	}

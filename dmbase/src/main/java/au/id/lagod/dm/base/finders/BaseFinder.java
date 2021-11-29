@@ -26,24 +26,15 @@ public abstract class BaseFinder<T> implements Finder<T>  {
 	/* (non-Javadoc)
 	 * @see com.medeserv.Finder#find(java.util.Map)
 	 */
-	public abstract List<T> find(List<FinderSpec> params);
+	public abstract List<T> find(FinderSpec spec);
 
 	/* (non-Javadoc)
 	 * @see com.medeserv.Finder#find(java.util.Map)
 	 */
 	public List<T> find(Map<String, Object> params) {
-		List<FinderSpec> specs = mapToSpecList(params);
-		return find(specs);
+		return find(new FinderSpec(params));
 	}
 
-	public List<FinderSpec> mapToSpecList(Map<String, Object> params) {
-		List<FinderSpec> specs = new ArrayList<FinderSpec>();
-		for (Entry<String, Object> entry: params.entrySet()) {
-			specs.add(new FinderSpec(entry.getKey(), FinderOperator.EQUALS, entry.getValue()));
-		}
-		return specs;
-	};
-	
 	/* (non-Javadoc)
 	 * @see com.medeserv.Finder#findAll()
 	 */

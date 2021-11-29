@@ -7,6 +7,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.context.annotation.AdviceMode;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.aspectj.EnableSpringConfigured;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -25,7 +26,8 @@ public class AppConfig extends au.id.lagod.dm.persistence.config.AppConfig {
 		return Arrays.asList(new String[] { "au.id.lagod.dmexample.model.**.*" });
 	}
 	
-	@Bean(name="finderFactory")
+	@Primary
+	@Bean
 	public FinderFactory getFinderFactory(SessionFactory sf) {
 		return new ExampleFinderFactory(sf);
 	}

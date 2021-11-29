@@ -14,10 +14,12 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 
 import au.id.lagod.dm.base.finders.BaseFinder;
 import au.id.lagod.dm.base.finders.FinderOperator;
 import au.id.lagod.dm.base.finders.FinderSpec;
+import au.id.lagod.dm.base.finders.FinderCriterion;
 
 
 public class JPAFinder<T> extends BaseFinder<T> {
@@ -39,31 +41,38 @@ public class JPAFinder<T> extends BaseFinder<T> {
 	}
 	
 	@Override
-	public List<T> find(List<FinderSpec> params) {
+	public List<T> find(FinderSpec params) {
 		CriteriaBuilder cb = sf.getCurrentSession().getCriteriaBuilder();
 		CriteriaQuery<T> cr = cb.createQuery(clazz);
 		Root<T> root = cr.from(clazz);
 		CriteriaQuery<T> cq = cr.select(root);
 		
-		List<FinderSpec> allParams = new ArrayList<>(params);
+		List<FinderCriterion> allParams = new ArrayList<>(params.getCriteria());
 		if (globalCriteria != null) {
-			allParams.addAll(mapToSpecList(globalCriteria));
+			allParams.addAll(FinderSpec.mapToSpecList(globalCriteria));
 		}
 
 		if (allParams != null) {
 			List<Predicate> predicates = specsToCriteria(cb, root, allParams);  
 			cq.where(predicates.toArray(new Predicate[] {}));
 		}
-		return sf.getCurrentSession().createQuery(cq).getResultList();
+		
+		Query<T> q = sf.getCurrentSession().createQuery(cq);
+		if (params.getPaging() != null) {
+			q.setFirstResult(params.getPaging().start);
+			q.setMaxResults(params.getPaging().pageSize);
+		}
+		
+		return q.getResultList();
 	}
 
 	/*
 	 * Builds criteria for a query by interpreting the map as field name/value pairs
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public List<Predicate> specsToCriteria(CriteriaBuilder cb, From from, List<FinderSpec> params) {
+	public List<Predicate> specsToCriteria(CriteriaBuilder cb, From from, List<FinderCriterion> params) {
 		List<Predicate> predicates = new ArrayList<>();
-		for (FinderSpec spec: params) {
+		for (FinderCriterion spec: params) {
 				String key = spec.getFieldName();
 
 				/*
@@ -73,7 +82,7 @@ public class JPAFinder<T> extends BaseFinder<T> {
 				 */
 				if (spec.getValue() instanceof Map) {
 					Join j = from.join(key);
-					List<FinderSpec> nestedSpecs = mapToSpecList((Map<String, Object>) spec.getValue());
+					List<FinderCriterion> nestedSpecs = FinderSpec.mapToSpecList((Map<String, Object>) spec.getValue());
 					predicates.addAll(specsToCriteria(cb, j, nestedSpecs));  // association criteria
 				}
 				

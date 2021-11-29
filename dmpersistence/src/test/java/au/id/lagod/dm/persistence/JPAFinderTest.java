@@ -22,8 +22,11 @@ import au.id.lagod.dmexample.model.group.folder.GroupFolder;
 public class JPAFinderTest extends BasePersistenceTests<Customer>{
 	
 	private static final String CUSTOMER_NAME = "JPAFinderTest";
+	private static final String CUSTOMER_NAME2 = "JPAFinderTest2";
 	private static final String GROUP_NAME = "JPAFinderGroup";
+	private static final String GROUP_NAME2 = "JPAFinderGroup2";
 	private static final String FOLDER_NAME = "JPAFinderFolder";
+	private static final String FOLDER_NAME2 = "JPAFinderFolder2";
 	
 	@Autowired
 	protected ExampleModel model;
@@ -58,7 +61,7 @@ public class JPAFinderTest extends BasePersistenceTests<Customer>{
 		JPAFinder<Group> finder = new JPAFinder<Group>(sf, Group.class);
 		
 		List<Group> groups = finder.find("customer.name", CUSTOMER_NAME);
-		assertEquals(1, groups.size());
+		assertEquals(2, groups.size());
 		assertTrue(groups.contains(c.groups(GROUP_NAME)));
 		
 	}
@@ -69,10 +72,10 @@ public class JPAFinderTest extends BasePersistenceTests<Customer>{
 		JPAFinder<GroupFolder> finder = new JPAFinder<GroupFolder>(sf, GroupFolder.class);
 		
 		List<GroupFolder> groupFolders = finder.find("group.customer.name", CUSTOMER_NAME);
-		assertEquals(1, groupFolders.size());
+		assertEquals(2, groupFolders.size());
 		assertTrue(groupFolders.contains(c.groups(GROUP_NAME).getGroupFolders().getDefault()));
 		
-		assertEquals(finder.find("folder.customer.name", CUSTOMER_NAME), groupFolders);
+		assertTrue(finder.find("folder.customer.name", CUSTOMER_NAME).containsAll(groupFolders));
 		
 	}
 
@@ -88,22 +91,47 @@ public class JPAFinderTest extends BasePersistenceTests<Customer>{
 		
 		
 		List<Group> groups = finder.find(criteria);
-		assertEquals(1, groups.size());
+		assertEquals(2, groups.size());
 		assertTrue(groups.contains(c.groups(GROUP_NAME)));
 		
 	}
 
 	@Override
 	protected void doSetupBeforeTransaction() {
-		Customer c = model.getCustomers().create(CUSTOMER_NAME);
-		Group g = c.getGroups().create(GROUP_NAME);
-		Folder f = c.getFolders().create(FOLDER_NAME);
-		g.getGroupFolders().create(f);
+		{
+			Customer c = model.getCustomers().create(CUSTOMER_NAME);
+			{
+				Group g = c.getGroups().create(GROUP_NAME);
+				Folder f = c.getFolders().create(FOLDER_NAME);
+				g.getGroupFolders().create(f);
+			}
+			{
+				Group g = c.getGroups().create(GROUP_NAME2);
+				Folder f = c.getFolders().create(FOLDER_NAME2);
+				g.getGroupFolders().create(f);
+			}
+		}
+		
+		{
+			Customer c = model.getCustomers().create(CUSTOMER_NAME2);
+			{
+				Group g = c.getGroups().create(GROUP_NAME);
+				Folder f = c.getFolders().create(FOLDER_NAME);
+				g.getGroupFolders().create(f);
+			}
+			{
+				Group g = c.getGroups().create(GROUP_NAME2);
+				Folder f = c.getFolders().create(FOLDER_NAME2);
+				g.getGroupFolders().create(f);
+			}
+		}
+		
 	}
 
 	@Override
 	protected void doTeardownAfterTransaction() {
 		model.getCustomers().remove(model.customers(CUSTOMER_NAME));
+		model.getCustomers().remove(model.customers(CUSTOMER_NAME2));
 	}
 	
 	
