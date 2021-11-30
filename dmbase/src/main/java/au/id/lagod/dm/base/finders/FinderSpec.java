@@ -9,7 +9,7 @@ public class FinderSpec {
 	
 	private List<IFinderCriterion> criteria = new ArrayList<IFinderCriterion>();
 	
-	private List<String> orderBy = new ArrayList<String>();
+	private List<OrderBy> orderBy = new ArrayList<OrderBy>();
 	
 	private PagingRange paging;
 	
@@ -28,7 +28,7 @@ public class FinderSpec {
 		return criteria;
 	}
 
-	public List<String> getOrderBy() {
+	public List<OrderBy> getOrderBy() {
 		return orderBy;
 	}
 
@@ -58,6 +58,20 @@ public class FinderSpec {
 			specs.add(spec);
 		}
 		return specs;
+	}
+
+	public FinderSpec addOrderBy(OrderBy... orderBys) {
+		for (OrderBy orderBy: orderBys) {
+			this.orderBy.add(orderBy);
+		}
+		return this;
+	}
+
+	public FinderSpec addOrderBy(String... fieldNames) {
+		for (String fieldName: fieldNames) {
+			this.orderBy.add(new OrderBy(fieldName, true));
+		}
+		return this;
 	}
 
 

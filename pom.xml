@@ -11,7 +11,7 @@
 		<aspectjVersion>1.9.8.M1</aspectjVersion>
 		<springVersion>5.2.1.RELEASE</springVersion>
 		<hibernateVersion>5.3.5.Final</hibernateVersion>
-		<java.version>9</java.version>
+		<java.version>11</java.version>
 	</properties>
 
 	<dependencies>
@@ -47,9 +47,7 @@
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>3.8.1</version>
 					<configuration>
-						<release>9</release>
-						<source>${java.version}</source>
-						<target>${java.version}</target>
+						<release>${java.version}</release>
 					</configuration>
 				</plugin>
 				<plugin>
@@ -57,7 +55,7 @@
 					<artifactId>aspectj-maven-plugin</artifactId>
 					<version>1.13</version>
 					<configuration>
-						<complianceLevel>1.9</complianceLevel>
+						<complianceLevel>${java.version}</complianceLevel>
 						<showWeaveInfo>true</showWeaveInfo>
 					</configuration>
 					<executions>

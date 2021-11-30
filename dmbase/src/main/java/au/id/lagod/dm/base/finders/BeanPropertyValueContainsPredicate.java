@@ -5,7 +5,11 @@ import org.apache.commons.beanutils.BeanPropertyValueEqualsPredicate;
 public class BeanPropertyValueContainsPredicate extends BeanPropertyValueEqualsPredicate {
 
 	public BeanPropertyValueContainsPredicate(String propertyName, Object propertyValue) {
-		super(propertyName, propertyValue);
+		this(propertyName, propertyValue, false);
+	}
+	
+	public BeanPropertyValueContainsPredicate(String propertyName, Object propertyValue, boolean ignoreNull) {
+		super(propertyName, propertyValue, ignoreNull);
 	}
 	
 	@Override

@@ -12,11 +12,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import au.id.lagod.dm.base.finders.CollectionFinder;
-import au.id.lagod.dm.base.finders.ConjunctionOperator;
-import au.id.lagod.dm.base.finders.FinderConjunction;
 import au.id.lagod.dm.base.finders.FinderOperator;
 import au.id.lagod.dm.base.finders.FinderSpec;
-import au.id.lagod.dm.base.finders.FinderCriterion;
 import au.id.lagod.dm.test.TestObject;
 
 public class CollectionFinderTest {
@@ -49,7 +46,7 @@ public class CollectionFinderTest {
 		
 		finder = new CollectionFinder<TestObject>(list);
 	}
-
+	
 	@Test
 	public void testFindMapOfStringObject() {
 		Map<String, Object> params = new HashMap<String, Object>(0);

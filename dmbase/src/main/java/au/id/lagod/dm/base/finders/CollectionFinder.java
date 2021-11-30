@@ -8,13 +8,15 @@ import static org.apache.commons.collections.PredicateUtils.allPredicate;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
+import org.apache.commons.beanutils.BeanComparator;
 import org.apache.commons.beanutils.BeanPropertyValueEqualsPredicate;
 import org.apache.commons.collections.Predicate;
 import org.apache.commons.collections.PredicateUtils;
+import org.apache.commons.collections.comparators.ComparatorChain;
 
 /**
  * @author jmetcher
@@ -47,6 +49,20 @@ public class CollectionFinder<T> extends BaseFinder<T> {
 		
 		filter(temp, allPredicate(predicates));
 		
+		if (!params.getOrderBy().isEmpty()) {
+			ComparatorChain chain = new ComparatorChain();
+			
+			for (OrderBy orderBy: params.getOrderBy()) {
+				Comparator<T> comp = new BeanComparator<T>(orderBy.getFieldName());
+				if (!orderBy.isAscending()) {
+					comp = comp.reversed();
+				}
+				chain.addComparator(comp);
+			}
+			
+			Collections.sort(temp, chain);
+		}
+		
 		return temp;
 		
 	}
@@ -78,9 +94,7 @@ public class CollectionFinder<T> extends BaseFinder<T> {
 						predicates.add(new BeanPropertyValueEqualsPredicate(entry.getFieldName(),entry.getValue(), true));
 					}
 					else if (FinderOperator.CONTAINS.equals(entry.getOp())) {
-						// TODO: BeanPropertyValueContainsPredicate doesn't have an "ignoreNull" constructor, so any nulls in the property path
-						// will cause an exception.  Probably we need to create our own subclass.
-						predicates.add(new BeanPropertyValueContainsPredicate(entry.getFieldName(),entry.getValue()));
+						predicates.add(new BeanPropertyValueContainsPredicate(entry.getFieldName(),entry.getValue(), true));
 					}
 				}
 			}

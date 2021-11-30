@@ -14,6 +14,7 @@ import au.id.lagod.dm.base.finders.FinderConjunction;
 import au.id.lagod.dm.base.finders.FinderCriterion;
 import au.id.lagod.dm.base.finders.FinderOperator;
 import au.id.lagod.dm.base.finders.FinderSpec;
+import au.id.lagod.dm.base.finders.OrderBy;
 import au.id.lagod.dm.test.BasePersistenceTests;
 import au.id.lagod.dmexample.model.ExampleModel;
 import au.id.lagod.dmexample.model.customer.Customer;
@@ -69,6 +70,24 @@ public class JPAFinderConjunctionTest  extends BasePersistenceTests<Customer> {
 	protected void doTeardownAfterTransaction() {
 		model.getCustomers().remove(model.customers(CUSTOMER_NAME));
 		model.getCustomers().remove(model.customers(CUSTOMER_NAME2));
+	}
+	
+	@Test
+	public void testSorted() {
+		JPAFinder<Group> finder = new JPAFinder<Group>(sf, Group.class);
+		FinderSpec fs = new FinderSpec()
+			.addOrderBy(
+				new OrderBy("label", true),
+				new OrderBy("customer.code", false)
+			);
+
+		List<Group> found = finder.find(fs);
+		
+		assertEquals(4, found.size());
+		assertEquals(model.customers(CUSTOMER_NAME2).groups(GROUP_NAME), found.get(0));
+		assertEquals(model.customers(CUSTOMER_NAME).groups(GROUP_NAME), found.get(1));
+		assertEquals(model.customers(CUSTOMER_NAME2).groups(GROUP_NAME2), found.get(2));
+		assertEquals(model.customers(CUSTOMER_NAME).groups(GROUP_NAME2), found.get(3));
 	}
 
 	@Test

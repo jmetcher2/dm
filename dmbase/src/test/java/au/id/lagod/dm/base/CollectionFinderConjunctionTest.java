@@ -4,9 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,10 +12,10 @@ import org.junit.Test;
 import au.id.lagod.dm.base.finders.CollectionFinder;
 import au.id.lagod.dm.base.finders.ConjunctionOperator;
 import au.id.lagod.dm.base.finders.FinderConjunction;
+import au.id.lagod.dm.base.finders.FinderCriterion;
 import au.id.lagod.dm.base.finders.FinderOperator;
 import au.id.lagod.dm.base.finders.FinderSpec;
-import au.id.lagod.dm.base.finders.IFinderCriterion;
-import au.id.lagod.dm.base.finders.FinderCriterion;
+import au.id.lagod.dm.base.finders.OrderBy;
 import au.id.lagod.dm.test.TestObject;
 
 public class CollectionFinderConjunctionTest {
@@ -29,8 +27,8 @@ public class CollectionFinderConjunctionTest {
 		list = new ArrayList<TestObject>(0);
 		
 		// Build a list
-		list.add(new TestObject(1,"a", new TestObject(2, "b", null)));
-		list.add(new TestObject(1,"a", new TestObject(22, "bb", null)));
+		list.add(new TestObject(1,"a", new TestObject(2, "bb", null)));
+		list.add(new TestObject(1,"a", new TestObject(22, "b", null)));
 		list.add(new TestObject(3,"c", new TestObject(4, "d", null)));
 		list.add(new TestObject(5,"e", new TestObject(6, "f", null)));
 		list.add(new TestObject(6,"g", new TestObject(8, "h", null)));
@@ -43,13 +41,59 @@ public class CollectionFinderConjunctionTest {
 		
 		// Repeated properties
 		TestObject to3 = new TestObject(200, "aa", null);
-		list.add(new TestObject(201, "bb1", to3));
 		list.add(new TestObject(201, "bb2", to3));
+		list.add(new TestObject(201, "bb1", to3));
 		
 		// Null nested object
 		list.add(new TestObject(300, "AA", null));
 		
 		finder = new CollectionFinder<TestObject>(list);
+	}
+
+	@Test
+	public void testSorted() {
+		FinderSpec fs = new FinderSpec()
+			.addOrderBy("intField", "stringField", "nestedObject.stringField");
+		
+		List<TestObject> found = finder.find(fs);
+		assertEquals(list.size(), found.size());
+		assertEquals(list.get(1), found.get(0));
+		assertEquals(list.get(0), found.get(1));
+		assertEquals(list.get(2), found.get(2));
+		assertEquals(list.get(3), found.get(3));
+		assertEquals(list.get(4), found.get(4));
+		assertEquals(list.get(5), found.get(5));
+		
+		assertEquals(list.get(7), found.get(6));
+		assertEquals(list.get(6), found.get(7));
+
+		assertEquals(list.get(8), found.get(8));
+
+	}
+
+	@Test
+	public void testSortedDesc() {
+		FinderSpec fs = new FinderSpec()
+			.addOrderBy(
+					new OrderBy("intField", true), 
+					new OrderBy("stringField", true), 
+					new OrderBy("nestedObject.intField", false)
+			);
+		
+		List<TestObject> found = finder.find(fs);
+		assertEquals(list.size(), found.size());
+		assertEquals(list.get(1), found.get(0));
+		assertEquals(list.get(0), found.get(1));
+		assertEquals(list.get(2), found.get(2));
+		assertEquals(list.get(3), found.get(3));
+		assertEquals(list.get(4), found.get(4));
+		assertEquals(list.get(5), found.get(5));
+		
+		assertEquals(list.get(7), found.get(6));
+		assertEquals(list.get(6), found.get(7));
+
+		assertEquals(list.get(8), found.get(8));
+
 	}
 
 	@Test
@@ -80,7 +124,7 @@ public class CollectionFinderConjunctionTest {
 		List<TestObject> found = finder.find(fs);
 		
 		assertEquals(1, found.size());
-		assertTrue(found.contains(list.get(1)));
+		assertTrue(found.contains(list.get(0)));
 	}
 	
 	@Test

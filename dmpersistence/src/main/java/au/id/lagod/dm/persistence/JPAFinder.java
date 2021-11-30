@@ -9,6 +9,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.From;
 import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -22,6 +23,7 @@ import au.id.lagod.dm.base.finders.FinderConjunction;
 import au.id.lagod.dm.base.finders.FinderOperator;
 import au.id.lagod.dm.base.finders.FinderSpec;
 import au.id.lagod.dm.base.finders.IFinderCriterion;
+import au.id.lagod.dm.base.finders.OrderBy;
 import au.id.lagod.dm.base.finders.FinderCriterion;
 
 
@@ -60,13 +62,58 @@ public class JPAFinder<T> extends BaseFinder<T> {
 			cq.where(predicates.toArray(new Predicate[] {}));
 		}
 		
+		if (!params.getOrderBy().isEmpty()) {
+			List<Order> orderList = new ArrayList<Order>();
+			
+			for (OrderBy orderBy: params.getOrderBy()) {
+				orderList.add(addOrderBy(cb, root, orderBy));
+			}
+			cq.orderBy(orderList);
+		}
+		
 		Query<T> q = sf.getCurrentSession().createQuery(cq);
+		
 		if (params.getPaging() != null) {
 			q.setFirstResult(params.getPaging().start);
 			q.setMaxResults(params.getPaging().pageSize);
 		}
 		
 		return q.getResultList();
+	}
+
+	@SuppressWarnings({ "rawtypes" })
+	private Order addOrderBy(CriteriaBuilder cb, From from, OrderBy orderBy) {
+		String fieldPath = orderBy.getFieldName();
+		
+		String [] temp = fieldPath.split("\\.");
+		
+		Order order = null;
+		
+		if (temp.length > 1) {
+			Join join = from.join(temp[0]);
+			String fieldName = temp[temp.length - 1];
+	
+			for (int i = 1; i < temp.length - 1; i++) {
+				join = join.join(temp[i]);
+			}
+			
+			if (orderBy.isAscending()) {
+				order = cb.asc(join.get(fieldName));
+			}
+			else {
+				order = cb.desc(join.get(fieldName));
+			}
+		}
+		else {
+			if (orderBy.isAscending()) {
+				order = cb.asc(from.get(fieldPath));
+			}
+			else {
+				order = cb.desc(from.get(fieldPath));
+			}
+		}
+		
+		return order;
 	}
 
 	/*
