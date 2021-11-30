@@ -1,6 +1,6 @@
 package au.id.lagod.dm.base.finders;
 
-public class FinderCriterion {
+public class FinderCriterion implements IFinderCriterion {
 	
 	private String fieldName;
 	private FinderOperator op;
@@ -13,6 +13,10 @@ public class FinderCriterion {
 		this.fieldName = fieldName;
 		this.op = op;
 		this.value = value;
+	}
+	
+	public boolean isConjunction() {
+		return false;
 	}
 
 	public String getFieldName() {

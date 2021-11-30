@@ -12,6 +12,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import au.id.lagod.dm.base.finders.CollectionFinder;
+import au.id.lagod.dm.base.finders.ConjunctionOperator;
+import au.id.lagod.dm.base.finders.FinderConjunction;
 import au.id.lagod.dm.base.finders.FinderOperator;
 import au.id.lagod.dm.base.finders.FinderSpec;
 import au.id.lagod.dm.base.finders.FinderCriterion;

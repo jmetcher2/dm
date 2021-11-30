@@ -17,8 +17,11 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
 import au.id.lagod.dm.base.finders.BaseFinder;
+import au.id.lagod.dm.base.finders.ConjunctionOperator;
+import au.id.lagod.dm.base.finders.FinderConjunction;
 import au.id.lagod.dm.base.finders.FinderOperator;
 import au.id.lagod.dm.base.finders.FinderSpec;
+import au.id.lagod.dm.base.finders.IFinderCriterion;
 import au.id.lagod.dm.base.finders.FinderCriterion;
 
 
@@ -47,7 +50,7 @@ public class JPAFinder<T> extends BaseFinder<T> {
 		Root<T> root = cr.from(clazz);
 		CriteriaQuery<T> cq = cr.select(root);
 		
-		List<FinderCriterion> allParams = new ArrayList<>(params.getCriteria());
+		List<IFinderCriterion> allParams = new ArrayList<>(params.getCriteria());
 		if (globalCriteria != null) {
 			allParams.addAll(FinderSpec.mapToSpecList(globalCriteria));
 		}
@@ -70,9 +73,27 @@ public class JPAFinder<T> extends BaseFinder<T> {
 	 * Builds criteria for a query by interpreting the map as field name/value pairs
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public List<Predicate> specsToCriteria(CriteriaBuilder cb, From from, List<FinderCriterion> params) {
+	public List<Predicate> specsToCriteria(CriteriaBuilder cb, From from, List<IFinderCriterion> params) {
 		List<Predicate> predicates = new ArrayList<>();
-		for (FinderCriterion spec: params) {
+		for (IFinderCriterion crit: params) {
+			if (crit.isConjunction()) {
+				
+				FinderConjunction conj = (FinderConjunction) crit;
+				Predicate lhPredicate = specsToCriteria(cb, from, List.of(conj.getLhs())).get(0);
+				Predicate rhPredicate = specsToCriteria(cb, from, List.of(conj.getRhs())).get(0);
+				
+				if (ConjunctionOperator.AND.equals(conj.getOp())) {
+					predicates.add(cb.and(lhPredicate, rhPredicate));
+				}
+				else if (ConjunctionOperator.OR.equals(conj.getOp())) {
+					predicates.add(cb.or(lhPredicate, rhPredicate));
+				}
+				else if (ConjunctionOperator.NOT.equals(conj.getOp())) {
+					predicates.add(cb.not(lhPredicate));
+				}
+			}
+			else {
+				FinderCriterion spec = (FinderCriterion) crit;
 				String key = spec.getFieldName();
 
 				/*
@@ -82,7 +103,7 @@ public class JPAFinder<T> extends BaseFinder<T> {
 				 */
 				if (spec.getValue() instanceof Map) {
 					Join j = from.join(key);
-					List<FinderCriterion> nestedSpecs = FinderSpec.mapToSpecList((Map<String, Object>) spec.getValue());
+					List<IFinderCriterion> nestedSpecs = FinderSpec.mapToSpecList((Map<String, Object>) spec.getValue());
 					predicates.addAll(specsToCriteria(cb, j, nestedSpecs));  // association criteria
 				}
 				
@@ -109,6 +130,7 @@ public class JPAFinder<T> extends BaseFinder<T> {
 					Predicate predicate = predicateForOperator(spec.getOp(), cb, from.get(key), spec.getValue());
 					predicates.add(predicate);
 				}
+			}
 		}
 		
 		return predicates;
@@ -123,7 +145,7 @@ public class JPAFinder<T> extends BaseFinder<T> {
 			return cb.equal(path,  value);
 		}
 		else if (FinderOperator.CONTAINS.equals(op)) {
-			return cb.like(path, (String) value);
+			return cb.like(path, "%" + (String) value + "%");
 		}
 		else {
 			throw new RuntimeException("Unsupported find operator "  + op);

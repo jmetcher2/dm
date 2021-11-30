@@ -11,6 +11,7 @@ import org.hibernate.criterion.Restrictions;
 import au.id.lagod.dm.base.finders.BaseFinder;
 import au.id.lagod.dm.base.finders.FinderCriterion;
 import au.id.lagod.dm.base.finders.FinderSpec;
+import au.id.lagod.dm.base.finders.IFinderCriterion;
 
 
 public class HibernateFinder<T> extends BaseFinder<T> {
@@ -56,47 +57,50 @@ public class HibernateFinder<T> extends BaseFinder<T> {
 	 * Builds criteria for a query by interpreting the map as field name/value pairs
 	 */
 	@SuppressWarnings("unchecked")
-	public Criteria mapToCriteria(Criteria criteria, List<FinderCriterion> params) {
+	public Criteria mapToCriteria(Criteria criteria, List<IFinderCriterion> params) {
 		Map<String,Criteria> nestedCriteriaMap = new HashMap<String,Criteria>();
 
-		for (FinderCriterion fc: params) {
-			String key = fc.getFieldName();
-			Object value = fc.getValue();
-
-				/*
-				 * Parameters where the parameter value is a map are interpreted as applying to a composed
-				 * object.  The key gives the field name of the composed object, and the map is then 
-				 * interpreted as field names/values within that object
-				 */
-				if (value instanceof Map) {
-					mapToCriteria(criteria.createCriteria(key), FinderSpec.mapToSpecList((Map<String, Object>) value));  // association criteria
-				}
-				
-				/*
-				 * If the field name contains a . it is interpreted as per the apache commons PropertyUtils convention
-				 * The part of the name before the . is interpreted as the name of a field containing a composed object, and the part
-				 * of the name after the . is interpreted as the name of a field within that object.
-				 */
-				else if (key.matches(".*\\..*")) {
-					String [] temp = key.split("\\.", 2);
-					
-					Map<String,Object> nestedParams = new HashMap<String, Object>();
-					nestedParams.put(temp[1], value);
-					
-					// Remember if we've already created a subcriteria for this association, and if so use the same one
-					// Hibernate doesn't like two subcriteria on the same association.
-					if (!nestedCriteriaMap.containsKey(temp[0])) {
-						nestedCriteriaMap.put(temp[0], criteria.createCriteria(temp[0]));
+		for (IFinderCriterion crit: params) {
+			if (!crit.isConjunction()) {
+				FinderCriterion fc = (FinderCriterion) crit;
+				String key = fc.getFieldName();
+				Object value = fc.getValue();
+	
+					/*
+					 * Parameters where the parameter value is a map are interpreted as applying to a composed
+					 * object.  The key gives the field name of the composed object, and the map is then 
+					 * interpreted as field names/values within that object
+					 */
+					if (value instanceof Map) {
+						mapToCriteria(criteria.createCriteria(key), FinderSpec.mapToSpecList((Map<String, Object>) value));  // association criteria
 					}
-					Criteria nestedCriteria = nestedCriteriaMap.get(temp[0]);
 					
-					mapToCriteria(nestedCriteria,FinderSpec.mapToSpecList(nestedParams));
-				}
-				
-				else if (value == null)
-					criteria.add(Restrictions.isNull(key));
-				else
-					criteria.add(Restrictions.eq(key,value));
+					/*
+					 * If the field name contains a . it is interpreted as per the apache commons PropertyUtils convention
+					 * The part of the name before the . is interpreted as the name of a field containing a composed object, and the part
+					 * of the name after the . is interpreted as the name of a field within that object.
+					 */
+					else if (key.matches(".*\\..*")) {
+						String [] temp = key.split("\\.", 2);
+						
+						Map<String,Object> nestedParams = new HashMap<String, Object>();
+						nestedParams.put(temp[1], value);
+						
+						// Remember if we've already created a subcriteria for this association, and if so use the same one
+						// Hibernate doesn't like two subcriteria on the same association.
+						if (!nestedCriteriaMap.containsKey(temp[0])) {
+							nestedCriteriaMap.put(temp[0], criteria.createCriteria(temp[0]));
+						}
+						Criteria nestedCriteria = nestedCriteriaMap.get(temp[0]);
+						
+						mapToCriteria(nestedCriteria,FinderSpec.mapToSpecList(nestedParams));
+					}
+					
+					else if (value == null)
+						criteria.add(Restrictions.isNull(key));
+					else
+						criteria.add(Restrictions.eq(key,value));
+			}
 		}
 		
 		return criteria;
