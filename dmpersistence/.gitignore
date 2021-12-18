@@ -2,3 +2,6 @@
 /build/
 /derby.log
 /target/
+/.apt_generated/
+/.apt_generated_test/
+/.factorypath

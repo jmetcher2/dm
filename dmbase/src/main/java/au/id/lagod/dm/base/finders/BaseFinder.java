@@ -93,4 +93,8 @@ public abstract class BaseFinder<T> implements Finder<T>  {
 		return findOne("id", id);
 	}
 
+	public static String propPath(String...strings) {
+		return String.join(".", strings);
+	}
+	
 }

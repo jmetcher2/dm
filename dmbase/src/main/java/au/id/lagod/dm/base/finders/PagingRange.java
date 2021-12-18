@@ -31,15 +31,4 @@ public class PagingRange {
 		}
 	}
 	
-	public String offsetFetchSql() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("offset ");
-		sb.append(start);
-		sb.append(" rows\n");
-		sb.append(" fetch next ");
-		sb.append(pageSize);
-		sb.append(" rows only option(recompile)");
-		return sb.toString();
-	}
-
 }
